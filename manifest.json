@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "HCTG+",
+  "description": "better game.hackclub.com",
+  "version": "1.0.0",
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://game.hackclub.com/*"],
+      "js": ["content.js", "components/sidebar.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://*.game.hackclub.com/*"],
+      "js": ["components/utils.js"],
+      "run_at": "document_idle",
+      "world": "MAIN"
+    }
+  ],
+  "permissions": ["storage", "tabs"],
+  "host_permissions": ["https://game.hackclub.com/*", "https://*.game.hackclub.com/*"]
+}
