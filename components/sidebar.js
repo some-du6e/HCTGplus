@@ -7,9 +7,9 @@ function makeSidebarBetter() {
     // slip in the hours
     // done: see if dollars can be fitted in (prob too cramped)
     // ^ only 2 looks like trash but 3 is ok
-    let iconsdiv = null
-    let possibleiconsdivs = document.getElementsByClassName("flex items-center justify-between")
-    for (let div of possibleiconsdivs) {
+    let statsdiv = null
+    let possiblestatsdivs = document.getElementsByClassName("flex items-center justify-between")
+    for (let div of possiblestatsdivs) {
         const leftCell = div.children[0]
         if (
             leftCell &&
@@ -17,25 +17,25 @@ function makeSidebarBetter() {
             leftCell.classList?.contains("items-center") &&
             leftCell.classList?.contains("gap-1.5")
         ) {
-            iconsdiv = div
+            statsdiv = div
             break
         }
     }
-    if (!iconsdiv) {
+    if (!statsdiv) {
         console.error("HCTG: could not find icons div! ID: 9s8f7g")
         return
     }
 
-    let littleiconsdiv = null
-    let possiblelittleiconsdivs = document.getElementsByClassName("flex items-center justify-between")
-    for (let div of possiblelittleiconsdivs) {
+    let littlestatsdiv = null
+    let possiblelittlestatsdivs = document.getElementsByClassName("flex items-center justify-between")
+    for (let div of possiblelittlestatsdivs) {
         if (div.children[0].className === "flex items-center gap-1.5") {
-            littleiconsdiv = div
+            littlestatsdiv = div
             break
         }
     }
 
-    let tokensdiv = iconsdiv.children[0]
+    let tokensdiv = statsdiv.children[0]
     if (!tokensdiv) { return }
 
     let hoursdiv = tokensdiv.cloneNode(true)
@@ -52,8 +52,36 @@ function makeSidebarBetter() {
     dollardiv.children[0].src = dollardivicon
     // good enough order
     // tokens, dollars, hours
-    iconsdiv.insertBefore(hoursdiv, iconsdiv.children[1])
-    iconsdiv.insertBefore(dollardiv, iconsdiv.children[1])
+    statsdiv.insertBefore(hoursdiv, statsdiv.children[1])
+    statsdiv.insertBefore(dollardiv, statsdiv.children[1])
+
+
+
+    ////// / // / / // / // / / // / / / /
+    // make that shi prettier
+    let stuffdiv = null
+    let possiblestuffdivs = document.getElementsByClassName("flex items-center gap-2")
+    for (stuff of possiblestuffdivs) {
+        // if (stuff.className == "cursor-pointer text-black/70 transition-transform hover:scale-110") {
+        //     stuffdiv = stuff
+        //     break
+        // }
+
+        stuffdiv = stuff // todo yeah we are ignore this cuz its 1 element atm but it might cause issues in the future if they add more
+
+    }
+    // make the icon thing with the logout stuff vertical
+    stuffdiv.className = "flex items-center gap-0.5 flex-col"
+    
+    let tempthingidkhowtocall = document.getElementsByClassName("flex items-center gap-3")[0]
+    // !TODO SUPER BRITTLE AND IT NEEDS TO BE DEFIND AND SHI
+
+    tempthingidkhowtocall.appendChild(stuffdiv)
+
+    // make the statsdiv not spaced out asl
+    statsdiv.className = "flex items-center gap-2"
+    // fix the hours cuz it looks really squished
+    hoursdiv.children[1].className = "smoothing-black text-xl tracking-[-0.025em]"
 
 }
 
