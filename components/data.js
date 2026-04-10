@@ -1,5 +1,10 @@
 function parseDataPage() {
     window.HCTG = window.HCTG || {}
+    window.HCTG.consts = window.HCTG.consts || {
+        "onetoken2usd": 5,
+        "onehour2usd": 5,
+        "REALLYdebuging": false
+    }
 
     // get data-page from the app div
     const appdiv = document.getElementById("app")
@@ -33,7 +38,33 @@ function parseDataPage() {
     
     }
     window.HCTG.hours = hours
+
+    // economics
+    let economics = {
+        "totalHours": null,
+        "hours": null,
+        "predictedUSD": null,
+        "USD": null,
+        "tokens": user.balance ?? 0
+    }
     
+    // total hours
+    economics.totalHours = hours.totalTime / 3600
+    economics.totalHours = Math.round(economics.totalHours * 100) / 100 // make it bit prettier
+    economics.hours = economics.totalHours
+
+    // predict usd
+    economics.predictedUSD = economics.totalHours * window.HCTG.consts.onehour2usd
+    economics.predictedUSD = Math.round(economics.predictedUSD * 100) / 100
+
+    // kinda predict usd
+    economics.USD = economics.tokens * window.HCTG.consts.onetoken2usd
+    economics.USD = Math.round(economics.USD * 100) / 100
+
+    window.HCTG.economics = economics
+    window.dispatchEvent(new Event('hctg:dataReady'))
+
+    console.log(datapage)
 }
 
 window.addEventListener('pageChange', function() {

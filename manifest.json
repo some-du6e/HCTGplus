@@ -9,7 +9,7 @@
   "content_scripts": [
     {
       "matches": ["*://game.hackclub.com/*"],
-      "js": ["content.js", "components/sidebar.js", "components/datapage.js"],
+      "js": ["content.js", "components/consts.js", "components/data.js", "components/sidebar.js"],
       "run_at": "document_idle"
     },
     {
