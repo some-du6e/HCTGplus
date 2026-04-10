@@ -17,8 +17,8 @@ function betterShop() {
         console.warn("HCTG+: need to refresh for some reason idk") // TODO: there has to be a better way to get the props.items. maybe its a problem in data.js?
         location.reload()
     }
-
-    console.log(datapage.props.items)
+    let itemlist = datapage.props.items
+    console.log(itemlist)
 
 
     // shop ui now...
@@ -38,37 +38,25 @@ function betterShop() {
         return
     }
 
-
-    // keep first item as template, remove the rest
-    while (shopcontainer.children.length > 1) {
-        shopcontainer.removeChild(shopcontainer.lastChild)
-    }
-
-    const itemTemplate = shopcontainer.children[0]
-    itemTemplate.hidden = true
-    function renderitems() {
-        let items = window.HCTG.datapage.props.items
-        for (let item of items) { 
-            let chud = itemTemplate.cloneNode(true)
-
-            // featured?
-            if (!item.featured) {
-                chud.children[0].children[0].hidden = true
+    // lets add the id to each child because my last method was stupid 
+    for (let item of shopcontainer.children) {
+        let itempictureurl = item.children[1].children[0].src
+        let itemtitle = item.children[1].children[0].alt // the picture alt is the title lol
+        console.log(itemtitle)
+        console.log(itempictureurl)
+        for (shopitem of itemlist) {
+            // check for the picture since that shi is never ever gonna change and theres never ever gonna be the same one
+            // check name as a backup bc of the mac neos
+            if (itempictureurl.endsWith(shopitem.image) && shopitem.name === itemtitle) {
+                item.id = "HCTGplus-item-" + shopitem.id
             }
-
-            // image
-            let imgthing = chud.children[1].children[0]
-            imgthing.src = item.image
-
-            // title
-            let titlething = chud.children[1].children[1].children[0]
-            titlething.innerText = item.name
-
-            chud.hidden = false
-            shopcontainer.appendChild(chud)
+            
         }
     }
-    renderitems()
+
+
+
+    
 
 }
 
