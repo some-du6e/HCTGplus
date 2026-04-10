@@ -22,6 +22,8 @@ function parseDataPage() {
         console.error("HCTG: could not parse data-page JSON. ID:xj8sqv")
         return
     }
+
+    window.HCTG.datapage = datapage
     // console.log("HCTG+: parsed datapage", datapage)
     let user = datapage?.props?.user
     if (user) {
