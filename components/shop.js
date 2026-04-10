@@ -42,8 +42,8 @@ function betterShop() {
     for (let item of shopcontainer.children) {
         let itempictureurl = item.children[1].children[0].src
         let itemtitle = item.children[1].children[0].alt // the picture alt is the title lol
-        console.log(itemtitle)
-        console.log(itempictureurl)
+        // console.log(itemtitle)
+        // console.log(itempictureurl)
         for (shopitem of itemlist) {
             // check for the picture since that shi is never ever gonna change and theres never ever gonna be the same one
             // check name as a backup bc of the mac neos
@@ -56,7 +56,25 @@ function betterShop() {
 
 
 
-    
+    function renderCategory(category) {
+        if (category === "none") {
+            for (let item of shopcontainer.children) {
+                item.style.display = "block"
+            }
+            return
+        }   
+        let standard = window.HCTG.shop.categories[category]
+        for (let item of shopcontainer.children) {
+            let itemid = parseInt(item.id.replace("HCTGplus-item-", ""))
+            if (standard.includes(itemid)) {
+                item.style.display = "block"
+            }else {
+                item.style.display = "none"
+            }
+        }
+    }
+
+    renderCategory("none")
 
 }
 
