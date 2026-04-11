@@ -9,6 +9,30 @@ function makeProjectsBetter() {
         location.reload()
         return
     }
+
+
+    let projectscontainer = null
+    let possibleprojectscontainers = document.getElementsByClassName("grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3")
+    // TODO: only one, but still need to fix
+    projectscontainer = possibleprojectscontainers[0]
+
+    // link the id to each project card
+    let projects = window.HCTG.datapage.props.projects
+    for (let card of projectscontainer.children) {
+        let cardID = card.href.split("/projects/")[1].trim()
+        
+        if (cardID !== "new") {
+            console.log("HCTG+: cardID:", cardID)
+            for (let project of projects) {
+                if (project.id == cardID) {
+                    card.id = "hctg-project-" + project.id
+                    card.setAttribute("data-hctg-project-id", project.id)
+                    break
+                }
+            }
+        }
+    }
+
     
 }
 
