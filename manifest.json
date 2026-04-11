@@ -15,7 +15,8 @@
         "components/data.js",
         "components/sidebar.js",
         "components/shop.js",
-        "components/projects.js"
+        "components/projects.js",
+        "components/lander.js"
       ],
       "run_at": "document_idle"
     },
