@@ -49,6 +49,31 @@ function betterShop() {
             // check name as a backup bc of the mac neos
             if (itempictureurl.endsWith(shopitem.image) && shopitem.name === itemtitle) {
                 item.id = "HCTGplus-item-" + shopitem.id
+                item.setAttribute("data-hctg-item-id", shopitem.id)
+                // also add a lil thing  to copy the id
+                // TODO: add "dev" option to some sort of settings
+                let gubby = true
+                if (gubby) {
+                    let copydiv = document.createElement("div")
+                    copydiv.className = "absolute top-2 left-5 flex gap-1.5"
+                    // Tailwind utility classes may not exist in the host page build, so lock position with inline styles.
+                    copydiv.style.left = "0.50rem"
+                    copydiv.style.top = "0.5rem"
+                    let copyicon = document.createElement("img")
+                    copyicon.src = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20448%20512%22%3E%3C!--!Font%20Awesome%20Free%20v7.2.0%20by%20%40fontawesome%20-%20https%3A%2F%2Ffontawesome.com%20License%20-%20https%3A%2F%2Ffontawesome.com%2Flicense%2Ffree%20Copyright%202026%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M192%200c-35.3%200-64%2028.7-64%2064l0%20256c0%2035.3%2028.7%2064%2064%2064l192%200c35.3%200%2064-28.7%2064-64l0-200.6c0-17.4-7.1-34.1-19.7-46.2L370.6%2017.8C358.7%206.4%20342.8%200%20326.3%200L192%200zM64%20128c-35.3%200-64%2028.7-64%2064L0%20448c0%2035.3%2028.7%2064%2064%2064l192%200c35.3%200%2064-28.7%2064-64l0-16-64%200%200%2016-192%200%200-256%2016%200%200-64-16%200z%22%2F%3E%3C%2Fsvg%3E"
+                    copyicon.className = "w-4 invert hover:pink cursor-pointer"
+                    copyicon.onclick = function() {
+                        navigator.clipboard.writeText(item.getAttribute("data-hctg-item-id"))
+                    }
+
+
+                    let copytext = document.createElement("span")
+                    copytext.innerText = shopitem.id
+                    copytext.className = "text-[#ffffff] text-sm font-bold invert items-center"
+                    copydiv.appendChild(copyicon)
+                    copydiv.appendChild(copytext)
+                    item.children[0].appendChild(copydiv)
+                }
             }
             
         }
