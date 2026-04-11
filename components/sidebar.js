@@ -102,6 +102,51 @@ function makeSidebarBetter() {
     // fix the hours cuz it looks really squished
     hoursdiv.children[1].className = "smoothing-black text-xl tracking-[-0.025em]"
 
+
+    /////////
+    // goals
+    let navbar = document.getElementsByClassName("relative z-10 mt-6 flex flex-col gap-[40px]")[0]
+    // todo: checke this better
+
+    let lastitem = navbar.children[navbar.children.length - 1]
+    
+    let goalstab = lastitem.cloneNode(true)
+
+    let goalstabtitle = goalstab.children[0].children[1].children[0]
+    let goalstabicon = goalstab.children[0].children[0].children[0].children[0]
+    goalstabtitle.innerText = "Goals"
+    goalstabtitle.className = goalstabtitle.className
+        .split(" ")
+        .filter((c) => c !== "text-white" && c !== "smoothing-white")
+        .join(" ")
+    goalstabtitle.classList.add("text-black", "smoothing-black")
+    goalstabtitle.style.setProperty("color", "black", "important")
+
+    goalstabicon.src = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%3E%3C!--!Font%20Awesome%20Free%20v7.2.0%20by%20%40fontawesome%20-%20https%3A%2F%2Ffontawesome.com%20License%20-%20https%3A%2F%2Ffontawesome.com%2Flicense%2Ffree%20Copyright%202026%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M448%20256a192%20192%200%201%200%20-384%200%20192%20192%200%201%200%20384%200zM0%20256a256%20256%200%201%201%20512%200%20256%20256%200%201%201%20-512%200zm256%2080a80%2080%200%201%200%200-160%2080%2080%200%201%200%200%20160zm0-224a144%20144%200%201%201%200%20288%20144%20144%200%201%201%200-288zM224%20256a32%2032%200%201%201%2064%200%2032%2032%200%201%201%20-64%200z%22%2F%3E%3C%2Fsvg%3E"
+    
+    goalstab.href = "/me#goals"
+    navbar.appendChild(goalstab)
+
+
+    // color it in if we are in the goals tab
+    if (location.pathname === "/me" && location.hash === "#goals") {
+        // TODO: NOT MAKE THIS HARDCODED
+        goalstab.children[0].className = "flex items-center transition-all pr-4"
+        goalstab.children[0].children[0].className = "transition-all relative z-20 flex h-[76px] w-[76px] shrink-0 items-center justify-center rounded-full bg-[#fecb0d]"
+        goalstab.children[0].children[0].children[0].className = "transition-all relative flex h-[52px] w-[52px] items-center justify-center rounded-full bg-white"
+        
+
+
+        goalstab.children[0].children[1].className = "relative z-10 -ml-4 rounded-r-2xl py-2 pr-10 transition-all bg-[#fecb0d] pl-8"
+        const goalTitle = goalstab.children[0].children[1].children[0]
+        goalTitle.className = goalTitle.className
+            .split(" ")
+            .filter((c) => !c.startsWith("hover:") && !c.startsWith("group-hover:") && c !== "text-white" && c !== "smoothing-white")
+            .join(" ")
+        goalTitle.classList.add("text-black")
+        goalTitle.style.setProperty("color", "black", "important")
+    }
+
 }
 
 window.addEventListener('pageChange', function() {
