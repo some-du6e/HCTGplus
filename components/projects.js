@@ -25,15 +25,15 @@ function makeProjectsBetter() {
             console.log("HCTG+: cardID:", cardID)
             for (let project of projects) {
                 if (project.id == cardID) {
-                    card.id = "hctg-project-" + project.id
-                    card.setAttribute("data-hctg-project-id", project.id)
+                    card.id = "hctg-project-" + projects.indexOf(project)
+                    card.setAttribute("data-hctg-project-id", projects.indexOf(project))
                     break
                 }
             }
         }
     }
 
-    
+
 }
 
 window.addEventListener('pageChange', function() {
