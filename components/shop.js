@@ -78,6 +78,7 @@ function betterShop() {
 
     function renderCategoryButtons() {
         let categories = Object.keys(window.HCTG.shop.categories)
+        let mobileBreakpoint = 640
         // thank you font awesome
         let iconmapping = {
             "featured": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20576%20512%22%3E%3C!--!Font%20Awesome%20Free%20v7.2.0%20by%20%40fontawesome%20-%20https%3A%2F%2Ffontawesome.com%20License%20-%20https%3A%2F%2Ffontawesome.com%2Flicense%2Ffree%20Copyright%202026%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M309.5-18.9c-4.1-8-12.4-13.1-21.4-13.1s-17.3%205.1-21.4%2013.1L193.1%20125.3%2033.2%20150.7c-8.9%201.4-16.3%207.7-19.1%2016.3s-.5%2018%205.8%2024.4l114.4%20114.5-25.2%20159.9c-1.4%208.9%202.3%2017.9%209.6%2023.2s16.9%206.1%2025%202L288.1%20417.6%20432.4%20491c8%204.1%2017.7%203.3%2025-2s11-14.2%209.6-23.2L441.7%20305.9%20556.1%20191.4c6.4-6.4%208.6-15.8%205.8-24.4s-10.1-14.9-19.1-16.3L383%20125.3%20309.5-18.9z%22%2F%3E%3C%2Fsvg%3E",
@@ -101,13 +102,45 @@ function betterShop() {
             // }
             ohiogubby = posibility
         }
+        let existingControls = document.getElementById("HCTGplus-category-controls")
+        if (existingControls) {
+            existingControls.remove()
+        }
+
+        let controlswrapper = document.createElement("div")
+        controlswrapper.id = "HCTGplus-category-controls"
+        controlswrapper.className = "mt-2"
+
+        let mobilecategories = document.createElement("select")
+        mobilecategories.className = "w-full max-w-xs cursor-pointer border border-black bg-white px-3 py-2 font-bold text-black"
+
+        let defaultoption = document.createElement("option")
+        defaultoption.value = "none"
+        defaultoption.textContent = "All categories"
+        mobilecategories.appendChild(defaultoption)
+
+        mobilecategories.onchange = () => {
+            renderCategory(mobilecategories.value)
+        }
+
         let categoriesdiv = document.createElement("div")
-        categoriesdiv.className = "flex items-center gap-2"
+        categoriesdiv.className = "items-center gap-2 flex-wrap"
+
+        function syncCategoryControls() {
+            let isSmallScreen = window.innerWidth < mobileBreakpoint
+            mobilecategories.style.display = isSmallScreen ? "block" : "none"
+            categoriesdiv.style.display = isSmallScreen ? "none" : "flex"
+        }
 
 
 
         
         for (let placeholder of categories) {
+            let mobileoption = document.createElement("option")
+            mobileoption.value = placeholder
+            mobileoption.textContent = placeholder[0].toUpperCase() + placeholder.slice(1)
+            mobilecategories.appendChild(mobileoption)
+
             let bullshit = document.createElement("div")
             bullshit.className = "mt-2 bg-black px-4 py-1.5 font-bold text-white no-underline transition-colors hover:bg-[#fecb0d] hover:text-black cursor-pointer flex items-center gap-2"
 
@@ -137,7 +170,15 @@ function betterShop() {
         }
 
         ohiogubby.appendChild(document.createElement("br"))
-        ohiogubby.appendChild(categoriesdiv)
+        controlswrapper.appendChild(mobilecategories)
+        controlswrapper.appendChild(categoriesdiv)
+        ohiogubby.appendChild(controlswrapper)
+        syncCategoryControls()
+        if (window.HCTG.shop.syncCategoryControls) {
+            window.removeEventListener("resize", window.HCTG.shop.syncCategoryControls)
+        }
+        window.HCTG.shop.syncCategoryControls = syncCategoryControls
+        window.addEventListener("resize", syncCategoryControls)
     }
     renderCategoryButtons()
 }
