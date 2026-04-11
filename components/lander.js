@@ -25,12 +25,30 @@ function betterLander() {
     let getstartedbutton = ohiogubby.children[1]
 
     let loginbutton = getstartedbutton.cloneNode(true)
-
+    const changeTag = window.HCTG?.utils?.changeTag
+    if (typeof changeTag === "function") {
+        loginbutton = changeTag(loginbutton, "a")
+    } else {
+        console.warn("HCTG: changeTag helper missing; using direct <a> conversion")
+        const fallbackAnchor = document.createElement("a")
+        for (const attr of loginbutton.attributes) {
+            fallbackAnchor.setAttribute(attr.name, attr.value)
+        }
+        while (loginbutton.firstChild) {
+            fallbackAnchor.appendChild(loginbutton.firstChild)
+        }
+        loginbutton = fallbackAnchor
+    }
     loginbutton.children[1].innerText = "Log in"
     // change le icon
     let loginicon = loginbutton.children[0]
     // flip it
     loginicon.style.setProperty("transform", "rotate(180deg)", "important")
+    let url = "/auth/hca"
+    loginbutton.href = url
+    loginbutton.type = null
+    
+
     ohiogubby.appendChild(loginbutton)
 }
 

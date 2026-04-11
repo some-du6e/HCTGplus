@@ -59,3 +59,31 @@ function waitForElm(selector) {
         });
     });
 }
+
+if (!window.HCTG) {
+    window.HCTG = {}
+}
+if (!window.HCTG.utils) {
+    window.HCTG.utils = {}
+}
+
+
+window.HCTG.utils.changeTag = (element, newTagName) => {
+    // 1. Create the new element
+    const newElement = document.createElement(newTagName);
+
+    // 2. Copy attributes (id, class, etc.)
+    for (const attr of element.attributes) {
+        newElement.setAttribute(attr.name, attr.value);
+    }
+
+    // 3. Move the children (content) from the old to the new
+    while (element.firstChild) {
+        newElement.appendChild(element.firstChild);
+    }
+
+    // 4. Replace the old element with the new one
+    element.replaceWith(newElement);
+    
+    return newElement;
+}
