@@ -38,11 +38,16 @@ function makeSidebarBetter() {
     let tokensdiv = statsdiv.children[0]
     if (!tokensdiv) { return }
     // make the tokens more persice
-    // TODO: CRITICAL: CHANGE THIS BS MAKE IT REMOVE TOKENS IM NOT SURE 
     let wabisabitokens = window.HCTG.hours.approvedSeconds
     wabisabitokens = wabisabitokens / 3600 
     wabisabitokens = Math.round(wabisabitokens * 100) / 100
 
+    // bro trust this works
+    let difference = wabisabitokens - window.HCTG.economics.tokens
+    difference = Math.trunc(difference)
+    console.log("HCTG+: diff: ",difference)
+
+    wabisabitokens = wabisabitokens - difference
     tokensdiv.children[1].textContent = wabisabitokens
 
     let hoursdiv = statsdiv.querySelector('[data-hctg-stat="hours"]') || tokensdiv.cloneNode(true)
