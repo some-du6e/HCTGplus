@@ -42,11 +42,17 @@ function addGoals() {
       container.appendChild(buddyalert)
       return
     }
-
-    let alltimeprogress = (!goalitem.cost || !window.HCTG.economics.tokens) ? 0 : Math.min(100, parseFloat(window.HCTG.economics.tokens) / parseFloat(goalitem.cost) * 100)
+    let alltimeprogress = false
+    if (localStorage.getItem("hctg-use-hours-for-goals") === "true") {
+     alltimeprogress = (!goalitem.cost || !window.HCTG.economics.totalHours) ? 0 : Math.min(100, parseFloat(window.HCTG.economics.totalHours) / parseFloat(goalitem.cost) * 100)
+    }else {
+     alltimeprogress = (!goalitem.cost || !window.HCTG.economics.tokens) ? 0 : Math.min(100, parseFloat(window.HCTG.economics.tokens) / parseFloat(goalitem.cost) * 100)
+    }
+    
     if (!Number.isFinite(alltimeprogress)) {
       alltimeprogress = 0
     }
+    
     let todayprogress = 0
     let decimalplaces = parseInt((localStorage.getItem("hctg-decimal-places") || "decimal-0").split("-")[1], 10)
     if (!Number.isFinite(decimalplaces) || decimalplaces < 0) {
@@ -62,7 +68,43 @@ function addGoals() {
       return value.toFixed(decimalplaces)
     }
 
-    function updateProgress() {
+    function updateAlltimeProgress() {
+      if (localStorage.getItem("hctg-use-hours-for-goals") === "true") {
+        alltimeprogress = (!goalitem.cost || !window.HCTG.economics.totalHours) ? 0 : Math.min(100, parseFloat(window.HCTG.economics.totalHours) / parseFloat(goalitem.cost) * 100)
+      } else {
+        alltimeprogress = (!goalitem.cost || !window.HCTG.economics.tokens) ? 0 : Math.min(100, parseFloat(window.HCTG.economics.tokens) / parseFloat(goalitem.cost) * 100)
+      }
+
+      if (!Number.isFinite(alltimeprogress)) {
+        alltimeprogress = 0
+      }
+    }
+
+    function refreshTodayProgress() {
+      window.HCTG.goals.hoursDoneToday()
+        .then(function(hoursDoneToday) {
+          let currentHoursAday = Number(window.HCTG.goals.hoursAday())
+          if (!Number.isFinite(hoursDoneToday) || !Number.isFinite(currentHoursAday) || currentHoursAday <= 0) {
+            todayprogress = 0
+            updateProgress()
+            return
+          }
+
+          let computedProgress = Math.floor((hoursDoneToday / currentHoursAday) * 100)
+          computedProgress = Math.max(0, Math.min(100, computedProgress))
+          todayprogress = computedProgress
+          updateProgress()
+        })
+        .catch(function(error) {
+          console.error("Error calculating today's goal progress:", error)
+        })
+    }
+
+    function updateProgress(ohio = false) {
+      updateAlltimeProgress()
+      if (ohio) {
+        refreshTodayProgress()
+      }
       progress.innerHTML = `
 <div class="flex w-full flex-col">
    <div class="relative flex items-center">
@@ -147,6 +189,16 @@ function addGoals() {
             <option value="decimal-2">2 decimal places</option>
             <option value="decimal-9">Very</option>
           </select>
+        </div>
+      </div>
+      <div class="my-4 mx-auto w-fit min-w-20 rounded-2xl border-2 border-black bg-white px-6 py-4">
+        <h3 class="smoothing-black mb-4 text-center text-2xl font-bold tracking-[-0.02em]">Use hours instead of tokens for calculation</h3>
+        <div class="mt-4 flex items-center justify-center gap-2">
+          <select name="tokens-vs-hours" id="tokens-vs-hours">
+            <option value="false">no</option>
+            <option value="true">yeah</option>
+          </select>
+        </div>
       </div>
     </div>
     `
@@ -163,15 +215,17 @@ function addGoals() {
 
     upbutton.addEventListener("click", function() {
       updateBreakDays(1)
+      updateProgress(true)
     })
 
     downbutton.addEventListener("click", function() {
       updateBreakDays(-1)
+      updateProgress(true)
     })
 
     // hande the decimal points
     let decimalselect = options.querySelector("#decimalpoints")
-    decimalselect.value = localStorage.getItem("hctg-decimal-places") || "decimal-0"
+    decimalselect.value = localStorage.getItem("hctg-decimal-places") || "no"
     decimalselect.addEventListener("change", function() {
       localStorage.setItem("hctg-decimal-places", decimalselect.value)
       decimalplaces = parseInt(decimalselect.value.split("-")[1], 10)
@@ -182,26 +236,23 @@ function addGoals() {
     })
 
 
+    // handle hours vs tokens
+    let tokensvshoursselect = options.querySelector("#tokens-vs-hours")
+    tokensvshoursselect.value = localStorage.getItem("hctg-use-hours-for-goals") || "no"
+    tokensvshoursselect.addEventListener("change", function() {
+      let chud = false
+      if (tokensvshoursselect.value === "true") {
+        chud = true
+      }
+      localStorage.setItem("hctg-use-hours-for-goals", chud)
+      updateProgress(true)
+    })
 
     container.appendChild(progress)
     container.appendChild(youritem)
     container.appendChild(options)
 
-    let hoursAday = Number(window.HCTG.goals.hoursAday())
-    window.HCTG.goals.hoursDoneToday()
-      .then(function(hoursDoneToday) {
-        if (!Number.isFinite(hoursDoneToday) || !Number.isFinite(hoursAday) || hoursAday <= 0) {
-          return
-        }
-
-        let computedProgress = Math.floor((hoursDoneToday / hoursAday) * 100)
-        computedProgress = Math.max(0, Math.min(100, computedProgress))
-        todayprogress = computedProgress
-        updateProgress()
-      })
-      .catch(function(error) {
-        console.error("Error calculating today's goal progress:", error)
-      })
+    refreshTodayProgress()
 
 
    let gubby = window.HCTG.goals.hoursAday()
