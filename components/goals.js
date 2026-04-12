@@ -44,11 +44,26 @@ function addGoals() {
     }
 
     let alltimeprogress = (!goalitem.cost || !window.HCTG.economics.tokens) ? 0 : Math.min(100, parseFloat(window.HCTG.economics.tokens) / parseFloat(goalitem.cost) * 100)
+    if (!Number.isFinite(alltimeprogress)) {
+      alltimeprogress = 0
+    }
     let todayprogress = 0
+    let decimalplaces = parseInt((localStorage.getItem("hctg-decimal-places") || "decimal-0").split("-")[1], 10)
+    if (!Number.isFinite(decimalplaces) || decimalplaces < 0) {
+      decimalplaces = 0
+    }
     console.log(todayprogress)
 
     let progress = document.createElement("div")
-    progress.innerHTML = `
+    function formatProgress(value) {
+      if (!Number.isFinite(value)) {
+        return "0"
+      }
+      return value.toFixed(decimalplaces)
+    }
+
+    function updateProgress() {
+      progress.innerHTML = `
 <div class="flex w-full flex-col">
    <div class="relative flex items-center">
       <div class="relative z-10 h-16 w-16 shrink-0 rounded-full bg-[#fecb0d]"></div>
@@ -61,12 +76,14 @@ function addGoals() {
    <div class="mt-1 flex items-start justify-between px-1">
       <span class="smoothing-black pl-12 text-2xl font-bold tracking-tight">Begin</span>
       <div class="hidden px-10 lg:block">
-         <p class="smoothing-black text-center text-2xl tracking-[-0.04em]">You currently are <span class="font-bold">${alltimeprogress}% of the way there</span>.</p>
-         <p class="smoothing-black text-center text-2xl tracking-[-0.04em]">You currently are <span class="font-bold" id="hctg-today-progress-text">${todayprogress}% of the way there for today</span>.</p>
-      </div>
-      <span class="smoothing-black min-w-max pr-12 text-2xl font-bold tracking-tight">Your item</span>
-   </div>
-</div>`
+          <p class="smoothing-black text-center text-2xl tracking-[-0.04em]">You currently are <span class="font-bold">${formatProgress(alltimeprogress)}% of the way there</span>.</p>
+          <p class="smoothing-black text-center text-2xl tracking-[-0.04em]">You currently are <span class="font-bold" id="hctg-today-progress-text">${todayprogress}% of the way there for today</span>.</p>
+       </div>
+       <span class="smoothing-black min-w-max pr-12 text-2xl font-bold tracking-tight">Your item</span>
+    </div>
+ </div>`
+    }
+    updateProgress()
 
     // TODO: check if the item doesnt exist 
    
@@ -113,12 +130,24 @@ function addGoals() {
     options.className = ""
     options.innerHTML = `
     <h2 class="smoothing-black mb-4 text-3xl font-bold tracking-[-0.02em]">Options</h2>
-    <div class="my-4 mx-auto w-fit min-w-20 rounded-2xl border-2 border-black bg-white px-6 py-4">
-      <h3 class="smoothing-black mb-4 text-center text-2xl font-bold tracking-[-0.02em]">Break days</h3>
-      <div class="mt-4 flex items-center justify-center gap-2">
-        <button type="button" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-2 border-black bg-white text-xl font-bold transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40" id="break-days-down">−</button>
-        <span class="smoothing-black w-10 text-center text-xl font-bold" id="break-days-counter">${breakdaysreadonly}</span>
-        <button type="button" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-2 border-black bg-white text-xl font-bold transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40" id="break-days-up">+</button></div>
+    <div class="flex gap-4">
+      <div class="my-4 mx-auto w-fit min-w-20 rounded-2xl border-2 border-black bg-white px-6 py-4">
+        <h3 class="smoothing-black mb-4 text-center text-2xl font-bold tracking-[-0.02em]">Break days</h3>
+        <div class="mt-4 flex items-center justify-center gap-2">
+          <button type="button" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-2 border-black bg-white text-xl font-bold transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40" id="break-days-down">−</button>
+          <span class="smoothing-black w-10 text-center text-xl font-bold" id="break-days-counter">${breakdaysreadonly}</span>
+          <button type="button" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-2 border-black bg-white text-xl font-bold transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40" id="break-days-up">+</button></div>
+      </div>
+      <div class="my-4 mx-auto w-fit min-w-20 rounded-2xl border-2 border-black bg-white px-6 py-4">
+        <h3 class="smoothing-black mb-4 text-center text-2xl font-bold tracking-[-0.02em]">Percentage detail</h3>
+        <div class="mt-4 flex items-center justify-center gap-2">
+          <select name="decimalpoints" id="decimalpoints">
+            <option value="decimal-0">Not detailed</option>
+            <option value="decimal-1">1 decimal place</option>
+            <option value="decimal-2">2 decimal places</option>
+            <option value="decimal-9">Very</option>
+          </select>
+      </div>
     </div>
     `
     // handle break days
@@ -140,6 +169,20 @@ function addGoals() {
       updateBreakDays(-1)
     })
 
+    // hande the decimal points
+    let decimalselect = options.querySelector("#decimalpoints")
+    decimalselect.value = localStorage.getItem("hctg-decimal-places") || "decimal-0"
+    decimalselect.addEventListener("change", function() {
+      localStorage.setItem("hctg-decimal-places", decimalselect.value)
+      decimalplaces = parseInt(decimalselect.value.split("-")[1], 10)
+      if (!Number.isFinite(decimalplaces) || decimalplaces < 0) {
+        decimalplaces = 0
+      }
+      updateProgress()
+    })
+
+
+
     container.appendChild(progress)
     container.appendChild(youritem)
     container.appendChild(options)
@@ -153,14 +196,8 @@ function addGoals() {
 
         let computedProgress = Math.floor((hoursDoneToday / hoursAday) * 100)
         computedProgress = Math.max(0, Math.min(100, computedProgress))
-        let todayBar = progress.querySelector(".barbershop-stripes")
-        let todayText = progress.querySelector("#hctg-today-progress-text")
-        if (todayBar) {
-          todayBar.style.width = String(computedProgress) + "%"
-        }
-        if (todayText) {
-          todayText.textContent = String(computedProgress) + "% of your daily goal done today"
-        }
+        todayprogress = computedProgress
+        updateProgress()
       })
       .catch(function(error) {
         console.error("Error calculating today's goal progress:", error)
