@@ -15,40 +15,110 @@ function addGoals() {
     let oldcontent = document.getElementsByClassName("grid grid-cols-1 md:grid-cols-2")[0]
     oldcontent.remove()
     
-    let container = document.getElementsByClassName("relative -ml-2 h-screen w-full flex-1 overflow-y-scroll px-6 py-10")[0]
+    let containerx = document.getElementsByClassName("relative -ml-2 h-screen w-full flex-1 overflow-y-scroll px-6 py-10")[0]
+    let container = document.createElement("div")
+    container.className = "flex flex-col gap-10 px-6 py-8 xl:px-24 xl:py-16"
+    containerx.appendChild(container)
 
-
-    let progress = 44 // TODO: dont make it a placeholder
-
-    let alltimeprogress = document.createElement("div")
-    alltimeprogress.innerHTML = `
+    let alltimeprogress = 44 // TODO: dont make it a placeholder
+    let todayprogress = 68
+    let progress = document.createElement("div")
+    progress.innerHTML = `
 <div class="flex w-full flex-col">
    <div class="relative flex items-center">
       <div class="relative z-10 h-16 w-16 shrink-0 rounded-full bg-[#fecb0d]"></div>
       <div class="relative -mx-3 h-5 flex-1 overflow-hidden rounded-full bg-black">
-         <div class="absolute inset-y-0 left-0 bg-[#fecb0d]" style="width: ${progress}%;"></div>
+        <div class="barbershop-stripes absolute inset-y-0 left-0" style="width: ${todayprogress}%;"></div>
+        <div class="absolute inset-y-0 left-0 bg-[#fecb0d]" style="width: ${alltimeprogress}%;"></div>
       </div>
       <div class="relative z-10 h-16 w-16 shrink-0 rounded-full bg-black"></div>
    </div>
    <div class="mt-1 flex items-start justify-between px-1">
       <span class="smoothing-black pl-12 text-2xl font-bold tracking-tight">Begin</span>
       <div class="hidden px-10 lg:block">
-         <p class="smoothing-black text-center text-2xl tracking-[-0.04em]">You currently are <span class="font-bold">${progress}% of the way there</span>.</p>
+         <p class="smoothing-black text-center text-2xl tracking-[-0.04em]">You currently are <span class="font-bold">${alltimeprogress}% of the way there</span>.</p>
+         <p class="smoothing-black text-center text-2xl tracking-[-0.04em]">You currently are <span class="font-bold">${todayprogress}% of the way there for today</span>.</p>
       </div>
       <span class="smoothing-black min-w-max pr-12 text-2xl font-bold tracking-tight">Your item</span>
    </div>
 </div>`
 
-
-
+    // TODO: check if the item doesnt exist 
+    let goalitem = localStorage.getItem("hctgplus-goalitem")
+    goalitem = JSON.parse(goalitem)
     let youritem = document.createElement("div")
     youritem.innerHTML = `
 <h2 class="smoothing-black mb-4 text-3xl font-bold tracking-[-0.02em]">Your item</h2>
-<div class="smoothing-black mt-5 text-xl leading-snug text-black/80">You chose a  <span class="font-bold">Macbook neo</span> for your item</div>
+<div class="smoothing-black mt-5 text-xl leading-snug text-black/80">You chose a  <span class="font-bold">${goalitem.name}</span> for your item</div>
+<div class="flex h-full flex-col" id="HCTGplus-item-9" data-hctg-item-id="9" style="display: block;">
+  <div class="relative h-8 rounded-tl-2xl rounded-tr-2xl bg-black">
+    
+  </div>
+  <div class="flex flex-1 flex-row gap-6 rounded-br-2xl rounded-bl-2xl border-2 border-t-0 border-black bg-white px-6 py-4">
+    <div class="flex w-48 shrink-0 items-center justify-center">
+      <img alt="${goalitem.name}" class="h-40 w-full object-contain" src="${goalitem.image}">
+    </div>
+    <div class="flex min-w-0 flex-1 flex-col">
+      <div class="flex items-start justify-between gap-6">
+        <h2 class="smoothing-black text-4xl font-bold tracking-[-0.03em]">${goalitem.name}</h2>
+        <div class="flex items-center gap-1.5">
+          <img alt="Tickets" class="h-5 w-5" src="data:image/svg+xml,%3csvg%20width='100%25'%20height='100%25'%20overflow='visible'%20style='display:%20block;'%20viewBox='0%200%2031%2026'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20id='Ticket%20Icon'%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M17.05%200C17.4296%205.25047e-05%2017.7961%200.146178%2018.0798%200.410662C18.3635%200.675146%2018.5447%201.03959%2018.5891%201.43487L18.6%201.625C18.6004%202.03918%2018.7517%202.43755%2019.0229%202.73872C19.2941%203.0399%2019.6648%203.22113%2020.0592%203.2454C20.4535%203.26968%2020.8419%203.13515%2021.1448%202.86932C21.4478%202.60349%2021.6425%202.22641%2021.6891%201.81513L21.7%201.625C21.7%201.19402%2021.8633%200.780698%2022.154%200.475952C22.4447%200.171205%2022.8389%200%2023.25%200H26.35C27.5833%200%2028.766%200.513615%2029.638%201.42785C30.5101%202.34209%2031%203.58207%2031%204.875V21.125C31%2022.4179%2030.5101%2023.6579%2029.638%2024.5721C28.766%2025.4864%2027.5833%2026%2026.35%2026H23.25C22.8704%2025.9999%2022.5039%2025.8538%2022.2202%2025.5893C21.9365%2025.3249%2021.7553%2024.9604%2021.7108%2024.5651L21.7%2024.375C21.6996%2023.9608%2021.5483%2023.5624%2021.2771%2023.2613C21.0059%2022.9601%2020.6352%2022.7789%2020.2408%2022.7546C19.8465%2022.7303%2019.4581%2022.8648%2019.1552%2023.1307C18.8522%2023.3965%2018.6575%2023.7736%2018.6108%2024.1849L18.6%2024.375C18.6%2024.806%2018.4367%2025.2193%2018.146%2025.524C17.8553%2025.8288%2017.4611%2026%2017.05%2026H4.65C3.41674%2026%202.234%2025.4864%201.36195%2024.5721C0.489909%2023.6579%200%2022.4179%200%2021.125V4.875C0%203.58207%200.489909%202.34209%201.36195%201.42785C2.234%200.513615%203.41674%200%204.65%200H17.05ZM20.15%2014.625C19.7389%2014.625%2019.3447%2014.7962%2019.054%2015.101C18.7633%2015.4057%2018.6%2015.819%2018.6%2016.25V17.875C18.6%2018.306%2018.7633%2018.7193%2019.054%2019.024C19.3447%2019.3288%2019.7389%2019.5%2020.15%2019.5C20.5611%2019.5%2020.9553%2019.3288%2021.246%2019.024C21.5367%2018.7193%2021.7%2018.306%2021.7%2017.875V16.25C21.7%2015.819%2021.5367%2015.4057%2021.246%2015.101C20.9553%2014.7962%2020.5611%2014.625%2020.15%2014.625ZM20.15%206.5C19.7704%206.50005%2019.4039%206.64618%2019.1202%206.91066C18.8365%207.17515%2018.6553%207.53959%2018.6108%207.93488L18.6%208.125V9.75C18.6004%2010.1642%2018.7517%2010.5626%2019.0229%2010.8637C19.2941%2011.1649%2019.6648%2011.3461%2020.0592%2011.3704C20.4535%2011.3947%2020.8419%2011.2602%2021.1448%2010.9943C21.4478%2010.7285%2021.6425%2010.3514%2021.6891%209.94012L21.7%209.75V8.125C21.7%207.69402%2021.5367%207.2807%2021.246%206.97595C20.9553%206.67121%2020.5611%206.5%2020.15%206.5Z'%20fill='var(--fill-0,%20black)'/%3e%3c/svg%3e">
+          <span class="smoothing-black text-2xl tracking-[-0.03em]">${goalitem.cost}</span>
+        </div>
+      </div>
+      <p class="smoothing-black mt-2 text-xl tracking-[-0.02em]">${goalitem.description}</p>
+      <div class="mt-auto">
+        <!-- XXXXXXX --!>
+        <button type="button" class="smoothing-white mt-4 block w-full cursor-pointer bg-black px-5 py-3 text-center text-xl font-bold tracking-tight text-white transition-colors hover:bg-[#fecb0d] hover:text-black" onclick="alert('hey bud, im not implementing this since internal stuff could change and it could break too')">Buy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
     `
 
-    container.appendChild(alltimeprogress)
+    // this for later to put in the XXXXXXXXXXXX section maybe
+    // <div class="mt-4 flex items-center gap-2">
+        //   <button type="button" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-2 border-black bg-white text-xl font-bold transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40" disabled="">−</button>
+        //   <span class="smoothing-black w-10 text-center text-xl font-bold">1</span>
+        //   <button type="button" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-2 border-black bg-white text-xl font-bold transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40">+</button>
+        // </div>
+
+    let breakdaysreadonly = parseInt(localStorage.getItem("hctg-break-days") ? localStorage.getItem("hctg-break-days") : 1, 10)
+    let options = document.createElement("div")
+    options.className = ""
+    options.innerHTML = `
+    <h2 class="smoothing-black mb-4 text-3xl font-bold tracking-[-0.02em]">Options</h2>
+    <div class="my-4 mx-auto w-fit min-w-20 rounded-2xl border-2 border-black bg-white px-6 py-4">
+      <h3 class="smoothing-black mb-4 text-center text-2xl font-bold tracking-[-0.02em]">Break days</h3>
+      <div class="mt-4 flex items-center justify-center gap-2">
+        <button type="button" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-2 border-black bg-white text-xl font-bold transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40" id="break-days-down">−</button>
+        <span class="smoothing-black w-10 text-center text-xl font-bold" id="break-days-counter">${breakdaysreadonly}</span>
+        <button type="button" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-2 border-black bg-white text-xl font-bold transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40" id="break-days-up">+</button></div>
+    </div>
+    `
+    // handle break days
+    let upbutton = options.querySelector("#break-days-up")
+    let downbutton = options.querySelector("#break-days-down")
+    let breakdaysdisplay = options.querySelector("#break-days-counter")
+
+    function updateBreakDays(delta) {
+      breakdaysreadonly = Math.max(0, breakdaysreadonly + delta)
+      localStorage.setItem("hctg-break-days", String(breakdaysreadonly))
+      breakdaysdisplay.textContent = String(breakdaysreadonly)
+    }
+
+    upbutton.addEventListener("click", function() {
+      updateBreakDays(1)
+    })
+
+    downbutton.addEventListener("click", function() {
+      updateBreakDays(-1)
+    })
+
+    container.appendChild(progress)
     container.appendChild(youritem)
+    container.appendChild(options)
 }
 
 window.addEventListener('pageChange', function() {
@@ -56,3 +126,20 @@ window.addEventListener('pageChange', function() {
 });
 
 addGoals()
+
+
+if (!window.HCTG.goals) {
+    window.HCTG.goals = {}
+}
+
+window.HCTG.goals.hoursAday = function() {
+    let today = new Date()
+    let deadline = new Date(2026, 6, 8) // proof: https://hackclub.slack.com/archives/C088DT8P7B8/p1775145237119869?thread_ts=1775144771.592949&cid=C088DT8P7B8 
+
+    let diffInMs = deadline - today
+    const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24))
+
+    let daysworking = diffInDays - parseInt(localStorage.getItem("hctg-break-days") ? localStorage.getItem("hctg-break-days") : 1, 10)
+    let hoursaday = 24 * daysworking / 365
+    return hoursaday
+}
