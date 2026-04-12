@@ -13,11 +13,11 @@
         "content.js",
         "components/consts.js",
         "components/data.js",
+        "components/goals.js",
         "components/sidebar.js",
         "components/shop.js",
         "components/projects.js",
-        "components/lander.js",
-        "components/goals.js"
+        "components/lander.js"
       ],
       "run_at": "document_idle"
     },

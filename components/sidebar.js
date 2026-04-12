@@ -142,6 +142,47 @@ function makeSidebarBetter() {
         goalTitle.classList.add("text-black", "smoothing-black")
     }
 
+    // replace stuff with le goals
+    let goalsreplacing = "hours" //todo
+    function replaceWithGoals(stat) {
+        let target = null
+        if (stat === "hours") {
+            target = hoursdiv
+        }
+
+        if (!target) {
+            return
+        }
+
+        if (!window.HCTG.goals || typeof window.HCTG.goals.hoursDoneToday !== "function" || typeof window.HCTG.goals.hoursAday !== "function") {
+            return
+        }
+
+        const gubby = document.getElementsByClassName("flex items-center gap-3")[0]
+        gubby.children[1].appendChild(target)
+
+        let hoursDoneToday = window.HCTG.goals.hoursDoneToday()
+        if (hoursDoneToday && typeof hoursDoneToday.then === "function") {
+            hoursDoneToday.then(function(hoursDone) {
+                let hoursAday = window.HCTG.goals.hoursAday()
+                if (!Number.isFinite(hoursDone) || !Number.isFinite(hoursAday)) {
+                    target.children[1].innerText = "0/0"
+                    return
+                }
+
+                let targettext = String(Math.round(hoursDone * 100) / 100) + "/" + String(Math.round(hoursAday * 100) / 100)
+                target.children[1].innerText = targettext
+            }).catch(function() {
+                target.children[1].innerText = "0/0"
+            })
+            return
+        }
+
+        let targettext = String(window.HCTG.goals.hoursDoneToday() || 0) + "/" + String(window.HCTG.goals.hoursAday() || 0)
+        target.children[1].innerText = targettext
+    }
+
+    replaceWithGoals("hours")
 }
 
 window.addEventListener('pageChange', function() {
