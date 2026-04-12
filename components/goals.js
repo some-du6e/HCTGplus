@@ -119,17 +119,19 @@ function addGoals() {
     container.appendChild(progress)
     container.appendChild(youritem)
     container.appendChild(options)
+
+
+    window.HCTG.goals.hoursDoneToday()
 }
 
 window.addEventListener('pageChange', function() {
     setTimeout(addGoals, 200)
 });
 
-addGoals()
 
-
+window.HCTG = window.HCTG || {}
 if (!window.HCTG.goals) {
-    window.HCTG.goals = {}
+  window.HCTG.goals = {}
 }
 
 window.HCTG.goals.hoursAday = function() {
@@ -142,4 +144,34 @@ window.HCTG.goals.hoursAday = function() {
     let daysworking = diffInDays - parseInt(localStorage.getItem("hctg-break-days") ? localStorage.getItem("hctg-break-days") : 1, 10)
     let hoursaday = 24 * daysworking / 365
     return hoursaday
+} 
+
+window.HCTG.goals.hoursDoneToday = function() {
+  let hackatimekey = localStorage.getItem("hctg-hacktime-key")
+  if (!hackatimekey) {return null}
+
+  let secondsdone = null
+  fetch("https://hackatime.hackclub.com/api/hackatime/v1/users/current/statusbar/today?api_key=" + hackatimekey)
+    .then(response => response.json())
+    .then(data => {
+      console.log("HCTG: got HackTime data", data)
+      secondsdone = data.data.grand_total.total_seconds
+      let hoursdone = secondsdone / 3600
+      console.log("HCTG+: something called hoursdonetoday and we returning ", hoursdone)
+      return hoursdone
+    })
+    .catch(error => {
+      console.error("Error fetching HackTime data:", error)
+    })
+
+    
 }
+  
+
+
+
+
+
+
+
+addGoals()
