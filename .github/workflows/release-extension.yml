@@ -1,0 +1,60 @@
+name: Release Chrome Extension
+
+on:
+  push:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set release metadata
+        id: release_meta
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+          if [[ "${COMMIT_MESSAGE}" == 🚀* ]]; then
+            echo "channel=stable" >> "${GITHUB_OUTPUT}"
+            echo "tag=stable" >> "${GITHUB_OUTPUT}"
+            echo "release_name=Stable Release" >> "${GITHUB_OUTPUT}"
+            echo "prerelease=false" >> "${GITHUB_OUTPUT}"
+          else
+            TIMESTAMP="$(date -u +'%Y%m%d-%H%M%S')"
+            SHORT_SHA="${GITHUB_SHA::7}"
+            echo "channel=nightly" >> "${GITHUB_OUTPUT}"
+            echo "tag=nightly-${TIMESTAMP}-${SHORT_SHA}" >> "${GITHUB_OUTPUT}"
+            echo "release_name=Nightly ${TIMESTAMP} (${SHORT_SHA})" >> "${GITHUB_OUTPUT}"
+            echo "prerelease=true" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Build extension package
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p dist
+          zip -r "dist/hctgplus-${{ steps.release_meta.outputs.channel }}.zip" \
+            manifest.json \
+            content.js \
+            service-worker.js \
+            snippet.html \
+            components
+
+      - name: Publish GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          artifacts: dist/hctgplus-${{ steps.release_meta.outputs.channel }}.zip
+          generateReleaseNotes: true
+          makeLatest: ${{ steps.release_meta.outputs.channel == 'stable' && 'true' || 'false' }}
+          name: ${{ steps.release_meta.outputs.release_name }}
+          prerelease: ${{ steps.release_meta.outputs.prerelease }}
+          removeArtifacts: true
+          tag: ${{ steps.release_meta.outputs.tag }}
