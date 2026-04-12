@@ -20,8 +20,33 @@ function addGoals() {
     container.className = "flex flex-col gap-10 px-6 py-8 xl:px-24 xl:py-16"
     containerx.appendChild(container)
 
-    let alltimeprogress = 44 // TODO: dont make it a placeholder
-    let todayprogress = 68
+
+
+    let goalitem = localStorage.getItem("hctgplus-goalitem")
+    goalitem = JSON.parse(goalitem)
+    if (!goalitem) {
+      console.warn("HCTG+: user doesnt have a goal item... displaying error")
+      // inspo from flavortown when u dont have to vote
+      let buddyalert = document.createElement("div")
+      buddyalert.className = "flex flex-col items-center justify-center p-4"
+      buddyalert.innerHTML = `
+      <h2 class="smoothing-black mb-4 text-6xl font-bold tracking-[-0.02em]">🚫</h2>
+      <h2 class="smoothing-black mb-4 text-3xl font-bold tracking-[-0.02em]">Whoa there, buddy!</h2>
+      <span class="mb-4">You've haven't chosen a goal. Choose a item you want from the shop.</span>
+      <a class="group flex h-[59px] w-full cursor-pointer items-center justify-center gap-3 bg-black text-xl font-bold text-white transition-colors hover:border-4 hover:bg-white hover:text-black disabled:opacity-50" href="/shop">
+      <img alt="" class="h-5 w-5 transition-all group-hover:invert" src="data:image/svg+xml,%3csvg%20width='100%25'%20height='100%25'%20overflow='visible'%20style='display:%20block;'%20viewBox='0%200%2028%2028'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20id='Arrow%20Vector'%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M0.233334%2021.0198L0%200.3966L19.7556%200L27.4556%207.53541L13.7667%207.77337L28%2021.813L22.2444%2027.9207L7.93333%2013.881V28L0.233334%2021.0198Z'%20fill='var(--fill-0,%20white)'/%3e%3c/svg%3e">
+      Take me there
+      </a>
+      `
+      
+      container.appendChild(buddyalert)
+      return
+    }
+
+    let alltimeprogress = (!goalitem.cost || !window.HCTG.economics.tokens) ? 0 : Math.min(100, parseFloat(window.HCTG.economics.tokens) / parseFloat(goalitem.cost) * 100)
+    let todayprogress = 0
+    console.log(todayprogress)
+
     let progress = document.createElement("div")
     progress.innerHTML = `
 <div class="flex w-full flex-col">
@@ -37,15 +62,14 @@ function addGoals() {
       <span class="smoothing-black pl-12 text-2xl font-bold tracking-tight">Begin</span>
       <div class="hidden px-10 lg:block">
          <p class="smoothing-black text-center text-2xl tracking-[-0.04em]">You currently are <span class="font-bold">${alltimeprogress}% of the way there</span>.</p>
-         <p class="smoothing-black text-center text-2xl tracking-[-0.04em]">You currently are <span class="font-bold">${todayprogress}% of the way there for today</span>.</p>
+         <p class="smoothing-black text-center text-2xl tracking-[-0.04em]">You currently are <span class="font-bold" id="hctg-today-progress-text">${todayprogress}% of the way there for today</span>.</p>
       </div>
       <span class="smoothing-black min-w-max pr-12 text-2xl font-bold tracking-tight">Your item</span>
    </div>
 </div>`
 
     // TODO: check if the item doesnt exist 
-    let goalitem = localStorage.getItem("hctgplus-goalitem")
-    goalitem = JSON.parse(goalitem)
+   
     let youritem = document.createElement("div")
     youritem.innerHTML = `
 <h2 class="smoothing-black mb-4 text-3xl font-bold tracking-[-0.02em]">Your item</h2>
@@ -69,7 +93,7 @@ function addGoals() {
       <p class="smoothing-black mt-2 text-xl tracking-[-0.02em]">${goalitem.description}</p>
       <div class="mt-auto">
         <!-- XXXXXXX --!>
-        <button type="button" class="smoothing-white mt-4 block w-full cursor-pointer bg-black px-5 py-3 text-center text-xl font-bold tracking-tight text-white transition-colors hover:bg-[#fecb0d] hover:text-black" onclick="alert('hey bud, im not implementing this since internal stuff could change and it could break too')">Buy</button>
+        <button type="button" class="smoothing-white mt-4 block w-full cursor-pointer bg-black px-5 py-3 text-center text-xl font-bold tracking-tight text-white transition-colors hover:bg-[#fecb0d] hover:text-black" onclick="alert('hey bud, im not implementing this cuz its too risky cuz internal stuff could change and it could break too')">Buy</button>
       </div>
     </div>
   </div>
@@ -120,8 +144,31 @@ function addGoals() {
     container.appendChild(youritem)
     container.appendChild(options)
 
-
+    let hoursAday = Number(window.HCTG.goals.hoursAday())
     window.HCTG.goals.hoursDoneToday()
+      .then(function(hoursDoneToday) {
+        if (!Number.isFinite(hoursDoneToday) || !Number.isFinite(hoursAday) || hoursAday <= 0) {
+          return
+        }
+
+        let computedProgress = Math.floor((hoursDoneToday / hoursAday) * 100)
+        computedProgress = Math.max(0, Math.min(100, computedProgress))
+        let todayBar = progress.querySelector(".barbershop-stripes")
+        let todayText = progress.querySelector("#hctg-today-progress-text")
+        if (todayBar) {
+          todayBar.style.width = String(computedProgress) + "%"
+        }
+        if (todayText) {
+          todayText.textContent = String(computedProgress) + "% of your daily goal done today"
+        }
+      })
+      .catch(function(error) {
+        console.error("Error calculating today's goal progress:", error)
+      })
+
+
+   let gubby = window.HCTG.goals.hoursAday()
+   console.log("HCTG+: hours a day is ", gubby)
 }
 
 window.addEventListener('pageChange', function() {
@@ -136,35 +183,45 @@ if (!window.HCTG.goals) {
 
 window.HCTG.goals.hoursAday = function() {
     let today = new Date()
-    let deadline = new Date(2026, 6, 8) // proof: https://hackclub.slack.com/archives/C088DT8P7B8/p1775145237119869?thread_ts=1775144771.592949&cid=C088DT8P7B8 
+    let deadline = new Date(2026, 5, 8) // proof: https://hackclub.slack.com/archives/C088DT8P7B8/p1775145237119869?thread_ts=1775144771.592949&cid=C088DT8P7B8 
 
     let diffInMs = deadline - today
     const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24))
-
+    let itemcost = localStorage.getItem("hctgplus-goalitem") ? JSON.parse(localStorage.getItem("hctgplus-goalitem")).cost : 0 
     let daysworking = diffInDays - parseInt(localStorage.getItem("hctg-break-days") ? localStorage.getItem("hctg-break-days") : 1, 10)
-    let hoursaday = 24 * daysworking / 365
+    let hoursaday = itemcost / daysworking
     return hoursaday
 } 
 
 window.HCTG.goals.hoursDoneToday = function() {
   let hackatimekey = localStorage.getItem("hctg-hacktime-key")
-  if (!hackatimekey) {return null}
+  if (!hackatimekey) {return Promise.resolve(null)}
 
-  let secondsdone = null
-  fetch("https://hackatime.hackclub.com/api/hackatime/v1/users/current/statusbar/today?api_key=" + hackatimekey)
-    .then(response => response.json())
-    .then(data => {
+  return fetch("https://hackatime.hackclub.com/api/hackatime/v1/users/current/statusbar/today?api_key=" + hackatimekey)
+    .then(function(response) {
+      return response.json()
+    })
+    .then(function(data) {
       console.log("HCTG: got HackTime data", data)
-      secondsdone = data.data.grand_total.total_seconds
-      let hoursdone = secondsdone / 3600
+
+      if (!data || !data.data || !data.data.grand_total) {
+        return null
+      }
+
+      let secondsdone = data.data.grand_total.total_seconds
+      let hoursdone = Number(secondsdone) / 3600
       console.log("HCTG+: something called hoursdonetoday and we returning ", hoursdone)
+
+      if (!Number.isFinite(hoursdone)) {
+        return null
+      }
+
       return hoursdone
     })
-    .catch(error => {
+    .catch(function(error) {
       console.error("Error fetching HackTime data:", error)
+      return null
     })
-
-    
 }
   
 
