@@ -172,15 +172,15 @@ function addGoals() {
     options.className = ""
     options.innerHTML = `
     <h2 class="smoothing-black mb-4 text-3xl font-bold tracking-[-0.02em]">Options</h2>
-    <div class="flex gap-4">
-      <div class="my-4 mx-auto w-fit min-w-20 rounded-2xl border-2 border-black bg-white px-6 py-4">
+    <div class="flex gap-4 flex-wrap flex-row">
+      <div class="rounded-2xl border-2 border-black bg-white px-6 py-4">
         <h3 class="smoothing-black mb-4 text-center text-2xl font-bold tracking-[-0.02em]">Break days</h3>
         <div class="mt-4 flex items-center justify-center gap-2">
           <button type="button" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-2 border-black bg-white text-xl font-bold transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40" id="break-days-down">−</button>
           <span class="smoothing-black w-10 text-center text-xl font-bold" id="break-days-counter">${breakdaysreadonly}</span>
           <button type="button" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-2 border-black bg-white text-xl font-bold transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40" id="break-days-up">+</button></div>
       </div>
-      <div class="my-4 mx-auto w-fit min-w-20 rounded-2xl border-2 border-black bg-white px-6 py-4">
+      <div class="rounded-2xl border-2 border-black bg-white px-6 py-4">
         <h3 class="smoothing-black mb-4 text-center text-2xl font-bold tracking-[-0.02em]">Percentage detail</h3>
         <div class="mt-4 flex items-center justify-center gap-2">
           <select name="decimalpoints" id="decimalpoints">
@@ -191,7 +191,7 @@ function addGoals() {
           </select>
         </div>
       </div>
-      <div class="my-4 mx-auto w-fit min-w-20 rounded-2xl border-2 border-black bg-white px-6 py-4">
+      <div class="rounded-2xl border-2 border-black bg-white px-6 py-4">
         <h3 class="smoothing-black mb-4 text-center text-2xl font-bold tracking-[-0.02em]">Use hours instead of tokens for calculation</h3>
         <div class="mt-4 flex items-center justify-center gap-2">
           <select name="tokens-vs-hours" id="tokens-vs-hours">
@@ -200,6 +200,23 @@ function addGoals() {
           </select>
         </div>
       </div>
+      <div class="rounded-2xl border-2 border-black bg-white px-6 py-4">
+        <h3 class="smoothing-black mb-4 text-center text-2xl font-bold tracking-[-0.02em]">Hackatime key</h3>
+        <div class="mt-4 flex items-center justify-center gap-2">
+          <input type="password" id="hackatime-key"></input>
+        </div>
+      </div>
+      
+      <div class="rounded-2xl border-2 border-black bg-white px-6 py-4">
+        <h3 class="smoothing-black mb-4 text-center text-2xl font-bold tracking-[-0.02em]">Hackatime key</h3>
+        <div class="mt-4 flex items-center justify-center gap-2">
+          <select name="tokens-vs-hours" id="tokens-vs-hours">
+            <option value="false">no</option>
+            <option value="true">yeah</option>
+          </select>
+        </div>
+      </div>
+      
     </div>
     `
     // handle break days
@@ -248,6 +265,22 @@ function addGoals() {
       updateProgress(true)
     })
 
+    // handle hackatime key
+    let hackatimekeyinput = options.querySelector("#hackatime-key")
+    let legacyHackatimeKey = localStorage.getItem("hctg-hackatime-key")
+    let storedHacktimeKey = localStorage.getItem("hctg-hacktime-key") 
+    if (!storedHacktimeKey && legacyHackatimeKey) {
+      localStorage.setItem("hctg-hacktime-key", legacyHackatimeKey)
+      storedHacktimeKey = legacyHackatimeKey
+    }
+    if (hackatimekeyinput) {
+      hackatimekeyinput.value = storedHacktimeKey || ""
+      hackatimekeyinput.addEventListener("change", function() {
+        localStorage.setItem("hctg-hacktime-key", hackatimekeyinput.value)
+      })
+    } else {
+      console.warn("HCTG+: Hackatime key input was not found.")
+    }
     container.appendChild(progress)
     container.appendChild(youritem)
     container.appendChild(options)
@@ -283,6 +316,13 @@ window.HCTG.goals.hoursAday = function() {
 
 window.HCTG.goals.hoursDoneToday = function() {
   let hackatimekey = localStorage.getItem("hctg-hacktime-key")
+  if (!hackatimekey) {
+    let legacyHackatimeKey = localStorage.getItem("hctg-hackatime-key")
+    if (legacyHackatimeKey) {
+      localStorage.setItem("hctg-hacktime-key", legacyHackatimeKey)
+      hackatimekey = legacyHackatimeKey
+    }
+  }
   if (!hackatimekey) {
     return Promise.resolve(null)
   }
