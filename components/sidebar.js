@@ -172,13 +172,19 @@ function makeSidebarBetter() {
 
                 let targettext = String(Math.round(hoursDone * 100) / 100) + "hrs/" + String(Math.round(hoursAday * 100) / 100) + "hrs"
                 target.children[1].innerText = targettext
+
+
+                if (Math.round(hoursDone * 100) >= Math.round(hoursAday * 100)) {
+                    target.children[1].classList.add("text-green-500")
+                    target.children[1].style.textShadow = "0 0 10px #15532c"
+                }
             }).catch(function() {
                 target.children[1].innerText = "0/0"
             })
             return
         }
 
-        let targettext = String(window.HCTG.goals.hoursDoneToday() || 0) + "/" + String(window.HCTG.goals.hoursAday() || 0)
+        let targettext = "..."
         target.children[1].innerText = targettext
     }
     let goalitem = localStorage.getItem("hctgplus-goalitem")
