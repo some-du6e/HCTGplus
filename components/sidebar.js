@@ -170,7 +170,7 @@ function makeSidebarBetter() {
                     return
                 }
 
-                let targettext = String(Math.round(hoursDone * 100) / 100) + "/" + String(Math.round(hoursAday * 100) / 100)
+                let targettext = String(Math.round(hoursDone * 100) / 100) + "hrs/" + String(Math.round(hoursAday * 100) / 100) + "hrs"
                 target.children[1].innerText = targettext
             }).catch(function() {
                 target.children[1].innerText = "0/0"
@@ -181,8 +181,11 @@ function makeSidebarBetter() {
         let targettext = String(window.HCTG.goals.hoursDoneToday() || 0) + "/" + String(window.HCTG.goals.hoursAday() || 0)
         target.children[1].innerText = targettext
     }
-
-    replaceWithGoals("hours")
+    let goalitem = localStorage.getItem("hctgplus-goalitem")
+    if (goalitem) {
+        let toreplace = "hours"
+        replaceWithGoals(toreplace)
+    }
 }
 
 window.addEventListener('pageChange', function() {

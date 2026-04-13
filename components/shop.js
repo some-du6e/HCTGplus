@@ -71,7 +71,7 @@ function betterShop() {
                 goalicon.src = "https://cdn.hackclub.com/019d7f19-cf3e-7fa7-a68a-acbdfd4ef851/image.png"
                 goalicon.className = "w-4 h-4 hover:pink cursor-pointer"
                 goalicon.onclick = function() {
-                    if (localStorage.goalitem) {
+                    if (localStorage.getItem("hctgplus-goalitem")) {
                         if (!confirm("Are you sure? This will overwrite your current goal")) {
                             return
                         }
@@ -95,6 +95,8 @@ function betterShop() {
                     }
                     console.log("goalitem: ", goalitem)
                     localStorage.setItem("hctgplus-goalitem", JSON.stringify(goalitem))
+                    // TODO: refresh stuff after or use other method cuz this is super lazy
+                    location.reload()
                 }
 
 
