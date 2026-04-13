@@ -160,7 +160,7 @@ function makeSidebarBetter() {
 
         const gubby = document.getElementsByClassName("flex items-center gap-3")[0]
         gubby.children[1].appendChild(target)
-
+        
         let hoursDoneToday = window.HCTG.goals.hoursDoneToday()
         if (hoursDoneToday && typeof hoursDoneToday.then === "function") {
             hoursDoneToday.then(function(hoursDone) {

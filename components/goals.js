@@ -283,7 +283,56 @@ window.HCTG.goals.hoursAday = function() {
 
 window.HCTG.goals.hoursDoneToday = function() {
   let hackatimekey = localStorage.getItem("hctg-hacktime-key")
-  if (!hackatimekey) {return Promise.resolve(null)}
+  if (!hackatimekey) {
+    return Promise.resolve(null)
+  }
+  let now = new Date()
+
+  let hackatimecache = localStorage.getItem("hctg-hacktime-cache")
+  function getcache() {
+    if (!hackatimecache) {
+      return null
+    }
+
+    let cacheobj = null
+    try {
+      cacheobj = JSON.parse(hackatimecache)
+    } catch {
+      return null
+    }
+
+    if (!cacheobj || !Number.isFinite(cacheobj.hours) || !cacheobj.date) {
+      return null
+    }
+
+    let cachedhours = Number(cacheobj.hours)
+    let cachedate = new Date(cacheobj.date)
+    if (Number.isNaN(cachedate.getTime())) {
+      return null
+    }
+
+    let cacheseconds = Math.abs(now - cachedate) / 1000
+    let cacheminutes = Math.floor(cacheseconds / 60) % 60
+    if (cacheminutes < 3) {
+      return cachedhours
+    }
+
+    return null
+  }
+
+  function setcache(hoursdone) {
+    let cachedata = {
+      "date": now.toISOString(),
+      "hours": hoursdone
+    }
+    let cachestring = JSON.stringify(cachedata)
+    localStorage.setItem("hctg-hacktime-cache", cachestring)
+  }
+
+  let cached = getcache()
+  if (Number.isFinite(cached)) {
+    return Promise.resolve(cached)
+  }
 
   return fetch("https://hackatime.hackclub.com/api/hackatime/v1/users/current/statusbar/today?api_key=" + hackatimekey)
     .then(function(response) {
@@ -303,7 +352,7 @@ window.HCTG.goals.hoursDoneToday = function() {
       if (!Number.isFinite(hoursdone)) {
         return null
       }
-
+      setcache(hoursdone)
       return hoursdone
     })
     .catch(function(error) {
@@ -311,6 +360,7 @@ window.HCTG.goals.hoursDoneToday = function() {
       return null
     })
 }
+ 
   
 
 
