@@ -22,13 +22,11 @@ jobs:
           if [ -z "$COMMIT_MSG" ]; then
             COMMIT_MSG="${{ github.event.push.commits[0].message }}"
           fi
-          
-          # Check for rocket emoji (handles both proper UTF-8 and mangled encoding from Windows)
-          IS_STABLE=0
-          echo "$COMMIT_MSG" | grep -q "^≡ƒÜÇ" && IS_STABLE=1
-          echo "$COMMIT_MSG" | grep -q "^🚀" && IS_STABLE=1
-          
-          if [ "$IS_STABLE" -eq 1 ]; then
+
+          # Rocket emoji UTF-8 bytes: f0 9f 9a 80
+          COMMIT_PREFIX_HEX="$(printf '%s' "$COMMIT_MSG" | xxd -p -l 4)"
+
+          if [ "$COMMIT_PREFIX_HEX" = "f09f9a80" ]; then
             echo "channel=stable" >> "${GITHUB_OUTPUT}"
             echo "tag=stable" >> "${GITHUB_OUTPUT}"
             echo "release_name=Stable Release" >> "${GITHUB_OUTPUT}"
