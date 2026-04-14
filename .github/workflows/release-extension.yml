@@ -28,8 +28,8 @@ jobs:
 
           if [ "$COMMIT_PREFIX_HEX" = "f09f9a80" ]; then
             echo "channel=stable" >> "${GITHUB_OUTPUT}"
-            echo "tag=stable" >> "${GITHUB_OUTPUT}"
-            echo "release_name=Stable Release" >> "${GITHUB_OUTPUT}"
+            echo "tag=stable-${TIMESTAMP}-${SHORT_SHA}" >> "${GITHUB_OUTPUT}"
+            echo "release_name=🚀 Stable ${TIMESTAMP} (${SHORT_SHA})" >> "${GITHUB_OUTPUT}"
             echo "prerelease=false" >> "${GITHUB_OUTPUT}"
           else
             echo "channel=nightly" >> "${GITHUB_OUTPUT}"
