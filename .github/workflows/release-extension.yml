@@ -19,6 +19,9 @@ jobs:
         run: |
           set -euo pipefail
 
+          COMMIT_MESSAGE="$(git log -1 --pretty=%B)"
+          echo "DEBUG: First 50 chars of message: $(echo "$COMMIT_MESSAGE" | head -c 50 | od -A x -t x1z -v)"
+          
           if git log -1 --pretty=%B | grep -q '^🚀'; then
             echo "channel=stable" >> "${GITHUB_OUTPUT}"
             echo "tag=stable" >> "${GITHUB_OUTPUT}"
