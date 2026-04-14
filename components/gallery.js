@@ -49,6 +49,31 @@ function galleryBetter() {
 
 
 
+
+    // add a link to the project(s)
+    let projectscontainer = document.getElementsByClassName("grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3")[0]
+
+    let renderedprojects = projectscontainer.children
+
+    for (let renderedproject of renderedprojects) {
+        let projectid = null
+        let renderedprojectimgurl = renderedproject.children[0].children[0].src
+        for (let project2 of projects) {
+            if (renderedprojectimgurl.endsWith(project2.screenshot)) {
+                projectid = project2.id
+                break
+            }
+        }
+        console.log(projectid)
+
+        projectid = String(projectid)
+        renderedproject.setAttribute("hctg-public-project-id", projectid)
+        let projecturl = `/me?projectId=${projectid}#view`
+        renderedproject.href = projecturl
+
+    }
+
+
 }
 
 window.addEventListener('pageChange', function() {
