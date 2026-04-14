@@ -1,7 +1,21 @@
 name: Release Chrome Extension
 
 on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: Release channel
+        required: true
+        default: nightly
+        type: choice
+        options:
+          - nightly
+          - stable
   push:
+    tags:
+      - "v*"
+    branches:
+      - main
 
 permissions:
   contents: write
@@ -17,16 +31,23 @@ jobs:
         id: release_meta
         run: |
           set -euo pipefail
-          
-          COMMIT_MSG="${{ github.event.head_commit.message }}"
-          if [ -z "$COMMIT_MSG" ]; then
-            COMMIT_MSG="${{ github.event.push.commits[0].message }}"
+
+          EVENT_NAME="${{ github.event_name }}"
+          REF="${{ github.ref }}"
+          INPUT_CHANNEL="${{ github.event.inputs.channel || '' }}"
+          COMMIT_MSG="$(git log -1 --pretty=%B | tr -d '\r')"
+
+          if [ "$EVENT_NAME" = "workflow_dispatch" ] && [ -n "$INPUT_CHANNEL" ]; then
+            CHANNEL="$INPUT_CHANNEL"
+          elif [[ "$REF" == refs/tags/v* ]]; then
+            CHANNEL="stable"
+          elif printf '%s' "$COMMIT_MSG" | grep -Eq '^🚀|\[stable\]'; then
+            CHANNEL="stable"
+          else
+            CHANNEL="nightly"
           fi
 
-          # Rocket emoji UTF-8 bytes: f0 9f 9a 80
-          COMMIT_PREFIX_HEX="$(printf '%s' "$COMMIT_MSG" | xxd -p -l 4)"
-
-          if [ "$COMMIT_PREFIX_HEX" = "f09f9a80" ]; then
+          if [ "$CHANNEL" = "stable" ]; then
             echo "channel=stable" >> "${GITHUB_OUTPUT}"
             echo "tag=stable" >> "${GITHUB_OUTPUT}"
             echo "release_name=Stable Release" >> "${GITHUB_OUTPUT}"
