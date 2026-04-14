@@ -23,8 +23,16 @@ jobs:
             COMMIT_MSG="${{ github.event.push.commits[0].message }}"
           fi
           
-          # Check if message starts with the mangled emoji bytes
-          if echo "$COMMIT_MSG" | grep -q "^≡ƒÜÇ\|^🚀"; then
+          echo "DEBUG: commit msg = '$COMMIT_MSG'"
+          echo "DEBUG: hex = $(echo -n "$COMMIT_MSG" | xxd -p | head -c 32)"
+          
+          # Check for both emoji variations
+          IS_STABLE=0
+          echo "$COMMIT_MSG" | grep -q "^≡ƒÜÇ" && IS_STABLE=1
+          echo "$COMMIT_MSG" | grep -q "^🚀" && IS_STABLE=1
+          echo "DEBUG: IS_STABLE = $IS_STABLE"
+          
+          if [ "$IS_STABLE" -eq 1 ]; then
             echo "channel=stable" >> "${GITHUB_OUTPUT}"
             echo "tag=stable" >> "${GITHUB_OUTPUT}"
             echo "release_name=Stable Release" >> "${GITHUB_OUTPUT}"
