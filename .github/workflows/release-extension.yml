@@ -19,7 +19,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+          COMMIT_MESSAGE="$(git log -1 --pretty=%B)"
           if [[ "${COMMIT_MESSAGE}" == 🚀* ]]; then
             echo "channel=stable" >> "${GITHUB_OUTPUT}"
             echo "tag=stable" >> "${GITHUB_OUTPUT}"
