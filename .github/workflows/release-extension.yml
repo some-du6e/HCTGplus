@@ -15,6 +15,9 @@ jobs:
 
       - name: Set release metadata
         id: release_meta
+        env:
+          LANG: en_US.UTF-8
+          LC_ALL: en_US.UTF-8
         shell: python
         run: |
           import subprocess
@@ -22,7 +25,7 @@ jobs:
           from datetime import datetime
           
           # Get commit message
-          result = subprocess.run(['git', 'log', '-1', '--pretty=%B'], capture_output=True, text=True)
+          result = subprocess.run(['git', 'log', '-1', '--pretty=%B'], capture_output=True, text=True, encoding='utf-8')
           commit_msg = result.stdout.strip()
           
           # Check if starts with rocket emoji
