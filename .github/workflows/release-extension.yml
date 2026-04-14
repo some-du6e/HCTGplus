@@ -19,8 +19,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          COMMIT_MESSAGE="$(git log -1 --pretty=%B)"
-          if [[ "${COMMIT_MESSAGE}" == 🚀* ]]; then
+          if git log -1 --pretty=%B | grep -q '^🚀'; then
             echo "channel=stable" >> "${GITHUB_OUTPUT}"
             echo "tag=stable" >> "${GITHUB_OUTPUT}"
             echo "release_name=Stable Release" >> "${GITHUB_OUTPUT}"
