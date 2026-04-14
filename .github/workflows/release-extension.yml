@@ -23,14 +23,10 @@ jobs:
             COMMIT_MSG="${{ github.event.push.commits[0].message }}"
           fi
           
-          echo "DEBUG: commit msg = '$COMMIT_MSG'"
-          echo "DEBUG: hex = $(echo -n "$COMMIT_MSG" | xxd -p | head -c 32)"
-          
-          # Check for both emoji variations
+          # Check for rocket emoji (handles both proper UTF-8 and mangled encoding from Windows)
           IS_STABLE=0
           echo "$COMMIT_MSG" | grep -q "^≡ƒÜÇ" && IS_STABLE=1
           echo "$COMMIT_MSG" | grep -q "^🚀" && IS_STABLE=1
-          echo "DEBUG: IS_STABLE = $IS_STABLE"
           
           if [ "$IS_STABLE" -eq 1 ]; then
             echo "channel=stable" >> "${GITHUB_OUTPUT}"
