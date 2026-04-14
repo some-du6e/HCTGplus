@@ -1,6 +1,9 @@
 function projectViewer() {
     if (location.pathname !== "/me") { return }
-    if (location.hash !== "#view") { return }
+    const queryParams = new URLSearchParams(window.location.search);
+    let projectidtoview = Object.fromEntries(queryParams.entries()).projectId
+    let isViewHash = location.hash === "#view"
+    if (!isViewHash && !projectidtoview) { return }
     console.log("HCTG+: projectViewer running")
     window.HCTG = window.HCTG || {}
 
@@ -19,27 +22,31 @@ function projectViewer() {
         let title = document.getElementsByClassName("text-[48px] font-bold tracking-[-0.06em] text-nowrap text-white smoothing-white")[0]
         if (!title) {
             console.warn("HCTG: could not find project title div! prob not on the project page ID: 9s8f7g")
-            return
+            return null
         }
         title.textContent = titlee
 
         let oldcontent = document.getElementsByClassName("grid grid-cols-1 md:grid-cols-2")[0]
+        if (!oldcontent) {
+            console.warn("HCTG: could not find old content container. ID: 4jv1mn")
+            return null
+        }
         oldcontent.remove()
 
         let containerx = document.getElementsByClassName("relative -ml-2 h-screen w-full flex-1 overflow-y-scroll px-6 py-10")[0]
+        if (!containerx) {
+            console.warn("HCTG: could not find page container. ID: a2q7kp")
+            return null
+        }
         let container = document.createElement("div")
         container.className = "flex flex-col gap-10 px-6 py-8 xl:px-24 xl:py-16"
         containerx.appendChild(container)
         return container
     }
-    let mainContainer = prepareforcustomsite("Project")
 
-
-    const queryParams = new URLSearchParams(window.location.search);
-    let projectidtoview = Object.fromEntries(queryParams.entries()).projectId
     if (!projectidtoview) {
         alert("What are you doing buddy?")
-        // TODO proper site
+        return
     }
 
 
@@ -146,65 +153,48 @@ function projectViewer() {
 
     // find the project
     let project = null
-
-    let xsrfCookie = document.cookie.match(/(?:^|;\s*)XSRF-TOKEN=([^;]+)/)
-    let xsrfToken = ""
-    if (xsrfCookie !== null && xsrfCookie !== undefined && xsrfCookie[1]) {
-        xsrfToken = decodeURIComponent(xsrfCookie[1])
-    }
-
-    let csrfMeta = document.querySelector('meta[name="csrf-token"]')
-    let csrfToken = ""
-    if (csrfMeta !== null && csrfMeta !== undefined) {
-        let metaContent = csrfMeta.getAttribute("content")
-        if (metaContent !== null && metaContent !== undefined) {
-            csrfToken = metaContent
+    let galleryprojects = null
+    let rawGalleryCache = localStorage.getItem("hctg-gallery-cache")
+    if (rawGalleryCache) {
+      try {
+        let parsedCache = JSON.parse(rawGalleryCache)
+        if (Array.isArray(parsedCache)) {
+          galleryprojects = parsedCache
+        } else if (parsedCache && Array.isArray(parsedCache.projects)) {
+          galleryprojects = parsedCache.projects
         }
+      } catch (error) {
+        console.warn("HCTG: invalid gallery cache, clearing it. ID: 8r3jwy")
+        localStorage.removeItem("hctg-gallery-cache")
+      }
     }
 
-    let inertiaVersion = ""
-    if (window.HCTG && window.HCTG.datapage && window.HCTG.datapage.version) {
-        inertiaVersion = window.HCTG.datapage.version
+    if (!galleryprojects) {
+      alert("need to go to gallery page")
+      return
     }
 
-    if (inertiaVersion === "") {
-        inertiaVersion = "c7a105b46d7f1000475154bbaf2f2668cf275f7d"
+    let projectIdAsNumber = Number(projectidtoview)
+    for (let galleryproject of galleryprojects) {
+      if (galleryproject.id === projectidtoview || galleryproject.id === projectIdAsNumber) {
+        project = galleryproject
+        break
+      }
+    }
+    if (!project) {
+      alert("not found :(")
+      return 
     }
 
-    let headers = {
-        "accept": "text/html, application/xhtml+xml",
-        "accept-language": "en-US,en;q=0.9,es;q=0.8",
-        "sec-ch-ua": "\"Google Chrome\";v=\"147\", \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"147\"",
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": "\"Windows\"",
-        "sec-fetch-dest": "empty",
-        "sec-fetch-mode": "cors",
-        "sec-fetch-site": "same-origin",
-        "x-inertia": "true",
-        "x-inertia-version": inertiaVersion,
-        "x-requested-with": "XMLHttpRequest"
-    }
-    if (xsrfToken !== "") {
-        headers["x-xsrf-token"] = xsrfToken
-    }
-    if (csrfToken !== "") {
-        headers["x-csrf-token"] = csrfToken
+    let mainContainer = prepareforcustomsite("Project")
+    if (!mainContainer) {
+      return
     }
 
-    fetch("https://game.hackclub.com/gallery", {
-      "headers": headers,
-      "referrer": "https://game.hackclub.com/shop",
-      "body": null,
-      "method": "GET",
-      "mode": "cors",
-      "credentials": "include"
-    })
-    .then(response => {
-         return response.json()
-     })
-     .then(data => { 
-        console.log(data)
-     })
+    console.log(project)
+    dqnidnqwi(project)
+
+    
 
 
     

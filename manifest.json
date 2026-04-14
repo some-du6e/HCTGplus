@@ -18,6 +18,7 @@
         "components/sidebar.js",
         "components/shop.js",
         "components/projects.js",
+        "components/gallery.js",
         "components/lander.js"
       ],
       "run_at": "document_idle"
