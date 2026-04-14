@@ -19,10 +19,8 @@ jobs:
         run: |
           set -euo pipefail
 
-          COMMIT_MESSAGE="$(git log -1 --pretty=%B)"
-          echo "DEBUG: First 50 chars of message: $(echo "$COMMIT_MESSAGE" | head -c 50 | od -A x -t x1z -v)"
-          
-          if git log -1 --pretty=%B | grep -q '^🚀'; then
+          # Check if first 4 bytes of commit message are the rocket emoji (f0 9f 9a 80 in UTF-8)
+          if git log -1 --pretty=%B | head -c 4 | od -An -tx1 | grep -q "f0 9f 9a 80"; then
             echo "channel=stable" >> "${GITHUB_OUTPUT}"
             echo "tag=stable" >> "${GITHUB_OUTPUT}"
             echo "release_name=Stable Release" >> "${GITHUB_OUTPUT}"
