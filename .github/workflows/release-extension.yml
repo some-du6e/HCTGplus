@@ -15,30 +15,42 @@ jobs:
 
       - name: Set release metadata
         id: release_meta
-        shell: bash
+        shell: node {0}
         run: |
-          set -euo pipefail
+          const fs = require('fs');
+          const { execSync } = require('child_process');
+          const path = require('path');
           
-          # Git config for UTF-8
-          git config --global core.quotepath false
+          const commitMsg = execSync('git log -1 --pretty=%B', { encoding: 'utf8' }).trim();
           
-          # Get commit message and ensure it's UTF-8
-          COMMIT_MSG=$(git log -1 --pretty=%B | iconv -f ISO-8859-1 -t UTF-8 2>/dev/null || git log -1 --pretty=%B)
+          let channel, tag, release_name, prerelease;
           
-          # Check if starts with rocket emoji
-          if [[ "$COMMIT_MSG" == 🚀* ]]; then
-            echo "channel=stable" >> "${GITHUB_OUTPUT}"
-            echo "tag=stable" >> "${GITHUB_OUTPUT}"
-            echo "release_name=Stable Release" >> "${GITHUB_OUTPUT}"
-            echo "prerelease=false" >> "${GITHUB_OUTPUT}"
-          else
-            TIMESTAMP="$(date -u +'%Y%m%d-%H%M%S')"
-            SHORT_SHA="${GITHUB_SHA::7}"
-            echo "channel=nightly" >> "${GITHUB_OUTPUT}"
-            echo "tag=nightly-${TIMESTAMP}-${SHORT_SHA}" >> "${GITHUB_OUTPUT}"
-            echo "release_name=Nightly ${TIMESTAMP} (${SHORT_SHA})" >> "${GITHUB_OUTPUT}"
-            echo "prerelease=true" >> "${GITHUB_OUTPUT}"
-          fi
+          if (commitMsg.startsWith('🚀')) {
+            channel = 'stable';
+            tag = 'stable';
+            release_name = 'Stable Release';
+            prerelease = 'false';
+          } else {
+            const date = new Date();
+            const timestamp = date.getUTCFullYear() + 
+              String(date.getUTCMonth() + 1).padStart(2, '0') +
+              String(date.getUTCDate()).padStart(2, '0') + '-' +
+              String(date.getUTCHours()).padStart(2, '0') +
+              String(date.getUTCMinutes()).padStart(2, '0') +
+              String(date.getUTCSeconds()).padStart(2, '0');
+            const shortSha = process.env.GITHUB_SHA.substring(0, 7);
+            channel = 'nightly';
+            tag = `nightly-${timestamp}-${shortSha}`;
+            release_name = `Nightly ${timestamp} (${shortSha})`;
+            prerelease = 'true';
+          }
+          
+          const output = `channel=${channel}\ntag=${tag}\nrelease_name=${release_name}\nprerelease=${prerelease}\n`;
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, output);
+          
+          console.log(`Detected: ${commitMsg.substring(0, 50)}`);
+          console.log(`Channel: ${channel}`);
+
 
       - name: Build extension package
         shell: bash
