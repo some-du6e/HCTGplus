@@ -21,15 +21,23 @@ jobs:
         run: |
           set -euo pipefail
 
+          COMMIT_MSG="$(git log -1 --pretty=%B | tr -d '\r')"
+          COMMIT_PREFIX_HEX="$(printf '%s' "$COMMIT_MSG" | xxd -p -l 4)"
           TIMESTAMP="$(date -u +'%Y%m%d-%H%M%S')"
           SHORT_SHA="${GITHUB_SHA::7}"
 
-          echo "channel=nightly" >> "${GITHUB_OUTPUT}"
-          echo "tag=nightly-${TIMESTAMP}-${SHORT_SHA}" >> "${GITHUB_OUTPUT}"
-          echo "release_name=Nightly ${TIMESTAMP} (${SHORT_SHA})" >> "${GITHUB_OUTPUT}"
-          echo "prerelease=true" >> "${GITHUB_OUTPUT}"
+          if [ "$COMMIT_PREFIX_HEX" = "f09f9a80" ]; then
+            echo "channel=stable" >> "${GITHUB_OUTPUT}"
+            echo "tag=stable" >> "${GITHUB_OUTPUT}"
+            echo "release_name=Stable Release" >> "${GITHUB_OUTPUT}"
+            echo "prerelease=false" >> "${GITHUB_OUTPUT}"
+          else
+            echo "channel=nightly" >> "${GITHUB_OUTPUT}"
+            echo "tag=nightly-${TIMESTAMP}-${SHORT_SHA}" >> "${GITHUB_OUTPUT}"
+            echo "release_name=Nightly ${TIMESTAMP} (${SHORT_SHA})" >> "${GITHUB_OUTPUT}"
+            echo "prerelease=true" >> "${GITHUB_OUTPUT}"
+          fi
         shell: bash
-
 
       - name: Build extension package
         shell: bash
@@ -50,7 +58,7 @@ jobs:
           allowUpdates: true
           artifacts: dist/hctgplus-${{ steps.release_meta.outputs.channel }}.zip
           generateReleaseNotes: true
-          makeLatest: false
+          makeLatest: ${{ steps.release_meta.outputs.channel == 'stable' && 'true' || 'false' }}
           name: ${{ steps.release_meta.outputs.release_name }}
           prerelease: ${{ steps.release_meta.outputs.prerelease }}
           removeArtifacts: true
