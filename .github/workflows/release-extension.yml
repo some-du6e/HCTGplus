@@ -2,18 +2,7 @@ name: Release Chrome Extension
 
 on:
   workflow_dispatch:
-    inputs:
-      channel:
-        description: Release channel
-        required: true
-        default: nightly
-        type: choice
-        options:
-          - nightly
-          - stable
   push:
-    tags:
-      - "v*"
     branches:
       - main
 
@@ -32,34 +21,13 @@ jobs:
         run: |
           set -euo pipefail
 
-          EVENT_NAME="${{ github.event_name }}"
-          REF="${{ github.ref }}"
-          INPUT_CHANNEL="${{ github.event.inputs.channel || '' }}"
-          COMMIT_MSG="$(git log -1 --pretty=%B | tr -d '\r')"
+          TIMESTAMP="$(date -u +'%Y%m%d-%H%M%S')"
+          SHORT_SHA="${GITHUB_SHA::7}"
 
-          if [ "$EVENT_NAME" = "workflow_dispatch" ] && [ -n "$INPUT_CHANNEL" ]; then
-            CHANNEL="$INPUT_CHANNEL"
-          elif [[ "$REF" == refs/tags/v* ]]; then
-            CHANNEL="stable"
-          elif printf '%s' "$COMMIT_MSG" | grep -Eq '^🚀|\[stable\]'; then
-            CHANNEL="stable"
-          else
-            CHANNEL="nightly"
-          fi
-
-          if [ "$CHANNEL" = "stable" ]; then
-            echo "channel=stable" >> "${GITHUB_OUTPUT}"
-            echo "tag=stable" >> "${GITHUB_OUTPUT}"
-            echo "release_name=Stable Release" >> "${GITHUB_OUTPUT}"
-            echo "prerelease=false" >> "${GITHUB_OUTPUT}"
-          else
-            TIMESTAMP="$(date -u +'%Y%m%d-%H%M%S')"
-            SHORT_SHA="${GITHUB_SHA::7}"
-            echo "channel=nightly" >> "${GITHUB_OUTPUT}"
-            echo "tag=nightly-${TIMESTAMP}-${SHORT_SHA}" >> "${GITHUB_OUTPUT}"
-            echo "release_name=Nightly ${TIMESTAMP} (${SHORT_SHA})" >> "${GITHUB_OUTPUT}"
-            echo "prerelease=true" >> "${GITHUB_OUTPUT}"
-          fi
+          echo "channel=nightly" >> "${GITHUB_OUTPUT}"
+          echo "tag=nightly-${TIMESTAMP}-${SHORT_SHA}" >> "${GITHUB_OUTPUT}"
+          echo "release_name=Nightly ${TIMESTAMP} (${SHORT_SHA})" >> "${GITHUB_OUTPUT}"
+          echo "prerelease=true" >> "${GITHUB_OUTPUT}"
         shell: bash
 
 
@@ -82,7 +50,7 @@ jobs:
           allowUpdates: true
           artifacts: dist/hctgplus-${{ steps.release_meta.outputs.channel }}.zip
           generateReleaseNotes: true
-          makeLatest: ${{ steps.release_meta.outputs.channel == 'stable' && 'true' || 'false' }}
+          makeLatest: false
           name: ${{ steps.release_meta.outputs.release_name }}
           prerelease: ${{ steps.release_meta.outputs.prerelease }}
           removeArtifacts: true
