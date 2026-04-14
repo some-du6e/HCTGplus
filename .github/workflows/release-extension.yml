@@ -28,8 +28,8 @@ jobs:
           
           echo "Commit message: '$COMMIT_MSG'"
           
-          # Check if starts with rocket emoji  
-          if [[ "$COMMIT_MSG" == 🚀* ]]; then
+          # Check if starts with rocket emoji (properly encoded) OR the mangled version
+          if [[ "$COMMIT_MSG" == 🚀* ]] || [[ "$COMMIT_MSG" == "≡ƒÜÇ"* ]] || [[ "$COMMIT_MSG" == "🚀"* ]]; then
             echo "channel=stable" >> "${GITHUB_OUTPUT}"
             echo "tag=stable" >> "${GITHUB_OUTPUT}"
             echo "release_name=Stable Release" >> "${GITHUB_OUTPUT}"
