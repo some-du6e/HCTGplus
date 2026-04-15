@@ -1,5 +1,12 @@
 # HCTG+
 Adds some qol features to [HCTG](https://game.hackclub.com) that i would like
+## How to install
+1. Get the [latest release](https://github.com/some-du6e/HCTGplus/releases/latest)
+2. Unzip the file
+3. Go to `chrome://extensions/` and turn on developer mode
+4. Click `Load unpacked` and select the unzipped file
+5. Done
+
 ## Feature list
 Heres a list of what every file does
 ### `consts.js`
