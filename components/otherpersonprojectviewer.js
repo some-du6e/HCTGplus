@@ -85,18 +85,18 @@ function projectViewer() {
               <p class="smoothing-black mt-2 text-xl tracking-[-0.02em]">${project.desc}</p>
               <div class="mt-auto">
                 <div class="mt-4 flex items-center gap-2">
-                    <button type="button" data-hctg-action-btn="true" class="group smoothing-white justify-center w-full mt-4 flex gap-3 cursor-pointer bg-black px-5 py-3 items-center text-xl font-bold tracking-tight text-white transition-colors hover:bg-[#fecb0d] hover:text-black">
+                    <a href="${project.demo_link}" data-hctg-action-btn="true" class="group smoothing-white justify-center w-full mt-4 flex gap-3 cursor-pointer bg-black px-5 py-3 items-center text-xl font-bold tracking-tight text-white transition-colors hover:bg-[#fecb0d] hover:text-black">
                       <img src="${demoicon}" class="w-4">
                         Demo
-                    </button>
-                    <button type="button" data-hctg-action-btn="true" class="group smoothing-white justify-center w-full mt-4 flex gap-3 cursor-pointer bg-black px-5 py-3 items-center text-xl font-bold tracking-tight text-white transition-colors hover:bg-[#fecb0d] hover:text-black">
+                    </a>
+                    <a href="${project.repo_link}" data-hctg-action-btn="true" class="group smoothing-white justify-center w-full mt-4 flex gap-3 cursor-pointer bg-black px-5 py-3 items-center text-xl font-bold tracking-tight text-white transition-colors hover:bg-[#fecb0d] hover:text-black">
                       <img src="${repoicon}" class="w-4">
                         Repository
-                    </button>
-                    <button type="button" data-hctg-action-btn="true" class="group smoothing-white justify-center w-full mt-4 flex gap-3 cursor-pointer bg-black px-5 py-3 items-center text-xl font-bold tracking-tight text-white transition-colors hover:bg-[#fecb0d] hover:text-black">
+                    </a>
+                    <a href="${project.repo_link+"/blob/main/README.md"}" data-hctg-action-btn="true" class="group smoothing-white justify-center w-full mt-4 flex gap-3 cursor-pointer bg-black px-5 py-3 items-center text-xl font-bold tracking-tight text-white transition-colors hover:bg-[#fecb0d] hover:text-black" >
                       <img src="${readmeicon}" class="w-4">
                         Readme
-                    </button>
+                    </a>
                 </div>
               </div>
             </div>

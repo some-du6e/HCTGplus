@@ -10,7 +10,6 @@
     {
       "matches": ["*://game.hackclub.com/*"],
       "js": [
-        "content.js",
         "components/consts.js",
         "components/data.js",
         "components/goals.js",
