@@ -19,8 +19,8 @@ function betterShop() {
     }
     let itemlist = datapage.props.items
     console.log(itemlist)
-    // TODO: add some sort of settings 
-    let hideblackmarket = false
+    
+    let hideblackmarket = localStorage.getItem("hctg-hideblackmarket") === "true" ? true : false
     function isBlackMarket(id) {
         if (!hideblackmarket) return false
         id = parseInt(id, 10)
@@ -61,17 +61,12 @@ function betterShop() {
                 item.id = "HCTGplus-item-" + shopitem.id
                 item.setAttribute("data-hctg-item-id", shopitem.id)
                 
-                // hide items that are blackmarket 
-                
-                if (hideblackmarket && shopitem.black_market) {
-                    item.style.setProperty("display", "none", "!important")
-                }
 
 
 
                 // also add a lil thing  to copy the id
                 // TODO: add "dev" option to some sort of settings
-                let gubby = true
+                let gubby = localStorage.getItem("hctg-devmode") === "true" ? true : false
                 
 
                 let copydiv = document.createElement("div")
