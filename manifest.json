@@ -3,9 +3,6 @@
   "name": "HCTG+",
   "description": "better game.hackclub.com",
   "version": "1.0.0",
-  "background": {
-    "service_worker": "service-worker.js"
-  },
   "content_scripts": [
     {
       "matches": ["*://game.hackclub.com/*"],
@@ -18,7 +15,8 @@
         "components/shop.js",
         "components/projects.js",
         "components/gallery.js",
-        "components/lander.js"
+        "components/lander.js",
+        "components/settings.js"
       ],
       "run_at": "document_idle"
     },
