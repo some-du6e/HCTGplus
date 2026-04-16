@@ -207,15 +207,7 @@ function addGoals() {
         </div>
       </div>
       
-      <div class="rounded-2xl border-2 border-black bg-white px-6 py-4">
-        <h3 class="smoothing-black mb-4 text-center text-2xl font-bold tracking-[-0.02em]">Hackatime key</h3>
-        <div class="mt-4 flex items-center justify-center gap-2">
-          <select name="tokens-vs-hours" id="tokens-vs-hours">
-            <option value="false">no</option>
-            <option value="true">yeah</option>
-          </select>
-        </div>
-      </div>
+    
       
     </div>
     `
