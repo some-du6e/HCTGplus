@@ -19,8 +19,18 @@ function betterShop() {
     }
     let itemlist = datapage.props.items
     console.log(itemlist)
-
-
+    // TODO: add some sort of settings 
+    let hideblackmarket = false
+    function isBlackMarket(id) {
+        if (!hideblackmarket) return false
+        id = parseInt(id, 10)
+        for (let item of itemlist) {
+            if (item.id === id && item.black_market) {
+                return true
+            }
+        }
+        return false
+    }
     // shop ui now...
 
     // get shopcontainer
@@ -50,6 +60,15 @@ function betterShop() {
             if (itempictureurl.endsWith(shopitem.image) && shopitem.name === itemtitle) {
                 item.id = "HCTGplus-item-" + shopitem.id
                 item.setAttribute("data-hctg-item-id", shopitem.id)
+                
+                // hide items that are blackmarket 
+                
+                if (hideblackmarket && shopitem.black_market) {
+                    item.style.setProperty("display", "none", "!important")
+                }
+
+
+
                 // also add a lil thing  to copy the id
                 // TODO: add "dev" option to some sort of settings
                 let gubby = true
@@ -111,6 +130,11 @@ function betterShop() {
                 }
                 
                 item.children[0].appendChild(copydiv)
+
+                if (shopitem.black_market) {
+                    let blackmarketthing = item.getElementsByClassName("absolute top-2 left-3 text-sm font-bold text-purple-500")[0]
+                    blackmarketthing.className = "absolute top-2 left-1/2 -translate-x-1/2 text-sm font-bold text-purple-500"
+                }
             }
             
         }
@@ -121,7 +145,11 @@ function betterShop() {
     function renderCategory(category) {
         if (category === "none") {
             for (let item of shopcontainer.children) {
-                item.style.display = "block"
+                if (isBlackMarket(item.getAttribute("data-hctg-item-id"))) {
+                    item.style.display = "none"
+                }else {
+                    item.style.display = "block"
+                }
             }
             return
         }   
@@ -131,6 +159,9 @@ function betterShop() {
             if (standard.includes(itemid)) {
                 item.style.display = "block"
             }else {
+                item.style.display = "none"
+            }
+            if (isBlackMarket(item.getAttribute("data-hctg-item-id"))) {
                 item.style.display = "none"
             }
         }
