@@ -190,6 +190,11 @@ function makeSidebarBetter() {
     let goalitem = localStorage.getItem("hctgplus-goalitem")
     if (goalitem) {
         let toreplace = "hours"
+        let hoursDoneToday = window.HCTG.goals.hoursDoneToday()
+        let hoursAday = window.HCTG.goals.hoursAday()
+        if (!Number.isFinite(hoursDone) || !Number.isFinite(hoursAday)) {
+            return
+        }
         replaceWithGoals(toreplace)
     }
 }
