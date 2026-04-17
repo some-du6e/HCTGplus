@@ -141,3 +141,5 @@ vite.config.ts.timestamp-*
 
 sensitive*
 *copilot-cli*
+dist/
+dist.zip

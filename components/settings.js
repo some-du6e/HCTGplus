@@ -9,7 +9,7 @@ function addSettings() {
     settingsContainer.className = "p-8"
     settingsContainer.innerHTML = `
     <h2 class="mb-2 text-3xl font-bold">HCTG+ settings</h2>
-    <div id="settingscontainer>
+    <div id="settingscontainer">
 
     </div>
     `

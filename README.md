@@ -1,5 +1,17 @@
-# HCTG+
-Adds some qol features to [HCTG](https://game.hackclub.com) that i would like
+<div align="center" style="text-align: center;">
+<h1><img src="icons/icon32.png" height="30px">  HCTG+</h1>
+<p>Adds some qol features to <a href="https://game.hackclub.com">HCTG</a> that i would like</p>
+
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/some-du6e/HCTGplus/total)
+![GitHub Release](https://img.shields.io/github/v/release/some-du6e/HCTGplus)
+![GitHub License](https://img.shields.io/github/license/some-du6e/HCTGplus)
+</div>
+<!-- sorry maxstellar for skidding this ^-->
+
+<div align="center">
+<img src="img/hctgplusfullkindabad.png" width="67%">
+</div>
+
 ## How to install
 1. Get the [latest release](https://github.com/some-du6e/HCTGplus/releases/latest)
 2. Unzip the file
@@ -7,8 +19,8 @@ Adds some qol features to [HCTG](https://game.hackclub.com) that i would like
 4. Click `Load unpacked` and select the unzipped file
 5. Done
 
-## Feature list
-Heres a list of what every file does
+## Features
+
 ### `consts.js`
 nothing much, just set the categories and dollars per hour
 ### `data.js`
