@@ -143,3 +143,4 @@ sensitive*
 *copilot-cli*
 dist/
 dist.zip
+__pycache__/
