@@ -144,3 +144,5 @@ sensitive*
 dist/
 dist.zip
 __pycache__/
+testingdata/
+testresults.md

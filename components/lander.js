@@ -5,7 +5,7 @@ function betterLander() {
     // check if we are really on the lander
     let title = document.getElementsByClassName("flex w-full flex-col border-t-30 border-r-4 border-b-4 border-l-4 border-solid border-black bg-white lg:flex-row")[0]
     if (!title) {
-        console.warn("HCTG: could not find lander title div! prob not on the lander ID: 9s8f7g")
+        console.warn("HCTG: could not find lander title div! prob not on the lander ID: WDZE8G")
         return
     }
     
@@ -18,7 +18,7 @@ function betterLander() {
     // TODO check this better
     let ohiogubby = document.getElementsByClassName("mt-4 flex h-20 w-full flex-col gap-2 sm:flex-row lg:gap-3")[0]
     if (!ohiogubby) {
-        console.warn("HCTG: could not find ohiogubby div! prob not on the lander ID: 9s8f7g")
+        console.warn("HCTG: could not find ohiogubby div! prob not on the lander ID: EQBH7g")
         return
     }
 

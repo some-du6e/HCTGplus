@@ -1,7 +1,7 @@
 from playwright.sync_api import Page
 from dotenv import load_dotenv
 import os
-
+from time import sleep
 load_dotenv()
 
 def login(page: Page):
@@ -23,5 +23,8 @@ def login(page: Page):
         page.context.add_cookies(cookies_to_add) # type: ignore
 
     page.goto("https://auth.hackclub.com/")
-    input("Log in and press enter when your done...")
+    if signed_user_token != None:
+        sleep(5)
+    else:
+        input("Log in and press enter when your done...")
     return page
