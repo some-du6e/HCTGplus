@@ -25,6 +25,7 @@
       ],
       "run_at": "document_idle"
     },
+
     {
       "matches": ["*://*.game.hackclub.com/*"],
       "js": ["components/utils.js"],
