@@ -18,12 +18,25 @@ function notificationsBetter() {
     for (let notifcard of notifscontainer.children) {
         let desc = notifcard.children[1].innerText
         for (let notifobject of notifs) {
-            if (notifobject.message === desc) {
+            let cleanmsg = notifobject.message.replace(/\n/g, " ")
+            // console.log(cleanmsg)
+            // console.log(desc)
+            // console.log("--------------")
+            if (cleanmsg == desc) {
                 notifcard.setAttribute("hctg-notification-id", notifobject.id)
             }
         }
     }
 
+
+    for (let notifcard of notifscontainer.children) {
+        let notifid = notifcard.getAttribute("hctg-notification-id")
+        let notif = notifs.find(n => n.id == notifid)
+
+        // change desc
+        let descContainer = notifcard.children[1]
+        descContainer.innerText = notif.message
+    }
 
 }
 

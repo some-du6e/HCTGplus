@@ -2,6 +2,12 @@ name: Release Chrome Extension
 
 on:
   workflow_dispatch:
+    inputs:
+      publish_to_store:
+        description: Publish stable build to Chrome Web Store
+        required: false
+        default: false
+        type: boolean
   push:
     branches:
       - main
@@ -63,3 +69,14 @@ jobs:
           prerelease: ${{ steps.release_meta.outputs.prerelease }}
           removeArtifacts: true
           tag: ${{ steps.release_meta.outputs.tag }}
+
+      - name: Publish to Chrome Web Store
+        if: ${{ steps.release_meta.outputs.channel == 'stable' && github.event_name == 'workflow_dispatch' && github.event.inputs.publish_to_store == 'true' }}
+        uses: mobilefirstllc/cws-publish@latest
+        with:
+          action: publish
+          client_id: ${{ secrets.CHROME_CLIENT_ID }}
+          client_secret: ${{ secrets.CHROME_CLIENT_SECRET }}
+          extension_id: ${{ secrets.CHROME_EXTENSION_ID }}
+          refresh_token: ${{ secrets.CHROME_REFRESH_TOKEN }}
+          zip_file: dist/hctgplus-${{ steps.release_meta.outputs.channel }}.zip

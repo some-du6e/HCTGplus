@@ -13,6 +13,7 @@
 </div>
 
 ## How to install
+Install from the [webstore](https://chromewebstore.google.com/detail/hctg+/kdndfafcpodecbbjhoicneekmbdhhckm) or do these steps
 1. Get the [latest release](https://github.com/some-du6e/HCTGplus/releases/latest)
 2. Unzip the file
 3. Go to `chrome://extensions/` and turn on developer mode
@@ -41,4 +42,4 @@ adds dollars and hours and goals if you have it, also adds goals tab and also ad
 helper for running stuff
 ### `settings.js`
 adds a new little section to the settings (`/me`) with these
-- 
+-
