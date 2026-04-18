@@ -24,7 +24,7 @@ def login(page: Page):
 
     page.goto("https://auth.hackclub.com/")
     if signed_user_token != None:
-        sleep(5)
+        sleep(1.5)
     else:
         input("Log in and press enter when your done...")
     return page

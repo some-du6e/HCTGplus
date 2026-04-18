@@ -31,6 +31,6 @@ def testlander(page: Page):
     page.goto("https://game.hackclub.com/")
     
     
-    time.sleep(5)
+    time.sleep(2.5)
 
     return page, results
