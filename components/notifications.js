@@ -19,9 +19,11 @@ function notificationsBetter() {
         let desc = notifcard.children[1].innerText
         for (let notifobject of notifs) {
             let cleanmsg = notifobject.message.replace(/\n/g, " ")
-            // console.log(cleanmsg)
-            // console.log(desc)
-            // console.log("--------------")
+            cleanmsg = cleanmsg.replace(/\s+/g, " ").trim()
+            desc = desc.replace(/\s+/g, " ").trim()
+            console.log(cleanmsg)
+            console.log(desc)
+            console.log("--------------")
             if (cleanmsg == desc) {
                 notifcard.setAttribute("hctg-notification-id", notifobject.id)
             }
@@ -35,7 +37,9 @@ function notificationsBetter() {
 
         // change desc
         let descContainer = notifcard.children[1]
-        descContainer.innerText = notif.message
+        let cleanmsg = notif.message.replace(" >", "/n")
+        console.log(cleanmsg)
+        descContainer.innerText = cleanmsg
     }
 
 }

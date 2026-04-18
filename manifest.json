@@ -21,8 +21,7 @@
         "components/projects.js",
         "components/gallery.js",
         "components/lander.js",
-        "components/settings.js",
-        "components/notifications.js"
+        "components/settings.js"
       ],
       "run_at": "document_idle"
     },
