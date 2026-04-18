@@ -32,6 +32,15 @@ jobs:
           TIMESTAMP="$(date -u +'%Y%m%d-%H%M%S')"
           SHORT_SHA="${GITHUB_SHA::7}"
 
+          # Explicit manual publish requests should always package and publish a stable build.
+          if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.publish_to_store || 'false' }}" = "true" ]; then
+            echo "channel=stable" >> "${GITHUB_OUTPUT}"
+            echo "tag=stable-${TIMESTAMP}-${SHORT_SHA}" >> "${GITHUB_OUTPUT}"
+            echo "release_name=Stable ${TIMESTAMP} (${SHORT_SHA})" >> "${GITHUB_OUTPUT}"
+            echo "prerelease=false" >> "${GITHUB_OUTPUT}"
+            exit 0
+          fi
+
           if [ "$COMMIT_PREFIX_HEX" = "f09f9a80" ]; then
             echo "channel=stable" >> "${GITHUB_OUTPUT}"
             echo "tag=stable-${TIMESTAMP}-${SHORT_SHA}" >> "${GITHUB_OUTPUT}"
