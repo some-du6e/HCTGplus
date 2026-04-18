@@ -31,11 +31,25 @@ history.pushState = function() {
     window.dispatchEvent(new Event('locationchange'));
 };
 
+const originalReplaceState = history.replaceState;
+history.replaceState = function() {
+    originalReplaceState.apply(this, arguments);
+    window.dispatchEvent(new Event('locationchange'));
+};
+
 function alittlebitofgoop() {
-    window.dispatchEvent(new Event('pageChange'));
+    // Fire only when Inertia has mounted page data.
+    const appDiv = document.getElementById("app");
+    const hasPageData = appDiv?.getAttribute("data-page");
+    if (appDiv && hasPageData) {
+        window.dispatchEvent(new Event('pageChange'));
+    }
 }
 window.addEventListener('locationchange', function() {
-    setTimeout(alittlebitofgoop, 300); // TODO: see if i can do better than a timeout here
+    alittlebitofgoop();
+});
+window.addEventListener('popstate', function() {
+    alittlebitofgoop();
 });
 
 

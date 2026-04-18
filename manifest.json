@@ -3,6 +3,11 @@
   "name": "HCTG+",
   "description": "better game.hackclub.com",
   "version": "1.0.0",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "kdndfafcpodecbbjhoicneekmbdhhckm@chromeisbetter"
+    }
+  },
   "content_scripts": [
     {
       "matches": ["*://game.hackclub.com/*"],
@@ -23,7 +28,7 @@
     {
       "matches": ["*://*.game.hackclub.com/*"],
       "js": ["components/utils.js"],
-      "run_at": "document_idle",
+      "run_at": "document_end",
       "world": "MAIN"
     }
   ],

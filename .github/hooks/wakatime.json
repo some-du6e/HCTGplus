@@ -4,6 +4,7 @@
     "sessionStart": [
       {
         "type": "command",
+        "bash": "copilot-cli-wakatime hook sessionStart",
         "powershell": "copilot-cli-wakatime hook sessionStart",
         "timeoutSec": 10
       }
@@ -11,6 +12,7 @@
     "postToolUse": [
       {
         "type": "command",
+        "bash": "copilot-cli-wakatime hook postToolUse",
         "powershell": "copilot-cli-wakatime hook postToolUse",
         "timeoutSec": 10
       }
@@ -19,6 +21,7 @@
       {
         "type": "command",
         "powershell": "copilot-cli-wakatime hook sessionEnd",
+        "bash": "copilot-cli-wakatime hook sessionEnd",
         "timeoutSec": 10
       }
     ]

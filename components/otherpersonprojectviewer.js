@@ -1,7 +1,7 @@
 function projectViewer() {
     if (location.pathname !== "/me") { return }
     const queryParams = new URLSearchParams(window.location.search);
-    let projectidtoview = Object.fromEntries(queryParams.entries()).projectId
+    let projectidtoview = Object.fromEntries(queryParams).projectId
     let isViewHash = location.hash === "#view"
     if (!isViewHash && !projectidtoview) { return }
     console.log("HCTG+: projectViewer running")
