@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "HCTG+",
   "description": "better game.hackclub.com",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "browser_specific_settings": {
     "gecko": {
       "id": "kdndfafcpodecbbjhoicneekmbdhhckm@chromeisbetter"

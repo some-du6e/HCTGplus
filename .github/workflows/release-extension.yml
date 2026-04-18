@@ -56,7 +56,8 @@ jobs:
             content.js \
             service-worker.js \
             snippet.html \
-            components
+            components \
+            icons
 
       - name: Publish GitHub release
         uses: ncipollo/release-action@v1
