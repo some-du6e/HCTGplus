@@ -2,17 +2,60 @@
 no ai slop
 
 
-## Chrome Web Store publish from GitHub Actions
-The release workflow can publish directly to the web store for stable builds.
+## cws action publishing
+tbh its a pile of slop just use ai...
+### instructions for agents
+```md
+## Release Workflow
 
-1. Add these repository secrets:
+The repository uses GitHub Actions workflow `Release Chrome Extension`.
+
+Behavior:
+1. Pushes to `main` create a release build and GitHub release artifact.
+2. Manual runs can also publish to Chrome Web Store.
+
+## Chrome Web Store Publish (Manual)
+
+### 1) Configure repository secrets
+
+Add these secrets in GitHub repository settings:
+
 - `CHROME_EXTENSION_ID`
 - `CHROME_CLIENT_ID`
 - `CHROME_CLIENT_SECRET`
 - `CHROME_REFRESH_TOKEN`
-2. Run the `Release Chrome Extension` workflow manually.
-3. Set `publish_to_store` to `true`.
 
-Notes:
-- Publish runs only for stable channel builds.
-- Pushes to `main` still create GitHub releases, but do not auto-publish to the web store.
+Path in GitHub UI:
+`Settings -> Secrets and variables -> Actions -> Repository secrets`
+
+### 2) Trigger publish
+
+From GitHub:
+1. Go to `Actions`.
+2. Select `Release Chrome Extension`.
+3. Click `Run workflow`.
+4. Set `publish_to_store` to `true`.
+5. Run it on `main`.
+
+From CLI:
+
+```bash
+gh workflow run release-extension.yml -f publish_to_store=true
+```
+
+### 3) Verify publish step
+
+Check the run logs for step `Publish to Chrome Web Store`.
+
+CLI examples:
+
+```bash
+gh run list --workflow release-extension.yml --limit 5
+gh run view <run_id> --json jobs
+```
+
+## Notes
+
+- Manual publish with `publish_to_store=true` now forces stable release metadata for the run.
+- If publish fails with auth errors, refresh/recreate `CHROME_REFRESH_TOKEN` and update secrets.
+```
