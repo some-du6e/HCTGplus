@@ -36,6 +36,9 @@ adds a new page that gets the cached project(s) and creates a project card with 
 ### `projects.js`
 adds a green glow to projects that have been aproved
 ### `sidebar.js`
-adds dollars and hours and goals if you have it, also adds goals tab
+adds dollars and hours and goals if you have it, also adds goals tab and also adds dismissing the help notification
 ### `utils.js`
 helper for running stuff
+### `settings.js`
+adds a new little section to the settings (`/me`) with these
+- 

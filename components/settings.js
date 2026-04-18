@@ -17,7 +17,7 @@ function addSettings() {
     mainContainer.appendChild(settingsContainer)
 
     
-    function addSetting(title, localstoragetochange, inputtype) {
+    function addSetting(title, localstoragetochange, inputtype, callback) {
         let setting = document.createElement("div")
         setting.className = "px-6 py-4"
 
@@ -29,7 +29,7 @@ function addSettings() {
 
         if (inputtype === "boolean") {
             let input = document.createElement("select")
-            input.className = "block mx-auto"
+            input.className = ""
             input.innerHTML = `
             <option value="false">No</option>
             <option value="true">Yes</option>
@@ -42,12 +42,26 @@ function addSettings() {
             localStorage.setItem(localstoragetochange, lsitem)
             setting.appendChild(input)
         }
+        if (inputtype === "button") {
+            let input = document.createElement("a")
+            input.className = "mt-2 bg-black px-4 py-1.5 font-bold text-white no-underline transition-colors hover:bg-[#fecb0d] hover:text-black cursor-pointer"
+            input.innerText = title
+            input.onclick = callback
+            setting.appendChild(input)
+        }
 
         settingsContainer.appendChild(setting)
     }
 
     addSetting("Hide black market items", "hctg-hideblackmarket", "boolean")
     addSetting("Developer mode", "hctg-devmode", "boolean")
+    addSetting("Bring back help", null, "button", function() {
+        localStorage.removeItem('hctg-dismiss-help')
+        location.reload()
+    })
+
+
+
     
 }
 
