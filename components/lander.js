@@ -3,7 +3,7 @@ function betterLander() {
     console.log("HCTG+: betterLander running")
 
     // check if we are really on the lander
-    let title = document.getElementsByClassName("flex w-full flex-col border-t-30 border-r-4 border-b-4 border-l-4 border-solid border-black bg-white lg:flex-row")[0]
+    let title = document.getElementsByClassName("flex w-full flex-col border-t-30 border-r-4 border-b-4 border-l-4 border-solid border-[#383636] bg-white lg:flex-row text-[#383636]")[0]
     if (!title) {
         console.warn("HCTG: could not find lander title div! prob not on the lander ID: WDZE8G")
         return

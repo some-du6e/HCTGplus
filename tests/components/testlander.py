@@ -7,9 +7,11 @@ load_dotenv()
 def testlander(page: Page):
     results = {
         "section": "Lander tests",
-        "passed_9s8f7g": True,
-        "passed_WDZE8G": True,
-        "passed_EQBH7g": True,
+        "tests": {
+            "passed_9s8f7g": True,
+            "passed_WDZE8G": True,
+            "passed_EQBH7g": True,
+        }
     }
     stuff_to_watchoutfor = [
         "9s8f7g",
@@ -22,7 +24,7 @@ def testlander(page: Page):
         for thing in stuff_to_watchoutfor:
             if thing in msg.text:
                 print(f"found {thing} in console...")
-                results[f"passed_{thing}"] = False
+                results["tests"][f"passed_{thing}"] = False
     
     # Set up listener BEFORE navigating to page
     page.on("console", lambda msg: handle_console(msg))

@@ -28,5 +28,18 @@ def rendertest(results):
 </div>
 """
 
+
+    for result in results:
+        content += f"""
+## {result["section"]}
+"""     
+        tests = result["tests"]
+        for test in tests:
+            thingy = "❌"
+            if tests[test] == True:
+                thingy = "✅"
+            cleantest = str(test).replace("passed_", "")
+            content += f"""- {thingy} {cleantest} \n"""
+
     with open("testresults.md", "w", encoding="utf-8") as f:
         f.write(content)

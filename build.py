@@ -37,7 +37,8 @@ print("Copied succesfully!")
 print("Deleting blocklist files...")
 try:
     for item in blocklist:
-        os.remove("dist/"+item)
+        if os.path.exists(item):
+            os.remove("dist/"+item)
 except Exception as e:
     print("Oops smth happened: ", e)
     exit()
