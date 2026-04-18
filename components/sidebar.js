@@ -197,6 +197,37 @@ function makeSidebarBetter() {
         }
         
     }
+
+    
+
+    /// extra
+    let possiblehelpstuff = document.getElementsByClassName("rounded-xl border-2 border-white p-4")
+    let helpstuff = null
+    for (let possibily of possiblehelpstuff ) {
+        let parent = possibily.parentElement
+        if (parent.children[1]) {
+            if (parent.children[1].className === "rounded-2xl bg-[#fecb0d] p-[21px] text-black") {
+                helpstuff = possibily
+            }
+        }
+    }
+    if (!helpstuff) { console.error("HCTG+: didnt find the help stuff pls fix id:DBNIJ")}
+    
+    let dismiss = localStorage.getItem("hctg-dismiss-help") ? true : false 
+    if (dismiss) { helpstuff.hidden = true }
+    // add a little x
+    if (!dismiss) {
+        let dissmiss = document.createElement("a")
+        dissmiss.className = "absolute top-2 right-5 flex gap-1.5"
+        dissmiss.innerText = "X"
+        dissmiss.href = "javascript:void(0)"
+        dissmiss.onclick = function() {
+            helpstuff.hidden = true
+            localStorage.setItem("hctg-dismiss-help", "i dont really check for the content tbh")
+        }
+
+        helpstuff.appendChild(dissmiss)
+    }
 }
 
 window.addEventListener('pageChange', function() {
