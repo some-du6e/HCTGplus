@@ -63,6 +63,10 @@ function parseDataPage() {
     economics.USD = economics.tokens * window.HCTG.consts.onetoken2usd
     economics.USD = Math.round(economics.USD * 100) / 100
 
+
+
+    // localStorage.setItem("hctg-old-balance", toString(economics.balance))
+    
     window.HCTG.economics = economics
     window.dispatchEvent(new Event('hctg:dataReady'))
 

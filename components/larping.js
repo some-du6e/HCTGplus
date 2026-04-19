@@ -7,6 +7,11 @@ const observer = new MutationObserver(() => {
 
     let larpadmin = localStorage.getItem("hctg-larp-admin") === "true" ? true : false;
     let larpreviewer = localStorage.getItem("hctg-larp-reviewer") === "true" ? true : false;
+    let larpwizard = localStorage.getItem("hctg-larp-wizard") === "true" ? true : false;
+
+    let larpingbal = localStorage.getItem("hctg-larp-balance") === "true" ? true : false;
+    
+    let newbal = parseInt(localStorage.getItem("hctg-new-balance")) ? parseInt(localStorage.getItem("hctg-new-balance")) : 0
 
     if (larpadmin && larpreviewer) {
         larpreviewer = false;
@@ -20,6 +25,16 @@ const observer = new MutationObserver(() => {
     }
     if (larpadmin) { 
         modified = modified.replaceAll('"role":"user"', '"role":"admin"');
+    }
+
+    if (larpwizard) { 
+        modified = modified.replaceAll('"wizard":false', '"wizard":true');
+    }
+
+    if (larpingbal) {
+
+        let oldbal = modified.match(/"balance":(\d+)/)?.[1] || 0;
+        modified = modified.replaceAll(`"balance":${oldbal}`, `"balance":${newbal}`);
     }
 
     if (modified !== raw) {

@@ -178,7 +178,8 @@ function addGoals() {
         <div class="mt-4 flex items-center justify-center gap-2">
           <button type="button" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-2 border-black bg-white text-xl font-bold transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40" id="break-days-down">−</button>
           <span class="smoothing-black w-10 text-center text-xl font-bold" id="break-days-counter">${breakdaysreadonly}</span>
-          <button type="button" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-2 border-black bg-white text-xl font-bold transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40" id="break-days-up">+</button></div>
+          <button type="button" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-2 border-black bg-white text-xl font-bold transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40" id="break-days-up">+</button>
+        </div>
       </div>
       <div class="rounded-2xl border-2 border-black bg-white px-6 py-4">
         <h3 class="smoothing-black mb-4 text-center text-2xl font-bold tracking-[-0.02em]">Percentage detail</h3>
