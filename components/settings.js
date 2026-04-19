@@ -55,6 +55,9 @@ function addSettings() {
 
     addSetting("Hide black market items", "hctg-hideblackmarket", "boolean")
     addSetting("Developer mode", "hctg-devmode", "boolean")
+    addSetting("Larp as admin", "hctg-larp-admin", "boolean")
+    addSetting("Larp as reviewer", "hctg-larp-admin", "boolean")
+    
     addSetting("Bring back help", null, "button", function() {
         localStorage.removeItem('hctg-dismiss-help')
         location.reload()

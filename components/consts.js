@@ -29,3 +29,15 @@ window.HCTG.shop.categories = {
     "gaming": [15, 70, 75, 77, 89],
     "misc": [65, 79, 88, 95]
 }
+
+if (!window.HCTG.roles) {
+    window.HCTG.roles = {}
+}
+
+// prob really bad but wtv
+window.HCTG.roles = {
+    "424": {
+        "name": "ascpixi",
+        "pfpurl": "https://avatars.slack-edge.com/2026-01-14/10299410841394_d43f91bb6b15095f06a2_512.png"
+    },
+}
