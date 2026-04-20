@@ -72,9 +72,11 @@ function addSettings() {
             title = title.replaceAll(" ", "")
             input.innerHTML = `
             <div class="mt-4 flex items-center  gap-2">
-                <button type="button" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-2 border-black bg-white text-xl font-bold transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40" id="${title}-down">−</button>
+            <button type="button" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-2 border-black bg-white text-xl font-bold transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40" id="${title}-down10">-10</button>
+                <button type="button" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-2 border-black bg-white text-xl font-bold transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40" id="${title}-down">−1</button>
                     <span class="smoothing-black w-10 text-center text-xl font-bold" id="${title}-counter">${lsitem}</span>
-                <button type="button" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-2 border-black bg-white text-xl font-bold transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40" id="${title}-up">+</button>
+                <button type="button" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-2 border-black bg-white text-xl font-bold transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40" id="${title}-up">+1</button>
+                <button type="button" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-2 border-black bg-white text-xl font-bold transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40" id="${title}-up10">+10</button>
             </div>
             `
 
@@ -89,7 +91,9 @@ function addSettings() {
             setting.appendChild(input)
             
             input.querySelector(`#${title}-up`).addEventListener('click', () => sillygubby(+1))
+            input.querySelector(`#${title}-up10`).addEventListener('click', () => sillygubby(+10))
             input.querySelector(`#${title}-down`).addEventListener('click', () => sillygubby(-1))
+            input.querySelector(`#${title}-down10`).addEventListener('click', () => sillygubby(-10))
         }
         settingsContainer.appendChild(setting)
     }
@@ -97,13 +101,13 @@ function addSettings() {
     addSetting("Hide black market items", "hctg-hideblackmarket", "boolean", null, 'Hides items that require a golden ticket' )
     addSetting("Developer mode", "hctg-devmode", "boolean", null, "Shows the item id of a shop item")
 
-    let yap = "Note 1: may be flaky at times since manifest v3 ruined all chances at on the fly request modification \n Note 2: You cant use this to do role stuff since the server has it secured \n Note 3: im not responsible if you find a vulnerability using this feature"
+    let yap = "Note 1: may be flaky at times since manifest v3 ruined all chances at on the fly request modification \n Note 2: You cant use this to do role stuff since the server has it secured \n Note 3: im not responsible if you find a vulnerability using this feature \n Note 4: You need to refresh after changing it to see changes"
     addSetting("Larp as admin", "hctg-larp-admin", "boolean", null, `Be a fake admin \n ${yap}`)
     addSetting("Larp as reviewer", "hctg-larp-reviewer", "boolean", null, `Be a fake reviewer \n ${yap}`)
     addSetting("Fake golden ticket", "hctg-larp-wizard", "boolean", null, `Have a fake golden ticket (internally known as being a wizard) \n ${yap}`)
 
-    addSetting("Fake balance", "hctg-larp-balance", "boolean", null, `Have a fake balance as defined below \n ${yap}`)
-    addSetting("Fake balance", "hctg-new-balance", "counter")
+    addSetting("Fake balance", "hctg-larp-balance", "boolean", null, `Have a fake balance defined below \n ${yap}`)
+    addSetting("Fake balance", "hctg-new-balance", "counter", null, "Refresh after changing this to see changes.")
     addSetting("Bring back help", null, "button", function() {
         localStorage.removeItem('hctg-dismiss-help')
         location.reload()
