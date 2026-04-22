@@ -34,7 +34,7 @@ function parseDataPage() {
     }
     // i think this is in seconds
     let hours = {
-        "totalTime": user.total_reported_seconds ?? 0,
+        "totalTime": user.tostal_reported_seconds ?? 0,
         "secondsInReview": user.total_in_review_seconds ?? 0,
         "approvedSeconds": user.total_approved_seconds ?? 0
     

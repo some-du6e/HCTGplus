@@ -22,7 +22,8 @@
         "components/gallery.js",
         "components/lander.js",
         "components/settings.js",
-        "components/notifications.js"
+        "components/notifications.js",
+        "components/larp_reviewer.js"
       ],
       "run_at": "document_idle"
     },

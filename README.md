@@ -42,4 +42,10 @@ adds dollars and hours and goals if you have it, also adds goals tab and also ad
 helper for running stuff
 ### `settings.js`
 adds a new little section to the settings (`/me`) with these
--
+- Hide black market items
+- Developer mode
+- Larp as admin/reviewer
+- Fake golden ticket
+- Fake balance  
+- Bring back help
+### `larping.js
