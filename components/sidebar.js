@@ -228,6 +228,35 @@ function makeSidebarBetter() {
 
         helpstuff.appendChild(dissmiss)
     }
+
+
+
+    ///////////////////////////
+    // redirect larping pages...
+    ///////////////////////
+
+
+    for (let thing of navbar.children) {
+        if (thing.className !== "group group relative z-10 flex items-center") {
+            console.log("HCTG+:", thing, "is not a choice buddy")
+        }
+        let thingName = thing.children[0]?.children[1].children[0]?.innerText
+        // if (thingName) {
+        //     console.log(thingName)
+        // }
+        if (thingName === "Review") {
+            // const textEl = thing.children[0]?.children[1].children[0]
+            // if (textEl) {
+            //     textEl.innerText = "butt!"
+            // }
+            let gubby = "/me#larp-reviewer"
+            thing.href = gubby
+            thing.onclick = function (e) {
+                window.location.href = gubby
+                e.preventDefault()
+            }
+        }
+    }
 }
 
 window.addEventListener('pageChange', function() {

@@ -6,23 +6,6 @@ function galleryBetter() {
     let now = new Date()
 
 
-    let oldcache = null
-    let rawCache = localStorage.getItem("hctg-gallery-cache")
-    if (rawCache) {
-        try {
-            oldcache = JSON.parse(rawCache)
-        } catch (error) {
-            console.warn("HCTG: invalid gallery cache, clearing it. ID: k3d8sz")
-            localStorage.removeItem("hctg-gallery-cache")
-        }
-    }
-    if (oldcache) {
-        let cachedate = new Date(oldcache.date)
-        let cachediffMs = now - cachedate
-
-        let cachediffMins = cachediffMs / (1000 * 60)
-        // todo: idk what to do after
-    }
 
     let newcache = {
         "projects": null,

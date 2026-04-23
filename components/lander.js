@@ -15,7 +15,8 @@ function betterLander() {
         return
     }
 
-    // TODO check this better
+    ///// TODO check this better 
+    // it doesnt have to be perfect
     let ohiogubby = document.getElementsByClassName("mt-4 flex h-20 w-full flex-col gap-2 sm:flex-row lg:gap-3")[0]
     if (!ohiogubby) {
         console.warn("HCTG: could not find ohiogubby div! prob not on the lander ID: EQBH7g")
