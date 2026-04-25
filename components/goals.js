@@ -52,7 +52,8 @@ function addGoals() {
     if (!Number.isFinite(alltimeprogress)) {
       alltimeprogress = 0
     }
-    
+    console.log(alltimeprogress)
+    console.log(window.HCTG.economics)
     let todayprogress = 0
     let decimalplaces = parseInt((localStorage.getItem("hctg-decimal-places") || "decimal-0").split("-")[1], 10)
     if (!Number.isFinite(decimalplaces) || decimalplaces < 0) {
