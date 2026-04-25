@@ -56,7 +56,7 @@ function notificationsBetter() {
       // set stuff
       let authorid = notif.notifiable?.author_id
       if (authorid) {
-        console.log(window.HCTG.roles)
+        // console.log(window.HCTG.roles)
         let foundthing = window.HCTG.roles[String(authorid)]
         if (foundthing) {
             reviewer = foundthing

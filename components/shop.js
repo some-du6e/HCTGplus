@@ -54,12 +54,13 @@ function betterShop() {
         let itemtitle = item.children[1].children[0].alt // the picture alt is the title lol
         // console.log(itemtitle)
         // console.log(itempictureurl)
-        for (shopitem of itemlist) {
+        for (let shopitem of itemlist) {
             // check for the picture since that shi is never ever gonna change and theres never ever gonna be the same one
             // check name as a backup bc of the mac neos
             if (itempictureurl.endsWith(shopitem.image) && shopitem.name === itemtitle) {
                 item.id = "HCTGplus-item-" + shopitem.id
                 item.setAttribute("data-hctg-item-id", shopitem.id)
+                let matchedShopItem = shopitem; // Store the matched item for this specific card
                 
 
 
@@ -90,32 +91,36 @@ function betterShop() {
                             return
                         }
                     }
+                    let gubbythis = item.getAttribute("data-hctg-custom-amount") ? parseInt(item.getAttribute("data-hctg-custom-amount"), 10) : 1
+                    let visibleNameNode = null
+                    let possibleNameNodes = item.querySelectorAll("h1, h2, h3, h4, p, span, div")
+                    for (let node of possibleNameNodes) {
+                        if (!node || !node.textContent) { continue }
+                        let nodeText = node.textContent.trim()
+                        // Strip leading $### from node text and matched name to handle dollar amount changes
+                        let nodeTextBase = nodeText.replace(/^\$\d+\s*/, '')
+                        let matchedNameBase = matchedShopItem.name.replace(/^\$\d+\s*/, '')
+                        if (nodeTextBase === matchedNameBase) {
+                            visibleNameNode = node
+                            break
+                        }
+                    }
                     let goalitem = {
                         id: item.getAttribute("data-hctg-item-id"),
-                        name: "TEST item",
-                        image: "https://game.hackclub.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NDM1LCJwdXIiOiJibG9iX2lkIn19--e811f41a9a44c85771aa3f0c9f58121bbac53099/Mac%20Mini%20Hero%202024.png?disposition=inline",
-                        description: "Testinggggg",
-                        cost: 67
-                    
-                    }
-
-                    for (let shopitem of itemlist) {
-                        if (shopitem.id == goalitem.id) {
-                            goalitem.name = shopitem.name
-                            goalitem.image = shopitem.image
-                            goalitem.description = shopitem.description
-                            goalitem.cost = shopitem.price
-                        }
+                        name: gubbythis != 1 && visibleNameNode ? visibleNameNode.textContent.trim() : matchedShopItem.name,
+                        image: matchedShopItem.image,
+                        description: matchedShopItem.description,
+                        cost: matchedShopItem.price * gubbythis,
                     }
                     console.log("goalitem: ", goalitem)
                     localStorage.setItem("hctgplus-goalitem", JSON.stringify(goalitem))
                     // TODO: refresh stuff after or use other method cuz this is super lazy
-                    location.reload()
+                    // location.reload()
                 }
 
 
                 let copytext = document.createElement("span")
-                copytext.innerText = shopitem.id
+                copytext.innerText = matchedShopItem.id
                 copytext.className = "text-[#ffffff] text-sm font-bold invert items-center"
 
                 copydiv.appendChild(goalicon)
@@ -130,7 +135,7 @@ function betterShop() {
                 }
                 item.children[0].appendChild(copydiv)
 
-                if (shopitem.black_market) {
+                if (matchedShopItem.black_market) {
                     let blackmarketthing = item.getElementsByClassName("absolute top-2 left-3 text-sm font-bold text-purple-500")[0]
                     blackmarketthing.className = "absolute top-2 left-1/2 -translate-x-1/2 text-sm font-bold text-purple-500"
                 }
@@ -153,10 +158,44 @@ function betterShop() {
 
                 let buybutton = item.children[1].children[3].children[1]
 
+
+                let ticketprice = item.children[1].children[1].children[1].children[1]
+                let imageNode = item.children[1].children[0]
+                let visibleNameNode = null
+                let possibleNameNodes = item.querySelectorAll("h1, h2, h3, h4, p, span, div")
+                for (let node of possibleNameNodes) {
+                    if (!node || !node.textContent) { continue }
+                    if (node.textContent.trim() === matchedShopItem.name.trim()) {
+                        visibleNameNode = node
+                        break
+                    }
+                }
+                // find it in the title first
+                let dollaramount = null
+                let nameresult = String(matchedShopItem.name).match(/^\$\d+/) || null
+                let descriptionresult = String(matchedShopItem.description).match(/^\$\d+/) || null
+                if (nameresult) {
+                    nameresult = nameresult[0]
+                    item.setAttribute("data-hctg-founddollars-in-name", "yeah")
+                    // console.log(nameresult)
+                    dollaramount = String(nameresult).replace("$", "")
+                }
+                if (descriptionresult) {
+                    descriptionresult = descriptionresult[0]
+                    item.setAttribute("data-hctg-founddollars-in-description", "yeah")
+                    // console.log(descriptionresult)
+                    dollaramount = String(descriptionresult).replace("$", "")
+                }
+
+                if (dollaramount) {
+                    console.log(matchedShopItem.name, "og dollar amount: ", dollaramount)
+                    item.setAttribute("data-hctg-dollar-amount", dollaramount)
+                }
                 function rendercardthingidkhowtoname(increment = 0) {
                     let currentamount = item.getAttribute("data-hctg-custom-amount") ? parseInt(item.getAttribute("data-hctg-custom-amount")) : 0
                     if (increment == 0) {currentamount = 1}
-                    
+                    let originalPrice = item.getAttribute("data-hctg-original-price") || matchedShopItem.price
+                    let dollaramt = item.getAttribute("data-hctg-dollar-amount") || false
                     up.disabled = false
                     // console.log(counter.innerText)
 
@@ -167,15 +206,29 @@ function betterShop() {
                     down.disabled = currentamount === 1
                     counter.innerText = currentamount
 
-
-                    
+                    ticketprice.innerText = String(currentamount * parseInt(originalPrice, 10))
+                    if (dollaramt) {
+                        let foundintitle = item.getAttribute("data-hctg-founddollars-in-name") ? true : false
+                        let foundindescription = item.getAttribute("data-hctg-founddollars-in-description") ? true : false
+                        let dollars = "$" + String(String(currentamount * parseInt(dollaramt, 10)))
+                        if (foundintitle) {
+                            let updatedName = String(String(matchedShopItem.name).replace(/^\$\d+/, dollars))
+                            console.log(updatedName)
+                            if (visibleNameNode) {
+                                visibleNameNode.textContent = updatedName
+                            }
+                            if (imageNode && imageNode.alt) {
+                                imageNode.alt = updatedName
+                            }
+                        }
+                    }
                 }
 
 
                 let isItemGrant = false
-                if (window.HCTG.shop.categories.grants.includes(shopitem.id)) {
+                if (window.HCTG.shop.categories.grants.includes(matchedShopItem.id)) {
                     isItemGrant = true
-                    console.log("found grant item: ", shopitem.name)
+                    console.log("found grant item: ", matchedShopItem.name)
                 }
 
                 if (isItemGrant) {
@@ -196,6 +249,9 @@ function betterShop() {
                             alert("im not going to implement this since its really risky")
                         }
                     }
+
+
+                    item.setAttribute("data-hctg-original-price", matchedShopItem.price)
                 }
             }
             
