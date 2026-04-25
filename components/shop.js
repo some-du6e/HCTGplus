@@ -77,14 +77,14 @@ function betterShop() {
                 let copyicon = document.createElement("img")
                 copyicon.src = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20448%20512%22%3E%3C!--!Font%20Awesome%20Free%20v7.2.0%20by%20%40fontawesome%20-%20https%3A%2F%2Ffontawesome.com%20License%20-%20https%3A%2F%2Ffontawesome.com%2Flicense%2Ffree%20Copyright%202026%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M192%200c-35.3%200-64%2028.7-64%2064l0%20256c0%2035.3%2028.7%2064%2064%2064l192%200c35.3%200%2064-28.7%2064-64l0-200.6c0-17.4-7.1-34.1-19.7-46.2L370.6%2017.8C358.7%206.4%20342.8%200%20326.3%200L192%200zM64%20128c-35.3%200-64%2028.7-64%2064L0%20448c0%2035.3%2028.7%2064%2064%2064l192%200c35.3%200%2064-28.7%2064-64l0-16-64%200%200%2016-192%200%200-256%2016%200%200-64-16%200z%22%2F%3E%3C%2Fsvg%3E"
                 copyicon.className = "w-4 invert hover:pink cursor-pointer"
-                copyicon.onclick = function() {
+                copyicon.onclick = function () {
                     navigator.clipboard.writeText(item.getAttribute("data-hctg-item-id"))
                 }
 
                 let goalicon = document.createElement("img")
                 goalicon.src = "https://cdn.hackclub.com/019d7f19-cf3e-7fa7-a68a-acbdfd4ef851/image.png"
                 goalicon.className = "w-4 h-4 hover:pink cursor-pointer"
-                goalicon.onclick = function() {
+                goalicon.onclick = function () {
                     if (localStorage.getItem("hctgplus-goalitem")) {
                         if (!confirm("Are you sure? This will overwrite your current goal")) {
                             return
@@ -121,14 +121,81 @@ function betterShop() {
                 copydiv.appendChild(goalicon)
                 if (gubby) {
                     copydiv.appendChild(copyicon)
-                copydiv.appendChild(copytext)
+                    copydiv.appendChild(copytext)
                 }
                 
+                if (!item || !item.children || item.children.length === 0) {
+                    console.warn("HCTG+: item missing children structure, skipping")
+                    continue
+                }
                 item.children[0].appendChild(copydiv)
 
                 if (shopitem.black_market) {
                     let blackmarketthing = item.getElementsByClassName("absolute top-2 left-3 text-sm font-bold text-purple-500")[0]
                     blackmarketthing.className = "absolute top-2 left-1/2 -translate-x-1/2 text-sm font-bold text-purple-500"
+                }
+
+                // do some grant goal stuff
+                // console.log("xxx", item.children)
+                // up/down buttons are inside children[1] (content div), specifically at children[1].children[3].children[0]
+                if (!item.children[1] || !item.children[1].children[3] || !item.children[1].children[3].children[0]) {
+                    console.warn("HCTG+: item missing up/down buttons structure, skipping grant stuff")
+                    continue
+                }
+                let upordownbuttons = item.children[1].children[3].children[0]
+                if (upordownbuttons.tagName !== "DIV") { continue }
+                // console.log(upordownbuttons)
+
+                // if (!upordownbuttons) {continue} // if there are no up or down buttons, skip the rest of the code since its not a grant
+                let down = upordownbuttons.children[0]
+                let counter = upordownbuttons.children[1]
+                let up = upordownbuttons.children[2]
+
+                let buybutton = item.children[1].children[3].children[1]
+
+                function rendercardthingidkhowtoname(increment = 0) {
+                    let currentamount = item.getAttribute("data-hctg-custom-amount") ? parseInt(item.getAttribute("data-hctg-custom-amount")) : 0
+                    if (increment == 0) {currentamount = 1}
+                    
+                    up.disabled = false
+                    // console.log(counter.innerText)
+
+
+                    item.setAttribute("data-hctg-custom-amount", String(currentamount + increment))
+                    
+                    currentamount = item.getAttribute("data-hctg-custom-amount") ? parseInt(item.getAttribute("data-hctg-custom-amount")) : 0
+                    down.disabled = currentamount === 1
+                    counter.innerText = currentamount
+
+
+                    
+                }
+
+
+                let isItemGrant = false
+                if (window.HCTG.shop.categories.grants.includes(shopitem.id)) {
+                    isItemGrant = true
+                    console.log("found grant item: ", shopitem.name)
+                }
+
+                if (isItemGrant) {
+                    rendercardthingidkhowtoname()
+                    down.onclick = function (e) {
+                        e.preventDefault()
+                        rendercardthingidkhowtoname(-1)
+                    }
+                    up.onclick = function (e) {
+                        e.preventDefault()
+                        rendercardthingidkhowtoname(1)
+                    }
+                    // todo smth to turn it off
+                    let dajkqwiojwq = true
+                    if (dajkqwiojwq) {
+                        buybutton.onclick = function (e) {
+                            e.preventDefault()
+                            alert("im not going to implement this since its really risky")
+                        }
+                    }
                 }
             }
             

@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @js-nocheck
 function larprevewing() {
     if (location.pathname !== "/me") { return }
     let isViewHash = location.hash === "#larp-reviewer"
@@ -14,13 +16,13 @@ function larprevewing() {
     }
 
     function prepareforcustomsite(titlee) {
-        // change title
+        // remove title
         let title = document.getElementsByClassName("text-[48px] font-bold tracking-[-0.06em] text-nowrap text-white smoothing-white")[0]
         if (!title) {
             console.warn("HCTG: could not find project title div! prob not on the project page ID: 9s8f7g")
             return null
         }
-        title.textContent = titlee
+        title.parentElement.parentElement.parentElement.parentElement.remove()
 
         let oldcontent = document.getElementsByClassName("grid grid-cols-1 md:grid-cols-2")[0]
         if (!oldcontent) {
@@ -34,12 +36,12 @@ function larprevewing() {
             console.warn("HCTG: could not find page container. ID: a2q7kp")
             return null
         }
-        let container = document.createElement("div")
-        container.className = "flex flex-col gap-10 px-6 py-8 xl:px-24 xl:py-16"
-        containerx.appendChild(container)
-        return container
+        // let container = document.createElement("div")
+        // container.className = "flex flex-col gap-10 px-6 py-8 xl:px-24 xl:py-16"
+        // containerx.appendChild(container)
+        return containerx
     }
-    let mainContainer = prepareforcustomsite("Review")
+    let mainContainer = prepareforcustomsite("Project")
 
   let fakequeue = [
     {
@@ -623,8 +625,9 @@ function larprevewing() {
         >
             <td key=${index} class="py-0 pr-4">
               <a
-                href={/review/${project.id}}
+                href="/review/${project.id}"
                 class="block py-2"
+                onclick="alert('not going to be implemented')"
               >
                 <span class="text-gray-400">${index + 1}</span>
               </a>
@@ -639,7 +642,7 @@ function larprevewing() {
             </td>
             <td class="py-0 pr-4">
               <Link
-                href={/review/${project.id}}
+                href="/review/${project.id}"
                 class="block py-2"
               >
             <span class="text-gray-600">${project.username}</span>
@@ -647,7 +650,7 @@ function larprevewing() {
             </td>
             <td class="py-0 pr-4">
               <Link
-                href={/review/${project.id}}
+                href="/review/${project.id}"
                 class="block py-2"
               >
             <span class="text-gray-500">
@@ -657,7 +660,7 @@ function larprevewing() {
             </td>
             <td class="py-0 pr-4">
               <Link
-                href={/review/${project.id}}
+                href="/review/${project.id}"
                 class="block py-2"
               >
               <span class="text-gray-500">
@@ -667,7 +670,7 @@ function larprevewing() {
             </td>
             <td class="py-0 pr-4">
               <Link
-                href={/review/${project.id}}
+                href="/review/${project.id}"
                 class="block py-2"
               >
               <span class="text-gray-500">
@@ -683,8 +686,8 @@ function larprevewing() {
     }
 
     let ohiosigmaboy = document.createElement("div")
-
-    let ohiogubby = `
+    // @ts-expect-error
+    let ohiogubby = `      
     <div class="px-8">
             <div class="mb-4 flex flex-col gap-1">
               <h1 class="smoothing-black text-4xl font-bold">
@@ -825,8 +828,8 @@ function larprevewing() {
             6
         ],
         "status": "Under review on 2026-04-21",
-        "unread_notification_count": 0,
-        "username": "Karim",
+        "unread_notification_count": 67,
+        "username": "Quandale Dingle",
         "screenshot": "/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MTA4NiwicHVyIjoiYmxvYl9pZCJ9fQ==--640a3a6d6ed80515a739bf4996113d3c4441327c/hctgplusfullkindabad.png?disposition=inline"
     }
     nextupproject.innerHTML = projectCard(nextupfakeproject)
