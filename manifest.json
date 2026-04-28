@@ -23,7 +23,8 @@
         "components/lander.js",
         "components/settings.js",
         "components/notifications.js",
-        "components/larp_reviewer.js"
+        "components/larp_reviewer.js",
+        "components/larping_reviewing.js"
       ],
       "run_at": "document_idle"
     },

@@ -3,7 +3,7 @@ function projectViewer() {
     const queryParams = new URLSearchParams(window.location.search);
     let projectidtoview = Object.fromEntries(queryParams).projectId
     let isViewHash = location.hash === "#view"
-    if (!isViewHash && !projectidtoview) { return }
+    if (!isViewHash) { return }
     console.log("HCTG+: projectViewer running")
     window.HCTG = window.HCTG || {}
 
