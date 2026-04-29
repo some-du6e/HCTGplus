@@ -1,4 +1,4 @@
-// https://game.hackclub.com/me?projectId=67#larp_review
+// https://game.hackclub.com/me?projectId=1506#larp_review
 
 function larpReview() {
     if (location.pathname !== "/me") { return }
@@ -45,10 +45,34 @@ function larpReview() {
         return containerx
     }
 
+    function formattime(seconds) {
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+
+        const formatted = `${hours}h ${minutes}m`;
+        return formatted // shi prob in 3 different components lowkey
+    }
+
+    function randomnumber(min, max) {
+      const minCeiled = Math.ceil(min);
+      const maxFloored = Math.floor(max);
+      return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
+    }
+
+    function generateRandomString(length) {
+        const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        for (let i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return result;
+    }
+
     if (!projectidtoview) {
         alert("What are you doing buddy?")
         return
     }
+
 
 
     let fakequeue = [
@@ -668,10 +692,22 @@ function larpReview() {
         return
     }
 
+    let userpfp = `https:///github.com/identicons/${project.username.toLowerCase()}.png`
 
     let mainContainer = prepareforcustomsite("Review", project.title)
     console.log(mainContainer)
 
+    let aideclaration = ""
+    if (project.ai_declaration) {
+        aideclaration = `
+            <div class="mb-6 rounded-md border border-gray-200 bg-gray-50 p-4">
+                <h3 class="text-lg font-bold">AI Declaration</h3>
+                <p class="mt-1 text-gray-600">
+                    ${project.ai_declaration}
+                </p>
+            </div>
+        `
+    }
 
 
     let sigmaboy = `
@@ -681,134 +717,153 @@ function larpReview() {
                     <div class="mt-2 flex flex-wrap items-center gap-4">
                         <div class="flex items-center gap-1.5">
                             <img alt="Clock" class="h-5 w-5" src="data:image/svg+xml,%3csvg%20viewBox='0%200%2016%2016'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M8%200C12.4184%200%2016%203.5816%2016%208C16%2012.4184%2012.4184%2016%208%2016C3.5816%2016%200%2012.4184%200%208C0%203.5816%203.5816%200%208%200ZM8%203.2C7.78783%203.2%207.58434%203.28429%207.43431%203.43431C7.28429%203.58434%207.2%203.78783%207.2%204V8C7.20005%208.21216%207.28436%208.41561%207.4344%208.5656L9.8344%2010.9656C9.98528%2011.1113%2010.1874%2011.192%2010.3971%2011.1901C10.6069%2011.1883%2010.8075%2011.1042%2010.9559%2010.9559C11.1042%2010.8075%2011.1883%2010.6069%2011.1901%2010.3971C11.192%2010.1874%2011.1113%209.98528%2010.9656%209.8344L8.8%207.6688V4C8.8%203.78783%208.71571%203.58434%208.56569%203.43431C8.41566%203.28429%208.21217%203.2%208%203.2Z'%20fill='black'%20/%3e%3c/svg%3e">
-                            
                             <span class="text-2xl tracking-[-0.06em]">
-                            17h 0m
+                                ${formattime(project.reported_seconds)}
                             </span>
                         </div>
-
-                        <span class="text-lg text-gray-600 italic">
-                        Under review
-                        </span>
+                        <span class="text-lg text-gray-600 italic">Under review</span>
                     </div>
-
                     <p class="mt-1 text-lg text-green-600">
-                    8h 0m approved
+                        ${formattime(project.approved_seconds)} approved
                     </p>
-
                     <p class="mt-1 text-lg text-yellow-600">
-                    4h 0m under review (5h 0m not yet shipped)
+                        ${formattime(randomnumber(3000, 14000))} under review (${formattime(project.reported_seconds - project.real_approved_seconds)} not yet shipped)
                     </p>
-
                     <div class="mt-2">
-                        <p class="text-sm font-semibold text-gray-600">
-                        Hackatime projects:
-                        </p>
-
+                        <p class="text-sm font-semibold text-gray-600">Hackatime projects:</p>
                         <ul class="mt-1 list-inside list-disc text-sm text-gray-600">
                             <li>
-                            hctg-fake
-                            <span class="text-gray-500">
-                            (20h 0m)
-                            </span>
-                            </li>
-
-                            <li>
-                            manhattan-map
-                            <span class="text-gray-500">
-                            (10h 0m)
-                            </span>
-                            </li>
-
-                            <li>
-                            invite-portal
-                            <span class="text-gray-500">
-                            (5h 0m)
-                            </span>
+                                ${project.title.replaceAll(" ", "-").toLowerCase()}
+                                <span class="text-gray-500">(${formattime(project.reported_seconds)})</span>
                             </li>
                         </ul>
                     </div>
-
                     <div class="mt-6 mb-6">
-                        <img
-                            alt="Screenshot of ${project.title}"
-                            class="max-h-72 rounded-md border border-gray-200 object-contain"
-                            src="${project.screenshot}">
+                        <img alt="Screenshot of ${project.title}" class="max-h-72 rounded-md border border-gray-200 object-contain" src="${project.screenshot}">
                     </div>
-
                     <div class="mb-6">
-                        <h2 class="mb-1 text-xl font-semibold">
-                        Description
-                        </h2>
-
+                        <h2 class="mb-1 text-xl font-semibold">Description</h2>
                         <p class="max-w-2xl text-lg wrap-break-word text-gray-700">
-                        A fake but realistic seed project so the frontend has something structured to render.
+                            ${project.desc.replaceAll("\r\n", "<br>")}
                         </p>
                     </div>
-
                     <div class="mb-6 flex flex-wrap gap-3">
                         <a href="${project.demo_link}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-md bg-black px-5 py-2.5 text-lg font-bold text-white transition-colors hover:bg-gray-800">
-                        Open Demo ↗
+                            Open Demo ↗
                         </a>
-
                         <a href="${project.repo_link}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-md border-2 border-black bg-white px-5 py-2.5 text-lg font-bold text-black transition-colors hover:bg-gray-100">
-                        Open Repo ↗
+                            Open Repo ↗
                         </a>
-
                         <a href="${"// TODO: smth like pass down the project object to the otherpersonprojectviewer.js?"}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-md border-2 border-gray-300 bg-white px-5 py-2.5 text-lg font-bold text-gray-600 transition-colors hover:bg-gray-50">
-                        View Project Page ↗
+                            View Project Page ↗
                         </a>
                     </div>
-
-                    <div class="mb-6 rounded-md border border-gray-200 bg-gray-50 p-4">
-                        <h3 class="text-lg font-bold">
-                        AI Declaration
-                        </h3>
-
-                        <p class="mt-1 text-gray-600">
-                        Used AI for copy editing and one layout prototype. Core code and implementation were written manually.
-                        </p>
+                    ${aideclaration}
+                </div>
+                <div class="w-72 shrink-0 self-start rounded-md border border-gray-200 bg-gray-50 p-5">
+                    <h2 class="mb-3 text-2xl font-bold">User Info</h2>
+                    <div class="flex flex-col gap-3">
+                        <img alt="Avatar of karim" class="h-20 w-20 rounded-md" src="${userpfp}">
+                        <div class="text-lg">
+                            <p class="font-bold">
+                                <a href="javascript:void(0)" onclick="alert('not going to be inmplemented') // TODO: implement this" class="text-blue-500 underline hover:text-blue-700">${project.username}</a>
+                            </p>
+                            <p class="text-gray-600" "// TODO: better randomization/realism">
+                                ${project.username.replaceAll(" ", "-").toLowerCase()}@hackclub.com
+                            </p>
+                            <p>
+                                <span class="font-semibold">Hackatime:</span>
+                                ${project.username.replaceAll(" ", "-").toLowerCase()}
+                                (
+                                <a href="https://joe.fraud.hackclub.com/profile/karim-demo" target="_blank" rel="noopener noreferrer" class="text-blue-500 underline">Joe</a>
+                                |
+                                <a href="https://billy.3kh0.net/?u=karim-demo" target="_blank" rel="noopener noreferrer" class="text-blue-500 underline">Billy</a>
+                                )
+                            </p>
+                            <p>
+                                <span class="font-semibold">Slack:</span>
+                                U0${generateRandomString(7).toUpperCase()}
+                            </p>
+                        </div>
                     </div>
                 </div>
-                    <div class="w-72 shrink-0 self-start rounded-md border border-gray-200 bg-gray-50 p-5">
-                        <h2 class="mb-3 text-2xl font-bold">
-                        User Info
-                        </h2>
-
-                        <div class="flex flex-col gap-3">
-                            <img alt="Avatar of karim" class="h-20 w-20 rounded-md" src="https://avatars.githubusercontent.com/u/1?v=4">
-
-                            <div class="text-lg">
-                                <p class="font-bold">
-                                <a href="javascript:void(0)" onclick="alert('not going to be inmplemented') // TODO: implement this" class="text-blue-500 underline hover:text-blue-700">${project.username}</a>
+            </div>
+            <div class="mt-8 flex w-full flex-col px-16 text-lg">
+                <h2 class="smoothing-black mb-2 text-3xl font-bold tracking-[-0.02em]">Reviews</h2>
+                <div class="flex flex-col gap-5">
+                    <div class="flex gap-3">
+                        <img alt="Avatar of karim" class="h-10 w-10 rounded-md" src="${userpfp}" title="">
+                        <div class="flex flex-col gap-1">
+                            <p class="leading-0.5">
+                                <span class="font-bold">${project.username}</span>
+                                <span class="italic">shipped</span>
+                                <span class="text-sm"><br>on ${new Date(project.submitted_at).toLocaleString()}</span>
+                            </p>
+                            <p class="max-w-sm wrap-break-word">
+                                <p class="leading-tight">
+                                    <span class="text-base font-bold">Title</span><br>
+                                    empty -&gt; ${project.title}
                                 </p>
-
-                                <p class="text-gray-600" "// TODO: better randomization/realism">
-                                ${project.username}@hackclub.com
+                                <p class="leading-tight">
+                                    <span class="text-base font-bold">Desc</span><br>
+                                    empty -&gt; ${project.desc}
                                 </p>
-<p>
-<span class="font-semibold">
-Hackatime:</span>
- karim-demo (<a href="https://joe.fraud.hackclub.com/profile/karim-demo" target="_blank" rel="noopener noreferrer" class="text-blue-500 underline">
-Joe</a>
- | <a href="https://billy.3kh0.net/?u=karim-demo" target="_blank" rel="noopener noreferrer" class="text-blue-500 underline">
-Billy</a>
-)</p>
-<p>
-<span class="font-semibold">
-Slack:</span>
- U12345678</p>
-</div>
-</div>
-</div>
-</div>
-<div class="mt-8 flex w-full flex-col px-16 text-lg">
-<h2 class="smoothing-black mb-2 text-3xl font-bold tracking-[-0.02em]">
-Reviews</h2>
-<div class="flex flex-col gap-5">
-<div class="flex gap-3">
-<img alt="Avatar of karim" class="h-10 w-10 rounded-md" src="https://avatars.githubusercontent.com/u/1?v=4" title="">
-<div class="flex flex-col gap-1"><p class="leading-0.5"><span class="font-bold">karim</span> <span class="italic">shipped</span><span class="text-sm"><br>on 4/22/2026, 2:00:00 PM</span></p><p class="max-w-sm wrap-break-word"><p class="leading-tight"><span class="text-base font-bold">Title</span><br> "Transit Board" -&gt; "Hack Club Transit Board"</p><p class="leading-tight"><span class="text-base font-bold">Desc</span><br> empty -&gt; "Added route planning and live status panels."</p></p></div></div><div class="flex gap-3"><img alt="Avatar of alex" class="h-10 w-10 rounded-md" src="https://avatars.githubusercontent.com/u/2?v=4"><div class="flex flex-col gap-1"><p class="leading-0.5"><span class="font-bold">alex</span> <span class="italic">approved for 8h 0m</span><span class="text-sm"><br>on 4/23/2026, 1:45:00 PM</span></p><p class="max-w-sm wrap-break-word">Solid submission. README and demo both made review straightforward.</p><p class="rounded-md border-2 border-dashed border-orange-600 bg-orange-200 p-3">Repo structure is clean.</p><div class="flex gap-3"><a class="text-blue-500 underline" href="/projects/2/reviews/1/edit">Edit</a></div></div></div><div class="flex gap-3"><img alt="Avatar of alex" class="h-10 w-10 rounded-md" src="https://avatars.githubusercontent.com/u/2?v=4" title=""><div class="flex flex-col gap-1"><p class="leading-0.5"><span class="font-bold">alex</span> <span class="italic">commented </span><span class="text-sm"><br>on 4/23/2026, 8:15:00 PM</span></p><p class="max-w-sm wrap-break-word">Consider tightening the onboarding copy before your next ship.</p><div class="flex gap-3"><a class="text-blue-500 underline" href="/projects/2/reviews/2/edit">Edit</a><button class="cursor-pointer text-red-500 underline" type="button">Delete</button></div></div></div></div><form class="mt-6 flex w-full flex-col gap-4 px-4 md:px-0"><div class="flex items-center gap-4"><select class="border-[#cacaca] bg-[#d9d9d9] py-2 pr-12 pl-6 text-lg outline-none"><option value="comment">Comment</option><option value="rejection">Rejection</option><option value="approval">Approval</option></select><div class="flex items-center gap-2"><input type="checkbox"><label class="text-lg">Internal?</label></div></div><div class="relative"><button type="button" class="cursor-pointer border border-[#cacaca] bg-[#d9d9d9] px-4 py-2 text-sm font-medium hover:bg-[#ccc]">Quick responses ▼</button></div><textarea class="h-[117px] resize-none border-[#cacaca] bg-[#d9d9d9] p-4 text-xl outline-none" placeholder="Add your comment here - this will be shown to the author"></textarea><button class="cursor-pointer bg-black px-6 py-2 text-lg font-bold text-white hover:bg-gray-800">Add review</button></form></div></div>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <img alt="Avatar of alex" class="h-10 w-10 rounded-md" src="https://avatars.githubusercontent.com/u/2?v=4">
+                        <div class="flex flex-col gap-1">
+                            <p class="leading-0.5">
+                                <span class="font-bold">alex</span>
+                                <span class="italic">approved for 8h 0m</span>
+                                <span class="text-sm"><br>on 4/23/2026, 1:45:00 PM</span>
+                            </p>
+                            <p class="max-w-sm wrap-break-word">Solid submission. README and demo both made review straightforward.</p>
+                            <p class="rounded-md border-2 border-dashed border-orange-600 bg-orange-200 p-3">Repo structure is clean.</p>
+                            <div class="flex gap-3">
+                                <a class="text-blue-500 underline" href="/projects/2/reviews/1/edit">Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--
+                    <div class="flex gap-3">
+                        <img alt="Avatar of alex" class="h-10 w-10 rounded-md" src="https://avatars.githubusercontent.com/u/2?v=4" title="">
+                        <div class="flex flex-col gap-1">
+                            <p class="leading-0.5">
+                                <span class="font-bold">alex</span>
+                                <span class="italic">commented </span>
+                                <span class="text-sm"><br>on 4/23/2026, 8:15:00 PM</span>
+                            </p>
+                            <p class="max-w-sm wrap-break-word">Consider tightening the onboarding copy before your next ship.</p>
+                            <div class="flex gap-3">
+                                <a class="text-blue-500 underline" href="/projects/2/reviews/2/edit">Edit</a>
+                                <button class="cursor-pointer text-red-500 underline" type="button">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                    -->
+                </div>
+                <form class="mt-6 flex w-full flex-col gap-4 px-4 md:px-0">
+                    <div class="flex items-center gap-4">
+                        <select class="border-[#cacaca] bg-[#d9d9d9] py-2 pr-12 pl-6 text-lg outline-none">
+                            <option value="comment">Comment</option>
+                            <option value="rejection">Rejection</option>
+                            <option value="approval">Approval</option>
+                        </select>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox">
+                            <label class="text-lg">Internal?</label>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <button type="button" class="cursor-pointer border border-[#cacaca] bg-[#d9d9d9] px-4 py-2 text-sm font-medium hover:bg-[#ccc]">Quick responses ▼</button>
+                    </div>
+                    <textarea class="h-[117px] resize-none border-[#cacaca] bg-[#d9d9d9] p-4 text-xl outline-none" placeholder="Add your comment here - this will be shown to the author"></textarea>
+                    <button class="cursor-pointer bg-black px-6 py-2 text-lg font-bold text-white hover:bg-gray-800">Add review</button>
+                </form>
+            </div>
+        </div>
     `
 
     let ohiosigmaboy = document.createElement("div")
