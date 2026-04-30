@@ -56,12 +56,15 @@ function parseDataPage() {
     economics.hours = economics.totalHours
 
     // predict usd
-    economics.predictedUSD = economics.totalHours * window.HCTG.consts.onehour2usd
-    economics.predictedUSD = Math.round(economics.predictedUSD * 100) / 100
-
-    // kinda predict usd
-    economics.USD = economics.tokens * window.HCTG.consts.onetoken2usd
-    economics.USD = Math.round(economics.USD * 100) / 100
+    if (localStorage.getItem("hctg-use-hours-for-money") === "true") {
+        economics.USD = economics.hours * window.HCTG.consts.onetoken2usd
+        economics.USD = Math.round(economics.USD * 100) / 100
+        console.log(economics.USD)
+    } else {
+        // kinda predict usd
+        economics.USD = economics.tokens * window.HCTG.consts.onetoken2usd
+        economics.USD = Math.round(economics.USD * 100) / 100
+    }
 
 
 

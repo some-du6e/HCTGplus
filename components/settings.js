@@ -100,6 +100,7 @@ function addSettings() {
 
     addSetting("Hide black market items", "hctg-hideblackmarket", "boolean", null, 'Hides items that require a golden ticket' )
     addSetting("Developer mode", "hctg-devmode", "boolean", null, "Shows the item id of a shop item")
+    addSetting("Use hours for money estimation", "hctg-use-hours-for-money", "boolean", null, "Calculates money based on total hours instead of tickets")
 
     let yap = "Note 1: may be flaky at times since manifest v3 ruined all chances at on the fly request modification \n Note 2: You cant use this to do role stuff since the server has it secured \n Note 3: im not responsible if you find a vulnerability using this feature \n Note 4: You need to refresh after changing it to see changes"
     addSetting("Larp as admin", "hctg-larp-admin", "boolean", null, `Be a fake admin \n ${yap}`)
