@@ -877,10 +877,12 @@ function larpReview() {
     gubbythis.addEventListener("click", function (event) {
         event.preventDefault()
         
+        let gubbythat = document.getElementById("dqwndqwi0nkoqwd").value
+        console.log(gubbythat)
         if (gubbythat == "approval" || gubbythat == "rejection") {
-            let projectsreivewed = JSON.parse(localStorage.getItem("projectsreviewed") || "[]")
+            let projectsreivewed = JSON.parse(localStorage.getItem("hctg-fake-projects-reviewed") || "[]")
             projectsreivewed.push(project.id)
-            localStorage.setItem("projectsreviewed", JSON.stringify(projectsreivewed))
+            localStorage.setItem("hctg-fake-projects-reviewed", JSON.stringify(projectsreivewed))
             location.href = "https://game.hackclub.com/me#larp-reviewer"
         } else if (gubbythat === "comment") {
             if (!window.HCTG.user) { window.HCTG.user = {} }

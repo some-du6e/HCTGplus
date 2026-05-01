@@ -59,7 +59,6 @@ function parseDataPage() {
     if (localStorage.getItem("hctg-use-hours-for-money") === "true") {
         economics.USD = economics.hours * window.HCTG.consts.onetoken2usd
         economics.USD = Math.round(economics.USD * 100) / 100
-        console.log(economics.USD)
     } else {
         // kinda predict usd
         economics.USD = economics.tokens * window.HCTG.consts.onetoken2usd

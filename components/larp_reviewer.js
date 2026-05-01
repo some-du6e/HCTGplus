@@ -612,12 +612,15 @@ function larprevewing() {
         "username": "Limitens"
     }
 ]
-  
+    
+    // Filter out already-reviewed projects
+    let alrdoneprojects = JSON.parse(localStorage.getItem("hctg-fake-projects-reviewed") || "[]")
+    fakequeue = fakequeue.filter(project => !alrdoneprojects.includes(project.id))
+    
     let queue_count = fakequeue.length
     let index = 0
     let queuetablething = ``
     for (let project of fakequeue) {
-        // console.log(project)
         queuetablething += `
         <tr
           key=${project.id}
@@ -625,9 +628,8 @@ function larprevewing() {
         >
             <td key=${index} class="py-0 pr-4">
               <a
-                href="/review/${project.id}"
+                href="https://game.hackclub.com/me?projectId=${project.id}#larp_review"
                 class="block py-2"
-                onclick="alert('not going to be implemented')"
               >
                 <span class="text-gray-400">${index + 1}</span>
               </a>
@@ -682,7 +684,7 @@ function larprevewing() {
             </td>
         </tr>
         `
-        index =+ 1
+        index += 1
     }
 
     let ohiosigmaboy = document.createElement("div")
@@ -758,7 +760,7 @@ function larprevewing() {
         const formatted = `${hours}h ${minutes}m`;
         return `
         <a
-            href="http://TODO.com"
+            href="https://game.hackclub.com/me?projectId=${project.id}#larp_review"
             target="_blank"
             rel="noopener noreferrer"
             class="group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl transition-transform hover:scale-[1.02] shadow-[0_0_30px_rgba(255,215,0,0.9)]"
@@ -801,37 +803,39 @@ function larprevewing() {
     mainContainer.appendChild(ohiosigmaboy)
 
     let nextupproject = document.getElementById("nextupproject")
-    let nextupfakeproject = {
-        "id": 1506,
-        "aasm_state": "submitted",
-        "approved_at": "2026-04-16T20:33:37.087Z",
-        "demo_link": "https://chromewebstore.google.com/detail/hctg+/kdndfafcpodecbbjhoicneekmbdhhckm",
-        "desc": "Adds some qol features to HCTG that i would like.\r\n\r\nNote: please install from github since webstore reviews take a long time and i have been adding a lot of stuff",
-        "rejected_at": "2026-04-15T15:25:21.424Z",
-        "repo_link": "https://github.com/some-du6e/HCTGplus",
-        "submitted_at": "2026-04-21T01:06:59.007Z",
-        "title": "HCTG+",
-        "ysws": null,
-        "created_at": "2026-04-09T17:53:24.874Z",
-        "updated_at": "2026-04-21T01:06:59.015Z",
-        "user_id": 2130,
-        "high_quality": false,
-        "ai_declaration": "Copilot/codex for things i could never fix, fully vibe coded ONLY the github release action\r\nmaybe claude for helping me with the calculations",
-        "reported_seconds": 109328,
-        "total_seconds": 109328,
-        "approved_seconds": 70773,
-        "real_approved_seconds": 63000,
-        "hackatime_projects": [
-            15183
-        ],
-        "tags": [
-            6
-        ],
-        "status": "Under review on 2026-04-21",
-        "unread_notification_count": 67,
-        "username": "Quandale Dingle",
-        "screenshot": "/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MTA4NiwicHVyIjoiYmxvYl9pZCJ9fQ==--640a3a6d6ed80515a739bf4996113d3c4441327c/hctgplusfullkindabad.png?disposition=inline"
-    }
+    // let nextupfakeproject = {
+    //     "id": 1506,
+    //     "aasm_state": "submitted",
+    //     "approved_at": "2026-04-16T20:33:37.087Z",
+    //     "demo_link": "https://chromewebstore.google.com/detail/hctg+/kdndfafcpodecbbjhoicneekmbdhhckm",
+    //     "desc": "Adds some qol features to HCTG that i would like.\r\n\r\nNote: please install from github since webstore reviews take a long time and i have been adding a lot of stuff",
+    //     "rejected_at": "2026-04-15T15:25:21.424Z",
+    //     "repo_link": "https://github.com/some-du6e/HCTGplus",
+    //     "submitted_at": "2026-04-21T01:06:59.007Z",
+    //     "title": "HCTG+",
+    //     "ysws": null,
+    //     "created_at": "2026-04-09T17:53:24.874Z",
+    //     "updated_at": "2026-04-21T01:06:59.015Z",
+    //     "user_id": 2130,
+    //     "high_quality": false,
+    //     "ai_declaration": "Copilot/codex for things i could never fix, fully vibe coded ONLY the github release action\r\nmaybe claude for helping me with the calculations",
+    //     "reported_seconds": 109328,
+    //     "total_seconds": 109328,
+    //     "approved_seconds": 70773,
+    //     "real_approved_seconds": 63000,
+    //     "hackatime_projects": [
+    //         15183
+    //     ],
+    //     "tags": [
+    //         6
+    //     ],
+    //     "status": "Under review on 2026-04-21",
+    //     "unread_notification_count": 67,
+    //     "username": "Quandale Dingle",
+    //     "screenshot": "/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MTA4NiwicHVyIjoiYmxvYl9pZCJ9fQ==--640a3a6d6ed80515a739bf4996113d3c4441327c/hctgplusfullkindabad.png?disposition=inline"
+    // }
+
+    let nextupfakeproject = fakequeue[0]
     nextupproject.innerHTML = projectCard(nextupfakeproject)
 
 }
