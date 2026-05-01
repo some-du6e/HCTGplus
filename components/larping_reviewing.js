@@ -775,9 +775,9 @@ function larpReview() {
                                 <span class="font-semibold">Hackatime:</span>
                                 ${project.username.replaceAll(" ", "-").toLowerCase()}
                                 (
-                                <a href="https://joe.fraud.hackclub.com/profile/karim-demo" target="_blank" rel="noopener noreferrer" class="text-blue-500 underline">Joe</a>
+                                <a href="javascript:void(0)" class="text-blue-500 underline" onclick="alert('This is a serious fraud detection tool used by Hack Club staff. You will not have access unless you are authorized.')">Joe</a> <!-- lowkey doesnt even work but add that alert so it sounds official -->
                                 |
-                                <a href="https://billy.3kh0.net/?u=karim-demo" target="_blank" rel="noopener noreferrer" class="text-blue-500 underline">Billy</a>
+                                <a href="javascript:void(0)" class="text-blue-500 underline" onclick="alert('This is a serious fraud detection tool used by Hack Club staff. You will not have access unless you are authorized.')">Billy</a>
                                 )
                             </p>
                             <p>
@@ -790,7 +790,7 @@ function larpReview() {
             </div>
             <div class="mt-8 flex w-full flex-col px-16 text-lg">
                 <h2 class="smoothing-black mb-2 text-3xl font-bold tracking-[-0.02em]">Reviews</h2>
-                <div class="flex flex-col gap-5">
+                <div class="flex flex-col gap-5" id="commentreviewthing">
                     <div class="flex gap-3">
                         <img alt="Avatar of karim" class="h-10 w-10 rounded-md" src="${userpfp}" title="">
                         <div class="flex flex-col gap-1">
@@ -811,6 +811,7 @@ function larpReview() {
                             </p>
                         </div>
                     </div>
+                    <!--
                     <div class="flex gap-3">
                         <img alt="Avatar of alex" class="h-10 w-10 rounded-md" src="https://avatars.githubusercontent.com/u/2?v=4">
                         <div class="flex flex-col gap-1">
@@ -826,6 +827,7 @@ function larpReview() {
                             </div>
                         </div>
                     </div>
+                    -->
                     <!--
                     <div class="flex gap-3">
                         <img alt="Avatar of alex" class="h-10 w-10 rounded-md" src="https://avatars.githubusercontent.com/u/2?v=4" title="">
@@ -846,7 +848,7 @@ function larpReview() {
                 </div>
                 <form class="mt-6 flex w-full flex-col gap-4 px-4 md:px-0">
                     <div class="flex items-center gap-4">
-                        <select class="border-[#cacaca] bg-[#d9d9d9] py-2 pr-12 pl-6 text-lg outline-none">
+                        <select class="border-[#cacaca] bg-[#d9d9d9] py-2 pr-12 pl-6 text-lg outline-none" id="dqwndqwi0nkoqwd">
                             <option value="comment">Comment</option>
                             <option value="rejection">Rejection</option>
                             <option value="approval">Approval</option>
@@ -859,8 +861,8 @@ function larpReview() {
                     <div class="relative">
                         <button type="button" class="cursor-pointer border border-[#cacaca] bg-[#d9d9d9] px-4 py-2 text-sm font-medium hover:bg-[#ccc]">Quick responses ▼</button>
                     </div>
-                    <textarea class="h-[117px] resize-none border-[#cacaca] bg-[#d9d9d9] p-4 text-xl outline-none" placeholder="Add your comment here - this will be shown to the author"></textarea>
-                    <button class="cursor-pointer bg-black px-6 py-2 text-lg font-bold text-white hover:bg-gray-800">Add review</button>
+                    <textarea class="h-[117px] resize-none border-[#cacaca] bg-[#d9d9d9] p-4 text-xl outline-none" placeholder="Add your comment here - this will be shown to the author" id="sadsnkl"></textarea>
+                    <button class="cursor-pointer bg-black px-6 py-2 text-lg font-bold text-white hover:bg-gray-800" id="add-review">Add review</button>
                 </form>
             </div>
         </div>
@@ -869,6 +871,54 @@ function larpReview() {
     let ohiosigmaboy = document.createElement("div")
     ohiosigmaboy.innerHTML = sigmaboy
     mainContainer.appendChild(ohiosigmaboy)
+
+    let gubbythis = document.getElementById("add-review")
+    let gubbythat = document.getElementById("dqwndqwi0nkoqwd").value
+    gubbythis.addEventListener("click", function (event) {
+        event.preventDefault()
+        
+        if (gubbythat == "approval" || gubbythat == "rejection") {
+            let projectsreivewed = JSON.parse(localStorage.getItem("projectsreviewed") || "[]")
+            projectsreivewed.push(project.id)
+            localStorage.setItem("projectsreviewed", JSON.stringify(projectsreivewed))
+            location.href = "https://game.hackclub.com/me#larp-reviewer"
+        } else if (gubbythat === "comment") {
+            if (!window.HCTG.user) { window.HCTG.user = {} }
+
+            let ohiouser = window.HCTG.user
+
+            let supersigmaboy = document.getElementById("sadsnkl")
+            let dnqu9dqw = supersigmaboy.value.trim()
+            if (dnqu9dqw == "") {
+                alert("The comment is empty bud")
+                return
+            }
+            let ohiogubby = `
+            <div class="flex gap-3">
+                <img alt="Avatar of alex" class="h-10 w-10 rounded-md" src="${ohiouser.avatar}" title="">
+                <div class="flex flex-col gap-1">
+                    <p class="leading-0.5">
+                        <span class="font-bold">${ohiouser.first_name}</span>
+                        <span class="italic">commented </span>
+                        <span class="text-sm"><br>on ${new Date().toLocaleString()}</span>
+                    </p>
+                    <p class="max-w-sm wrap-break-word">${dnqu9dqw}</p>
+                    <div class="flex gap-3">
+                        <a class="text-blue-500 underline" href="/projects/2/reviews/2/edit">Edit</a>
+                        <button class="cursor-pointer text-red-500 underline" type="button">Delete</button>
+                    </div>
+                </div>
+            </div>
+            `
+
+            let thing = document.getElementById("commentreviewthing")
+            let otherthing = document.createElement("div")
+            otherthing.innerHTML = ohiogubby
+            thing.appendChild(otherthing)
+        }
+        
+    })
+
 }
 
 window.addEventListener('pageChange', function() {
