@@ -773,9 +773,9 @@ function larpReview() {
                         <img alt="Avatar of karim" class="h-20 w-20 rounded-md" src="${userpfp}">
                         <div class="text-lg">
                             <p class="font-bold">
-                                <a href="javascript:void(0)" onclick="alert('not going to be inmplemented') // TODO: implement this" class="text-blue-500 underline hover:text-blue-700">${project.username}</a>
+                                <a href="javascript:void(0)" onclick="alert('not going to be inmplemented') // mmmmm: implement this" class="text-blue-500 underline hover:text-blue-700">${project.username}</a>
                             </p>
-                            <p class="text-gray-600" "// TODO: better randomization/realism">
+                            <p class="text-gray-600" "// ehhhhh: better randomization/realism">
                                 ${project.username.replaceAll(" ", "-").toLowerCase()}@hackclub.com
                             </p>
                             <p>
