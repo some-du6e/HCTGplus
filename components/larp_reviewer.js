@@ -686,7 +686,7 @@ function larprevewing() {
         `
         index += 1
     }
-
+    
     let ohiosigmaboy = document.createElement("div")
     // @ts-expect-error
     let ohiogubby = `      

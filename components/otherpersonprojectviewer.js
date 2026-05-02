@@ -4,6 +4,11 @@ function projectViewer() {
   }
   const queryParams = new URLSearchParams(window.location.search)
   let projectidtoview = Object.fromEntries(queryParams).projectId
+  if (!projectidtoview) {
+    if (Object.fromEntries(queryParams).projectobj) {
+      projectidtoview = 676767
+    }
+  }
   let isViewHash = location.hash === "#view"
   if (!isViewHash) {
     return
@@ -160,37 +165,43 @@ function projectViewer() {
 
   // find the project
   let project = null
-  let galleryprojects = null
-  let rawGalleryCache = localStorage.getItem("hctg-gallery-cache")
-  if (rawGalleryCache) {
-    try {
-      let parsedCache = JSON.parse(rawGalleryCache)
-      if (Array.isArray(parsedCache)) {
-        galleryprojects = parsedCache
-      } else if (parsedCache && Array.isArray(parsedCache.projects)) {
-        galleryprojects = parsedCache.projects
+  if (projectidtoview !== 676767) { // check for override
+    
+    let galleryprojects = null
+    let rawGalleryCache = localStorage.getItem("hctg-gallery-cache")
+    if (rawGalleryCache) {
+      try {
+        let parsedCache = JSON.parse(rawGalleryCache)
+        if (Array.isArray(parsedCache)) {
+          galleryprojects = parsedCache
+        } else if (parsedCache && Array.isArray(parsedCache.projects)) {
+          galleryprojects = parsedCache.projects
+        }
+      } catch (error) {
+        console.warn("HCTG: invalid gallery cache, clearing it. ID: 8r3jwy")
+        localStorage.removeItem("hctg-gallery-cache")
       }
-    } catch (error) {
-      console.warn("HCTG: invalid gallery cache, clearing it. ID: 8r3jwy")
-      localStorage.removeItem("hctg-gallery-cache")
     }
-  }
 
-  if (!galleryprojects) {
-    alert("need to go to gallery page")
-    return
-  }
-
-  let projectIdAsNumber = Number(projectidtoview)
-  for (let galleryproject of galleryprojects) {
-    if (galleryproject.id === projectidtoview || galleryproject.id === projectIdAsNumber) {
-      project = galleryproject
-      break
+    if (!galleryprojects) {
+      alert("need to go to gallery page")
+      return
     }
-  }
-  if (!project) {
-    alert("not found :(")
-    return
+
+    let projectIdAsNumber = Number(projectidtoview)
+    for (let galleryproject of galleryprojects) {
+      if (galleryproject.id === projectidtoview || galleryproject.id === projectIdAsNumber) {
+        project = galleryproject
+        break
+      }
+    }
+    if (!project) {
+      alert("not found :(")
+      return
+    }
+  } else {
+    project = decodeURIComponent(Object.fromEntries(queryParams).projectobj)
+    project = JSON.parse(project)
   }
 
   let mainContainer = prepareforcustomsite("Project")

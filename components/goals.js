@@ -128,7 +128,7 @@ function addGoals() {
     }
     updateProgress()
 
-    // TODO: check if the item doesnt exist 
+    // done: check if the item doesnt exist 
    
     let youritem = document.createElement("div")
     youritem.innerHTML = `

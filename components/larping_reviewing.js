@@ -52,6 +52,13 @@ function larpReview() {
         const formatted = `${hours}h ${minutes}m`;
         return formatted // shi prob in 3 different components lowkey
     }
+    
+    function buildViewableLink(projecto) {
+        let result = JSON.stringify(projecto)
+        result = encodeURIComponent(result)
+        
+        return `/me?projectobj=${result}#view`
+    }
 
     function randomnumber(min, max) {
       const minCeiled = Math.ceil(min);
@@ -754,7 +761,7 @@ function larpReview() {
                         <a href="${project.repo_link}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-md border-2 border-black bg-white px-5 py-2.5 text-lg font-bold text-black transition-colors hover:bg-gray-100">
                             Open Repo ↗
                         </a>
-                        <a href="${"// TODO: smth like pass down the project object to the otherpersonprojectviewer.js?"}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-md border-2 border-gray-300 bg-white px-5 py-2.5 text-lg font-bold text-gray-600 transition-colors hover:bg-gray-50">
+                        <a href="${buildViewableLink(project)}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 rounded-md border-2 border-gray-300 bg-white px-5 py-2.5 text-lg font-bold text-gray-600 transition-colors hover:bg-gray-50">
                             View Project Page ↗
                         </a>
                     </div>
