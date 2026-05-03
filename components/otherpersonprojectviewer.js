@@ -67,8 +67,8 @@ function projectViewer() {
     return formatted // shi prob in 3 different components lowkey
   }
 
-  function getIconURL(iconName) { 
-    return "chrome-extension://"+chrome.runtime.id+"/icons/"+iconName
+  function getIconURL(iconName) {
+    return "chrome-extension://" + chrome.runtime.id + "/icons/" + iconName
   }
 
   if (!projectidtoview) {
@@ -138,7 +138,6 @@ function projectViewer() {
 
     mainContainer.appendChild(projectcard)
   }
-
   // let project = { // first project i saw and also a good example
   //     // TODO: get other proejcs ad not hard code it
   //     "id": 14,
