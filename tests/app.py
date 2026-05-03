@@ -10,7 +10,8 @@ with sync_playwright() as p:
     pathtoext = os.path.join(os.getcwd(), "..")
     if question == 'y':
         pathtoext = os.path.join(pathtoext, "dist")
-    
+    else:
+        pathtoext = os.path.join(pathtoext, "src")
     datadir = os.path.join(os.getcwd(), "testingdata")
 
     browser = p.chromium.launch_persistent_context(

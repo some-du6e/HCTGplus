@@ -27,8 +27,8 @@ if os.path.exists("dist.zip"):
 
 print("Copying entire folder to dist...")
 try:
-    ignore_patterns = shutil.ignore_patterns('.git', '.github', "img")
-    shutil.copytree(".", "dist/", ignore=ignore_patterns)
+    ignore_patterns = shutil.ignore_patterns('.git', '.github', "img", "tests", "scripts")
+    shutil.copytree("src/", "dist/", ignore=ignore_patterns)
 except Exception as e:
     print("Oops smth happened: ", e)
     exit()
@@ -37,7 +37,7 @@ print("Copied succesfully!")
 print("Deleting blocklist files...")
 try:
     for item in blocklist:
-        if os.path.exists(item):
+        if os.path.exists("dist/"+item):
             os.remove("dist/"+item)
 except Exception as e:
     print("Oops smth happened: ", e)

@@ -138,6 +138,35 @@ function projectViewer() {
 
     mainContainer.appendChild(projectcard)
   }
+
+  function addComments(projectId) {
+    // Remove existing giscus iframe if present
+    let existing = document.getElementById("giscus-container")
+    if (existing) existing.remove()
+
+    let container = document.createElement("iframe")
+    container.id = "giscus-container"
+    container.style.width = "100%"
+    container.style.height = "600px"
+    container.style.border = "none"
+    container.src = chrome.runtime.getURL("comments.html") + "?project=" + encodeURIComponent(projectId)
+    mainContainer.appendChild(container)
+
+    if (!window.__hctgCommentsHeightListener) {
+      window.__hctgCommentsHeightListener = (event) => {
+        const currentContainer = document.getElementById("giscus-container")
+        if (!currentContainer || event.source !== currentContainer.contentWindow) return
+
+        if (!event.data || event.data.type !== "giscus-height") return
+
+        const nextHeight = Number.parseInt(event.data.height, 10)
+        if (Number.isFinite(nextHeight) && nextHeight > 0) {
+          currentContainer.style.height = `${nextHeight}px`
+        }
+      }
+      window.addEventListener("message", window.__hctgCommentsHeightListener)
+    }
+  }
   // let project = { // first project i saw and also a good example
   //     // TODO: get other proejcs ad not hard code it
   //     "id": 14,
@@ -217,6 +246,7 @@ function projectViewer() {
 
   console.log(project)
   dqnidnqwi(project)
+  addComments(project.id)
 }
 
 window.addEventListener("pageChange", function () {
