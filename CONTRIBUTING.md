@@ -1,5 +1,19 @@
 # Contributing
-no ai slop
+no ai slop allowed
+
+## Updating shop categories
+### Requirements:
+- Agent
+    - Copilot
+    - —OR—
+    - Codex
+- Python
+
+> [!NOTE]
+> I havent tried the python script on other stuff except windows
+
+### Steps
+
 
 
 ## cws action publishing
