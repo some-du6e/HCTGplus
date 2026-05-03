@@ -60,7 +60,8 @@ jobs:
           set -euo pipefail
 
           mkdir -p dist
-          zip -r "dist/hctgplus-${{ steps.release_meta.outputs.channel }}.zip" \
+          cd src
+          zip -r "../dist/hctgplus-${{ steps.release_meta.outputs.channel }}.zip" \
             manifest.json \
             content.js \
             service-worker.js \
