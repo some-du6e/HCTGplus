@@ -149,23 +149,28 @@ Please update.
 """
 
 
+with open("categoryupdating.md", "w") as f:
+    f.write(PROMPT)
 
 
-
+littleprompt = "Follow the instructions in categoryupdating.md and then delete categoryupdating.md when you are done."
 
 if agent == "codex":
     print("prompting codex...")
-    results = os.system(f"codex \"{PROMPT}\"")
+    results = os.system(f"codex \"{littleprompt}\"")
 elif agent == "copilot":
     print("prompting copilot")
-    # Pass prompt via stdin to avoid shell escaping issues
-    proc = subprocess.Popen(
-        ["copilot", "--yolo", "-p", PROMPT],
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        shell=False
-    )
-    output, _ = proc.communicate()
-    print(output.decode('utf-8', errors='replace'))
-    results = proc.returncode
+
+    os.system(f"echo \"{littleprompt}\" | copilot")
+    # really complicated slop V
+    # # Pass prompt via stdin to avoid shell escaping issues
+    # proc = subprocess.Popen(
+    #     ["copilot", littleprompt],
+    #     stdin=subprocess.PIPE,
+    #     stdout=subprocess.PIPE,
+    #     stderr=subprocess.STDOUT,
+    #     shell=False
+    # )
+    # output, _ = proc.communicate()
+    # print(output.decode('utf-8', errors='replace'))
+    # results = proc.returncode

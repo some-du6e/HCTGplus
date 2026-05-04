@@ -28,7 +28,7 @@ no ai slop allowed
 python scripts/update-shop-categories.py
 ```
 3. Choose your prefered agent (codex is free and allows you to do ~$10 of inference for free)
-0. 
+0. The agent tui will open, you can now see if the changes you see fit
 
 ## cws action publishing
 tbh its a pile of slop just use ai...

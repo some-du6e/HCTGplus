@@ -18,21 +18,22 @@ if (!window.HCTG.shop) {
 
 window.HCTG.shop.categories = {
   featured: [
-    3,    // Invite to Hack Club: The Game
     64,   // $8 Travel Stipend
+    25,   // Travel Stipends ($80)
+    29,   // $150 Laptop Grant
+    16,   // Cloudflare Grant
+    3,    // Invite to Hack Club: The Game
+    27,   // Macbook Neo (Global)
+    26,   // Macbook Neo (India)
     101,  // eSIM
     98,   // Hack Club Pin
-    25,   // Travel Stipends ($80)
-    100,  // Post-event accommodation
     99,   // Pre-event accommodation
-    29,   // $150 Laptop Grant
-    27,   // Macbook Neo (Global)
-    26    // Macbook Neo (India)
+    100   // Post-event accommodation
   ],
   travel: [
-    3,    // Invite to Hack Club: The Game
     64,   // $8 Travel Stipend
     25,   // Travel Stipends ($80)
+    3,    // Invite to Hack Club: The Game
     101,  // eSIM
     99,   // Pre-event accommodation
     100   // Post-event accommodation
@@ -46,6 +47,11 @@ window.HCTG.shop.categories = {
     73,   // PCB Grant
     76,   // Domain Grant
     63,   // $20 Framework Credits
+    71,   // $20 Keychron Credit
+    90,   // Proton VPN Credits
+    10,   // $10 Nebula Credit
+    96,   // $10 Nintendo eShop credits
+    66,   // $25 Steam Credit
     97    // $30 Console Grant
   ],
   tech: [
@@ -55,8 +61,11 @@ window.HCTG.shop.categories = {
     80,   // Mac Mini
     69,   // iPad
     63,   // $20 Framework Credits
+    71,   // $20 Keychron Credit
+    83,   // Evoworks Evo80
     87,   // Logitech C920
     86,   // Fujifilm Instax Mini 12 Instant Camera
+    8,    // Github branded Yubikey 5C
     85    // Pebble Time 2 (smartwatch)
   ],
   hardware: [
@@ -66,8 +75,6 @@ window.HCTG.shop.categories = {
     82,   // Bambu Lab A1 mini 3D Printer combo
     103,  // A1 mini 3D Printer
     73,   // PCB Grant
-    71,   // $20 Keychron Credit
-    83,   // Evoworks Evo80
     14    // 64GB USB
   ],
   audio: [
@@ -88,6 +95,7 @@ window.HCTG.shop.categories = {
     66    // $25 Steam Credit
   ],
   misc: [
+    98,   // Hack Club Pin
     65,   // Signed photo of @radioblahaj
     79,   // GitHub Denik Layflat Notebook
     88,   // Chrome Web Store license
@@ -95,7 +103,6 @@ window.HCTG.shop.categories = {
     102,  // Your profile picture, but @Iamalive-ified!
     12,   // Hell Yes CSS by Julia Evans
     13,   // The Pocket Guide to Debugging by Julia Evans
-    8,    // Github branded Yubikey 5C
     90,   // Proton VPN Credits
     10    // $10 Nebula Credit
   ]
