@@ -1,6 +1,11 @@
 from playwright.sync_api import sync_playwright
 from components.login import login as login
-from components.testlander import testlander as testlander
+
+# import tests
+from tests.testlander import testlander as testlander
+from tests.testlogin import testLogin
+
+
 from components.rendertests import rendertest as rendertest
 import os
 
@@ -32,8 +37,12 @@ with sync_playwright() as p:
     page, lander_results = testlander(page)
     results.append(lander_results)
 
-
-
+    # test login button
+    page, login_results = testLogin(page)
+    results.append(login_results)
 
 
     rendertest(results)
+
+
+    page.pause()
