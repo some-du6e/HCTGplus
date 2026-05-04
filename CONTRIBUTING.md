@@ -4,7 +4,7 @@ no ai slop allowed
 ## Updating shop categories
 > [!NOTE]
 > I havent tried the python script on other OSes except windows
-> You can vibe code it if it doesnt work
+> <br> You can vibe code it if it doesnt work
 ### Requirements:
 - Agent
     - Copilot
