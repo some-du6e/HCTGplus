@@ -12,7 +12,7 @@ with open(os.path.join(os.path.dirname(__file__), '..', 'shopitemsdumpy.js'), 'r
     shop_items = json.load(f)
 
 
-agent = input("Which one do you want to use? \n 1. Codex \n 2.Copilot")
+agent = input("Which one do you want to use? \n 1. Codex \n 2. Copilot \n")
 if agent == "1":
     agent = "codex"
 elif agent == "2":
@@ -148,9 +148,14 @@ Here is the full shop items array:
 Please update.
 """
 
+
+
+
+
+
 if agent == "codex":
     print("prompting codex...")
-    results = os.system(f"codex exec \"{PROMPT}\"")
+    results = os.system(f"codex \"{PROMPT}\"")
 elif agent == "copilot":
     print("prompting copilot")
     # Pass prompt via stdin to avoid shell escaping issues

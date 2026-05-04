@@ -188,7 +188,7 @@ function betterShop() {
                 }
 
                 if (dollaramount) {
-                    console.log(matchedShopItem.name, "og dollar amount: ", dollaramount)
+                    // console.log(matchedShopItem.name, "og dollar amount: ", dollaramount)
                     item.setAttribute("data-hctg-dollar-amount", dollaramount)
                 }
                 function rendercardthingidkhowtoname(increment = 0) {
@@ -213,7 +213,7 @@ function betterShop() {
                         let dollars = "$" + String(String(currentamount * parseInt(dollaramt, 10)))
                         if (foundintitle) {
                             let updatedName = String(String(matchedShopItem.name).replace(/^\$\d+/, dollars))
-                            console.log(updatedName)
+                            // console.log(updatedName)
                             if (visibleNameNode) {
                                 visibleNameNode.textContent = updatedName
                             }
@@ -228,7 +228,7 @@ function betterShop() {
                 let isItemGrant = false
                 if (window.HCTG.shop.categories.grants.includes(matchedShopItem.id)) {
                     isItemGrant = true
-                    console.log("found grant item: ", matchedShopItem.name)
+                    // console.log("found grant item: ", matchedShopItem.name)
                 }
 
                 if (isItemGrant) {

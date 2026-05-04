@@ -2,6 +2,9 @@
 no ai slop allowed
 
 ## Updating shop categories
+> [!NOTE]
+> I havent tried the python script on other OSes except windows
+> You can vibe code it if it doesnt work
 ### Requirements:
 - Agent
     - Copilot
@@ -9,12 +12,23 @@ no ai slop allowed
     - Codex
 - Python
 
-> [!NOTE]
-> I havent tried the python script on other stuff except windows
+
 
 ### Steps
-
-
+#### Shop items dumping
+1. Enable developer mode
+0. Open the [shop](https://game.hackclub.com/shop)
+0. Open developer tools and navigate to the console tab
+0. Right click the item that looks like a bunch of {...} (see image) and then select `Copy object` ![](img/contribshopitems.png)
+0. Create or modify `shopitemsdumpy.js` and paste the object that you previously copied
+#### Agentic modification of categories (actually run the script/agent)
+1. Install requirements
+2. Run the python script 
+```bash
+python scripts/update-shop-categories.py
+```
+3. Choose your prefered agent (codex is free and allows you to do ~$10 of inference for free)
+0. 
 
 ## cws action publishing
 tbh its a pile of slop just use ai...

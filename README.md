@@ -1,5 +1,5 @@
 <div align="center" style="text-align: center;">
-<h1><img src="icons/icon32.png" height="30px">  HCTG+</h1>
+<h1><img src="src/icons/icon32.png" height="30px">  HCTG+</h1>
 <p>Adds some qol features to <a href="https://game.hackclub.com">HCTG</a> that i would like</p>
 
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/some-du6e/HCTGplus/total)
