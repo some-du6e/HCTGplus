@@ -3,7 +3,7 @@
 - [ ] data.js
 - [ ] gallery.js
 - [ ] goals.js
-- [ ] lander.js
+- [X] lander.js
 - [ ] larping.js
 - [ ] larping_reviewing.js
 - [ ] larp_reviewer.js
@@ -13,4 +13,4 @@
 - [ ] settings.js
 - [ ] shop.js
 - [ ] sidebar.js
-- [ ] utils.js 
+- [~] utils.js 
