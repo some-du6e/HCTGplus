@@ -27,7 +27,8 @@ def testpage(page: Page, sectionname: str, stuff_to_watchoutfor: list, url: str)
     page.on("console", lambda msg: handle_console(msg))
     
     
-    page.goto(url)
+    if url != "stay" :
+        page.goto(url)
     
     
     page.wait_for_load_state("domcontentloaded", timeout=10000)

@@ -1,6 +1,6 @@
-# How much is covered of each component
+# Test coverage
 - [ ] consts.js
-- [ ] data.js
+- [X] data.js
 - [ ] gallery.js
 - [ ] goals.js
 - [X] lander.js
@@ -13,4 +13,4 @@
 - [ ] settings.js
 - [ ] shop.js
 - [ ] sidebar.js
-- [~] utils.js 
+- [ ] utils.js 

@@ -4,6 +4,7 @@ from components.login import login as login
 # import tests
 from tests.testlander import testlander as testlander
 from tests.testlogin import testLogin
+from tests.testdata import testData
 
 
 from components.rendertests import rendertest as rendertest
@@ -40,6 +41,10 @@ with sync_playwright() as p:
     # test login button
     page, login_results = testLogin(page)
     results.append(login_results)
+
+    # test datapage
+    page, data_results = testData(page)
+    results.append(data_results)
 
 
     rendertest(results)
