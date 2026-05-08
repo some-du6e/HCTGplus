@@ -1,6 +1,9 @@
 # Test coverage
-- [ ] consts.js
+- [X] consts.js
+    - Not needed
 - [X] data.js
+    - Just checking for errors
+    - TODO: some sort of javascript bs to check if the values are properly getting set
 - [ ] gallery.js
 - [ ] goals.js
 - [X] lander.js

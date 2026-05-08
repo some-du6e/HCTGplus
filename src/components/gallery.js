@@ -26,7 +26,7 @@ function galleryBetter() {
     
     newcache.projects = projects
 
-    console.log(newcache)
+    // console.log(newcache)
     localStorage.setItem("hctg-gallery-cache", JSON.stringify(newcache))
     console.log("HCTG+: saved gallery cache")
 
@@ -35,7 +35,7 @@ function galleryBetter() {
 
     // add a link to the project(s)
     let projectscontainer = document.getElementsByClassName("grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3")[0]
-
+    projectscontainer.id = "gallery-projects-container"
     let renderedprojects = projectscontainer.children
 
     for (let renderedproject of renderedprojects) {
@@ -47,7 +47,7 @@ function galleryBetter() {
                 break
             }
         }
-        console.log(projectid)
+        // console.log(projectid)
 
         projectid = String(projectid)
         renderedproject.setAttribute("hctg-public-project-id", projectid)
