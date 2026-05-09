@@ -1,5 +1,5 @@
 import json
-input("Put cookeis in cookies.json instructions commibng soon TODO")
+input("Make sure your reading CONTRIBUTING.md before doing this.\nPress enter to continue or ctrl+c to exit")
 
 cookiesJSON = []
 
@@ -12,6 +12,7 @@ except Exception as leException:
     print(leException)
     print("the error ^^^^^^")
     print("nope not working. are you sure you got the right file?")
+    exit(1)
 
 # try to get cookies && check if they exist while ur at it
 session_token = "" 
@@ -27,6 +28,7 @@ try:
         raise Exception("Tried my best mate but there isnt a signed_user or a session_token in the json u gave me")
 except Exception as excep:
     print(excep)
+    exit(1)
 
 
 
@@ -41,3 +43,6 @@ yassforoverwriting = input("Do you want to save? This will overwrite the current
 if yassforoverwriting.lower() == "y":
     with open(".env", 'w') as envFile:
         envFile.write(datatowrite)
+else:
+    print("Alr i wont")
+    exit(1)

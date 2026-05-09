@@ -30,6 +30,18 @@ python scripts/update-shop-categories.py
 3. Choose your prefered agent (codex is free and allows you to do ~$10 of inference for free)
 0. The agent tui will open, you can now see if the changes you see fit
 
+## Testing
+### Importing HCA cookies
+#### Exporting them
+1. Install [EditThisCookie](https://chromewebstore.google.com/detail/editthiscookie-v3/ojfebgpkimhlhcblbalbfjblapadhbol)
+0. Go to [HCA](https://auth.hackclub.com/) and make your your logged in
+0. Open EditThisCookie and click the "download" icon to paste to your clipboard
+0. Paste them into `cookies.json` (create it if doesnt exist)
+![](img/editthiscookie.png)
+#### Importing them using the script 
+1. Run `python import_cookies.py` (you should be in the testing dir)
+0. Press enter and follow the scripts intructions
+
 ## cws action publishing
 tbh its a pile of slop just use ai...
 ### instructions for agents
