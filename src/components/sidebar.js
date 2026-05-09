@@ -255,6 +255,24 @@ function makeSidebarBetter() {
                 window.location.href = gubby
                 e.preventDefault()
             }
+
+
+            if (location.pathname === "/me" && (location.hash === "#larp_review" || location.hash === "#larp-reviewer")) {
+                // TODO: NOT MAKE THIS HARDCODED
+                thing.children[0].className = "flex items-center transition-all pr-4"
+                thing.children[0].children[0].className = "transition-all relative z-20 flex h-[76px] w-[76px] shrink-0 items-center justify-center rounded-full bg-[#fecb0d]"
+                thing.children[0].children[0].children[0].className = "transition-all relative flex h-[52px] w-[52px] items-center justify-center rounded-full bg-white"
+
+
+
+                thing.children[0].children[1].className = "relative z-10 -ml-4 rounded-r-2xl py-2 pr-10 transition-all bg-[#fecb0d] pl-8"
+                const thingTitle = thing.children[0].children[1].children[0]
+                thingTitle.className = thingTitle.className
+                    .split(" ")
+                    .filter((c) => !c.startsWith("hover:") && !c.startsWith("group-hover:") && c !== "text-white" && c !== "smoothing-white")
+                    .join(" ")
+                thingTitle.classList.add("text-black", "smoothing-black")
+            }
         }
     }
 }
