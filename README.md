@@ -32,6 +32,10 @@ sets the gallery projects on localstorage (probably a bad idea) and also changes
 the main goal manager, gets hours done today and how much of the goal and all the calculations and also makes a "new" page
 ### `lander.js`
 just adds a login button on the lander page so u dont need to add ur email
+### `larp_reviewer.js`
+adds a fake reviewer dashboard [here](https://game.hackclub.com/me#larp-reviewer)
+### `larping_reviewing.js`
+adds a fake reviewing process [example here](https://game.hackclub.com/me?projectId=1506#larp_review)
 ### `otherpersonprojectviewer.js`
 adds a new page that gets the cached project(s) and creates a project card with the author and the demo links and everything
 ### `projects.js`
@@ -48,4 +52,3 @@ adds a new little section to the settings (`/me`) with these
 - Fake golden ticket
 - Fake balance  
 - Bring back help
-### `larping.js

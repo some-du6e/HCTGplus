@@ -699,7 +699,12 @@ function larpReview() {
         return
     }
 
-    let userpfp = `https:///github.com/identicons/${project.username.toLowerCase()}.png`
+
+    function cleanUsername(username) {
+        return username.toLowerCase().replace(/\s+/g, '-').replace(/\d+/g, "");
+    }
+
+    let userpfp = `https://identicons.io/${cleanUsername(project.username)}.png`
 
     let mainContainer = prepareforcustomsite("Review", project.title)
     console.log(mainContainer)

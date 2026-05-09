@@ -7,4 +7,4 @@ im not responsible if u get in trouble for automating hc stuff
 
 OR
 
-follow selfhosting.md
+follow the CONTRIBUTING.md instructions [here](../CONTRIBUTING.md#importing-hca-cookies)
