@@ -17,7 +17,7 @@ function addSettings() {
     mainContainer.appendChild(settingsContainer)
 
     
-    function addSetting(title, localstoragetochange, inputtype, callback, subtitle) {
+    function addSetting(title, localstoragetochange, inputtype, callback, subtitle, dropdowns) {
         let setting = document.createElement("div")
         setting.className = "px-6 py-4"
 
@@ -57,6 +57,22 @@ function addSettings() {
             localStorage.setItem(localstoragetochange, lsitem)
             setting.appendChild(input)
         }
+
+        if (inputtype === "customDropdown") {
+            let input = document.createElement("select")
+            input.className = ""
+            input.innerHTML = `
+            ${dropdowns.map(dropdown => `<option value="${dropdown}">${dropdown}</option>`).join("")}
+            `
+            input.onchange = function() {
+                localStorage.setItem(localstoragetochange, input.value)
+            }
+            let lsitem = localStorage.getItem(localstoragetochange) ? localStorage.getItem(localstoragetochange) : dropdowns[0]
+            input.value = lsitem
+            localStorage.setItem(localstoragetochange, lsitem)
+            setting.appendChild(input)
+        }
+
         if (inputtype === "button") {
             let input = document.createElement("a")
             input.className = "mt-2 bg-black px-4 py-1.5 font-bold text-white no-underline transition-colors hover:bg-[#fecb0d] hover:text-black cursor-pointer"
@@ -101,6 +117,7 @@ function addSettings() {
     addSetting("Hide black market items", "hctg-hideblackmarket", "boolean", null, 'Hides items that require a golden ticket' )
     addSetting("Developer mode", "hctg-devmode", "boolean", null, "Shows the item id of a shop item")
     addSetting("Use hours for money estimation", "hctg-use-hours-for-money", "boolean", null, "Calculates money based on total hours instead of tickets")
+    addSetting("Stat to replace with ur goal", "hctgplus-tobereplacedwithgoals", "customDropdown", null, "Replaces a stat you chose (like hours or tickets or dollars) with your goal progress in the sidebar.", ["hours", "tickets", "dollars"])
 
     let yap = "Note 1: may be flaky at times since manifest v3 ruined all chances at on the fly request modification \n Note 2: You cant use this to do role stuff since the server has it secured \n Note 3: im not responsible if you find a vulnerability using this feature \n Note 4: You need to refresh after changing it to see changes"
     addSetting("Larp as admin", "hctg-larp-admin", "boolean", null, `Be a fake admin \n ${yap}`)

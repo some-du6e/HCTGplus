@@ -152,7 +152,7 @@ function addGoals() {
       </div>
       <p class="smoothing-black mt-2 text-xl tracking-[-0.02em]">${goalitem.description}</p>
       <div class="mt-auto">
-        <!-- XXXXXXX --!>
+        <!-- XXXXXXX -->
         <button type="button" class="smoothing-white mt-4 block w-full cursor-pointer bg-black px-5 py-3 text-center text-xl font-bold tracking-tight text-white transition-colors hover:bg-[#fecb0d] hover:text-black" onclick="alert('hey bud, im not implementing this cuz its too risky cuz internal stuff could change and it could break too')">Buy</button>
       </div>
     </div>

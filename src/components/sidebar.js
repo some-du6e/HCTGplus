@@ -105,8 +105,14 @@ function makeSidebarBetter() {
 
     /////////
     // goals
-    let navbar = document.getElementsByClassName("relative z-10 mt-6 flex flex-col gap-[40px]")[0]
-    // todo: checke this better
+    let possiblenavbars = document.getElementsByClassName("relative z-10 mt-6 flex flex-col gap-[40px]")
+    let navbar = null
+    for (let possibility of possiblenavbars) {
+        if (possibility.tagName === "NAV") {
+            navbar = possibility
+            break
+        }
+    }
 
     let lastitem = navbar.children[navbar.children.length - 1]
     
@@ -126,7 +132,8 @@ function makeSidebarBetter() {
 
     // color it in if we are in the goals tab
     if (location.pathname === "/me" && location.hash === "#goals") {
-        // TODO: NOT MAKE THIS HARDCODED
+        // done: NOT MAKE THIS HARDCODED
+        // doesnt need to be perfect
         goalstab.children[0].className = "flex items-center transition-all pr-4"
         goalstab.children[0].children[0].className = "transition-all relative z-20 flex h-[76px] w-[76px] shrink-0 items-center justify-center rounded-full bg-[#fecb0d]"
         goalstab.children[0].children[0].children[0].className = "transition-all relative flex h-[52px] w-[52px] items-center justify-center rounded-full bg-white"
@@ -143,11 +150,15 @@ function makeSidebarBetter() {
     }
 
     // replace stuff with le goals
-    let goalsreplacing = "hours" //todo
+    let goalsreplacing = localStorage.getItem("hctgplus-tobereplacedwithgoals") || "hours"
     function replaceWithGoals(stat) {
         let target = null
         if (stat === "hours") {
             target = hoursdiv
+        }else if (stat === "dollars") {
+            target = dollardiv
+        } else if (stat === "tickets") {
+            target = statsdiv.children[0]
         }
 
         if (!target) {
@@ -189,7 +200,7 @@ function makeSidebarBetter() {
     }
     let goalitem = localStorage.getItem("hctgplus-goalitem")
     if (goalitem) {
-        let toreplace = "hours"
+        let toreplace = goalsreplacing
         let isthereakey = localStorage.getItem("hctg-hacktime-key") ? true : false
 
         if (isthereakey) {
@@ -258,7 +269,8 @@ function makeSidebarBetter() {
 
 
             if (location.pathname === "/me" && (location.hash === "#larp_review" || location.hash === "#larp-reviewer")) {
-                // TODO: NOT MAKE THIS HARDCODED
+                // done: NOT MAKE THIS HARDCODED
+                // doesnt need to be perfect
                 thing.children[0].className = "flex items-center transition-all pr-4"
                 thing.children[0].children[0].className = "transition-all relative z-20 flex h-[76px] w-[76px] shrink-0 items-center justify-center rounded-full bg-[#fecb0d]"
                 thing.children[0].children[0].children[0].className = "transition-all relative flex h-[52px] w-[52px] items-center justify-center rounded-full bg-white"
