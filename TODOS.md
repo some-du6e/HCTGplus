@@ -8,8 +8,8 @@
 - [x] **Line 146:** `let goalsreplacing = "hours" //todo` — This variable seems incomplete, probably meant to expand what stats can be replaced
 
 ### [shop.js](src/components/shop.js)
-- [ ] **Line 17:** Needs a refresh mechanism — "need to refresh for some reason idk" suggests props.items might not be syncing properly from data.js
-- [ ] **Line 117:** "refresh stuff after or use other method cuz this is super lazy" — Post-action state update is inefficient
+- [x] **Line 17:** Needs a refresh mechanism — "need to refresh for some reason idk" suggests props.items might not be syncing properly from data.js
+- [x] **Line 117:** "refresh stuff after or use other method cuz this is super lazy" — Post-action state update is inefficient
 - [ ] **Line 69:** "add 'dev' option to some sort of settings" — Developer mode option not fully implemented for shop
 - [ ] **Line 244:** "todo smth to turn it off" — Some feature can't be disabled
 

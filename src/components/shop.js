@@ -14,7 +14,8 @@ function betterShop() {
 
     let datapage = window.HCTG.datapage
     if (!datapage.props.items) {
-        console.warn("HCTG+: need to refresh for some reason idk") // TODO: there has to be a better way to get the props.items. maybe its a problem in data.js?
+        console.warn("HCTG+: need to refresh for some reason idk") // done: there has to be a better way to get the props.items. maybe its a problem in data.js?
+        // reason: yeah its some inertia bullshit, maybe when hctg is oss ill learn ruby on rails and try to implement that
         location.reload()
     }
     let itemlist = datapage.props.items
@@ -114,8 +115,9 @@ function betterShop() {
                     }
                     console.log("goalitem: ", goalitem)
                     localStorage.setItem("hctgplus-goalitem", JSON.stringify(goalitem))
-                    // TODO: refresh stuff after or use other method cuz this is super lazy
-                    // location.reload()
+                    // done: refresh stuff after or use other method cuz this is super lazy
+                    // reason: nope too complicated, um yeah expected results
+                    location.reload()
                 }
 
 
