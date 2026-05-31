@@ -208,6 +208,12 @@ function addGoals() {
           <input type="password" id="hackatime-key"></input>
         </div>
       </div>
+      <div class="rounded-2xl border-2 border-black bg-white px-6 py-4">
+        <h3 class="smoothing-black mb-4 text-center text-2xl font-bold tracking-[-0.02em]">Deadline</h3>
+        <div class="mt-4 flex items-center justify-center gap-2">
+          <input type="date" id="goal-deadline"></input>
+        </div>
+      </div>
       
     
       
@@ -281,7 +287,16 @@ function addGoals() {
 
     refreshTodayProgress()
 
-
+    // handle deadline
+    let deadlineselect = options.querySelector("#goal-deadline")
+    let storedDeadlineStr = localStorage.getItem("hctg-goal-deadline")
+    let defaultDeadline = new Date(2026, 5, 30)
+    let defaultStr = defaultDeadline.getFullYear() + "-" + String(defaultDeadline.getMonth() + 1).padStart(2, "0") + "-" + String(defaultDeadline.getDate()).padStart(2, "0")
+    deadlineselect.value = storedDeadlineStr || defaultStr
+    deadlineselect.addEventListener("change", function() {
+      localStorage.setItem("hctg-goal-deadline", deadlineselect.value)
+      updateProgress()
+    })
    let gubby = window.HCTG.goals.hoursAday()
    console.log("HCTG+: hours a day is ", gubby)
 }
@@ -296,14 +311,28 @@ if (!window.HCTG.goals) {
   window.HCTG.goals = {}
 }
 
-window.HCTG.goals.hoursAday = function() {
+window.HCTG.goals.hoursAday = function () {
     let today = new Date()
-    let deadline = new Date(2026, 5, 8) // proof: https://hackclub.slack.com/archives/C088DT8P7B8/p1775145237119869?thread_ts=1775144771.592949&cid=C088DT8P7B8 
-
+    today.setHours(0, 0, 0, 0)
+    let storedDeadline = localStorage.getItem("hctg-goal-deadline")
+    let deadline
+    if (storedDeadline && storedDeadline.includes("-")) {
+      let parts = storedDeadline.split("-")
+      deadline = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]))
+    } else {
+      deadline = new Date(2026, 5, 30)
+    }
+    deadline.setHours(0, 0, 0, 0)
     let diffInMs = deadline - today
     const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24))
+    console.log("HCTG+: diffInDays:", diffInDays, "deadline:", deadline, "today:", today)
     let itemcost = localStorage.getItem("hctgplus-goalitem") ? JSON.parse(localStorage.getItem("hctgplus-goalitem")).cost : 0 
-    let daysworking = diffInDays - parseInt(localStorage.getItem("hctg-break-days") ? localStorage.getItem("hctg-break-days") : 1, 10)
+    let breakdays = parseInt(localStorage.getItem("hctg-break-days") || "1", 10)
+    let daysworking = diffInDays - breakdays
+    console.log("HCTG+: daysworking:", daysworking)
+    if (daysworking <= 0) {
+      return 0
+    }
     let hoursaday = itemcost / daysworking
     return hoursaday
 } 
