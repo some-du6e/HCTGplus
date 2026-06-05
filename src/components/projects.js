@@ -19,7 +19,7 @@ function makeProjectsBetter() {
     let projects = window.HCTG.datapage.props.projects
     for (let card of projectscontainer.children) {
         let cardID = card.href.split("/projects/")[1].trim()
-        
+        cardID = cardID.split("/manage")[0].trim() // in case there are any trailing slashes or something
         if (cardID !== "new") {
             console.log("HCTG+: cardID:", cardID)
             for (let project of projects) {

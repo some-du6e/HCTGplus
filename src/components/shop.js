@@ -39,7 +39,7 @@ function betterShop() {
     let possibleshopcontainers = document.getElementsByClassName("grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3") 
     // i think this is bs cuz i think its never gonna change
     for (let posibility of possibleshopcontainers ) {
-        if (posibility.children[0].className === "flex h-full flex-col col-span-full") {
+        if (posibility.children[0].className === "flex h-full flex-col") {
             shopcontainer = posibility
             break
         }

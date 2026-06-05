@@ -59,14 +59,9 @@ function galleryBetter() {
 
 }
 
-window.addEventListener('pageChange', function() {
-    setTimeout(galleryBetter, 200)
-});
+// window.addEventListener('pageChange', function() {
+//     setTimeout(galleryBetter, 200)
+// });
+// retiring this for a bit since they officially added gallery stuff
 
-
-
-
-
-
-
-galleryBetter()
+// galleryBetter()
