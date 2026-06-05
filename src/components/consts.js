@@ -19,24 +19,16 @@ if (!window.HCTG.shop) {
 window.HCTG.shop.categories = {
   featured: [
     64,   // $8 Travel Stipend
+    98,   // Hack Club Pin
     25,   // Travel Stipends ($80)
     29,   // $150 Laptop Grant
-    16,   // Cloudflare Grant
-    3,    // Invite to Hack Club: The Game
     27,   // Macbook Neo (Global)
-    26,   // Macbook Neo (India)
-    101,  // eSIM
-    98,   // Hack Club Pin
-    99,   // Pre-event accommodation
-    100   // Post-event accommodation
+    26    // Macbook Neo (India)
   ],
   travel: [
     64,   // $8 Travel Stipend
     25,   // Travel Stipends ($80)
-    3,    // Invite to Hack Club: The Game
-    101,  // eSIM
-    99,   // Pre-event accommodation
-    100   // Post-event accommodation
+    101   // eSIM
   ],
   grants: [
     64,   // $8 Travel Stipend
@@ -51,6 +43,7 @@ window.HCTG.shop.categories = {
     90,   // Proton VPN Credits
     10,   // $10 Nebula Credit
     96,   // $10 Nintendo eShop credits
+    107,  // $10 Spotify Credit
     66,   // $25 Steam Credit
     97    // $30 Console Grant
   ],
@@ -62,6 +55,7 @@ window.HCTG.shop.categories = {
     69,   // iPad
     63,   // $20 Framework Credits
     71,   // $20 Keychron Credit
+    14,   // 64GB USB
     83,   // Evoworks Evo80
     87,   // Logitech C920
     86,   // Fujifilm Instax Mini 12 Instant Camera
@@ -74,15 +68,15 @@ window.HCTG.shop.categories = {
     72,   // Flipper Zero
     82,   // Bambu Lab A1 mini 3D Printer combo
     103,  // A1 mini 3D Printer
-    73,   // PCB Grant
-    14    // 64GB USB
+    73    // PCB Grant
   ],
   audio: [
     68,   // Beats Solo Buds
     67,   // Beats Solo 4 Headphones
     91,   // CMF Buds 2 Plus
     78,   // AirPods Pro 2nd Generation (USB-C) Refurbished
-    81    // Marshall Emberton III Speaker
+    81,   // Marshall Emberton III Speaker
+    107   // $10 Spotify Credit
   ],
   gaming: [
     15,   // Mini Metro
@@ -99,8 +93,6 @@ window.HCTG.shop.categories = {
     65,   // Signed photo of @radioblahaj
     79,   // GitHub Denik Layflat Notebook
     88,   // Chrome Web Store license
-    95,   // DONATION TO VOID (formerly raffle entry)
-    102,  // Your profile picture, but @Iamalive-ified!
     12,   // Hell Yes CSS by Julia Evans
     13,   // The Pocket Guide to Debugging by Julia Evans
     90,   // Proton VPN Credits

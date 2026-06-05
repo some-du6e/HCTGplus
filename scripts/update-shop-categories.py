@@ -32,8 +32,13 @@ if agent == "codex":
         print("Found codex")
 
     # check if they logged in
-    codex_status = os.system("codex login status >nul 2>&1")
-    if codex_status != 0:
+    codex_status = subprocess.run(
+        ["codex", "login", "status"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    if codex_status.returncode != 0:
         print("You are not logged in to codex. Please log in first (its free bro)")
         exit(1)
 
