@@ -4,11 +4,11 @@ def rendertest(results):
     testamount = 0
     testspassed = 0
     for result in results:
-        for key in result:
+        for key, passed in result["tests"].items():
             testamount += 1
-            if key.startswith("passed_") and not result[key]:
+            if not passed:
                 allpassed = False
-            elif key.startswith("passed_") and result[key]:
+            else:
                 testspassed += 1
     
 

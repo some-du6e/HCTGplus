@@ -5,11 +5,22 @@ from playwright.sync_api import sync_playwright
 from components.login import login as login
 
 # import tests
-from tests.testlander import testlander as testlander
 from tests.testlogin import testLogin
-from tests.testdata import testData
-
-import tests as t # idk if jsut t or manually import all of them
+from tests.test_consts import testConsts
+from tests.test_data import testDataComponent
+from tests.test_gallery import testGalleryComponent
+from tests.test_goals import testGoals
+from tests.test_lander import testLanderComponent
+from tests.test_larp_reviewer import testLarpReviewer
+from tests.test_larping import testLarping
+from tests.test_larping_reviewing import testLarpingReviewing
+from tests.test_notifications import testNotifications
+from tests.test_otherpersonprojectviewer import testOtherPersonProjectViewer
+from tests.test_projects import testProjects
+from tests.test_settings import testSettings
+from tests.test_shop import testShop
+from tests.test_sidebar import testSidebar
+from tests.test_utils import testUtils
 
 from components.rendertests import rendertest as rendertest
 from components.pregame import pregame
@@ -43,21 +54,29 @@ with sync_playwright() as p:
     results = []
 
 
-    # test lander
-    page, lander_results = testlander(page)
-    results.append(lander_results)
+    component_tests = [
+        testConsts,
+        testDataComponent,
+        testGalleryComponent,
+        testGoals,
+        testLanderComponent,
+        testLarpReviewer,
+        testLarping,
+        testLarpingReviewing,
+        testNotifications,
+        testOtherPersonProjectViewer,
+        testProjects,
+        testSettings,
+        testShop,
+        testSidebar,
+        testUtils,
+    ]
+    for component_test in component_tests:
+        page, component_results = component_test(page)
+        results.append(component_results)
 
-    # test login button
     page, login_results = testLogin(page)
     results.append(login_results)
-
-    # test datapage
-    page, data_results = testData(page)
-    results.append(data_results)
-
-    # test gallery
-    page, gallery_results = t.testGallery(page) 
-    results.append(gallery_results)
     
     rendertest(results)
 
