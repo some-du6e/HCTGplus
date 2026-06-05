@@ -48,10 +48,11 @@ function notificationsBetter() {
 
     if (notif.notifiable_type == "Project::Review") {
       let reviewer = {
-          id: 999,
-          avatar: "https://avatars.slack-edge.com/2025-07-20/9222694931782_3c71b26b49b027f3595a_512.png",
-          role: "reviewer",
-          username: "not found",
+        id: 999,
+        avatar:
+          "https://avatars.slack-edge.com/2025-07-20/9222694931782_3c71b26b49b027f3595a_512.png",
+        role: "reviewer",
+        username: "not found",
       }
       // set stuff
       let authorid = notif.notifiable?.author_id
@@ -59,7 +60,7 @@ function notificationsBetter() {
         // console.log(window.HCTG.roles)
         let foundthing = window.HCTG.roles[String(authorid)]
         if (foundthing) {
-            reviewer = foundthing
+          reviewer = foundthing
         } else {
           console.error("didnt find authorid for:", authorid)
         }
@@ -73,13 +74,12 @@ function notificationsBetter() {
       let timeapproved = "???"
       let approvedseconds = notif.notifiable.approved_seconds
       if (approvedseconds) {
-        const hours = Math.floor(approvedseconds / 3600);
-        const minutes = Math.floor((approvedseconds % 3600) / 60);
+        const hours = Math.floor(approvedseconds / 3600)
+        const minutes = Math.floor((approvedseconds % 3600) / 60)
 
-        const formatted = `${hours}h ${minutes}m`;
+        const formatted = `${hours}h ${minutes}m`
         timeapproved = formatted
       }
-
 
       let yap = "???"
       let reviewtype = notif.notifiable.review_type
@@ -122,7 +122,60 @@ function notificationsBetter() {
       `
       notifcard.innerHTML = slop
     } else {
-      notif.innerHtml = "not implemented :("
+    // copied from the reviewer stuff cuz im lazy and this is a edge case
+      let reviewer = {
+        id: 999,
+        avatar:
+          "https://avatars.slack-edge.com/2025-07-20/9222694931782_3c71b26b49b027f3595a_512.png",
+        role: "reviewer",
+        username: "orpheus",
+      }
+
+      let datething = new Date(notif.notifiable.created_at)
+      let datestring = datething.toLocaleString()
+
+      let ticketadjustment = notif.notifiable.amount
+
+      let yap = "???"
+      let upordown = notif.notifiable.amount > 0 ? "approval" : "rejection"
+      if (upordown === "rejection") {
+        yap = `<span class="italic">rejected</span><span class="text-sm"><br>on ${datestring}</span>`
+      } else if (upordown === "approval") {
+        yap = `<span class="italic">adjusted your tickets by +${ticketadjustment}</span><span class="text-sm"><br>on ${datestring}</span>`
+      }
+      let glow = false
+      let glowStyle = ""
+      if (upordown === "rejection") {
+        glowStyle = "0 0 20px rgba(255, 100, 100, 0.8)"
+      } else if (upordown === "approval") {
+        glowStyle = "0 0 20px rgba(100, 200, 100, 0.8)"
+      } else {
+        console.warn("HCTG+: Unknown review type:", upordown, "for notif:", notif.id)
+      }
+      if (glowStyle) {
+        notifcard.style.boxShadow = glowStyle
+      }
+      let reviewercomment = notif.message
+      const parts = reviewercomment.split(">")
+      reviewercomment = (parts.length > 1 ? parts[1] : reviewercomment).trim()
+      reviewercomment = reviewercomment.replace(/\n/g, "<br>")
+
+      slop = `
+          
+          <div class="flex gap-3 ">
+              <img alt="Avatar of ${reviewer.username}" class="h-10 w-10 rounded-md" src="${reviewer.avatar}" title="">
+              <div class="flex flex-col gap-1">
+                  <p class="leading-0.5">
+                      <span class="font-bold">${reviewer.username}</span>
+                      ${yap}
+                  </p>
+                  <p class="max-w-m wrap-break-word">
+                      ${reviewercomment}
+                  </p>
+              </div>
+          </div>
+      `
+      notifcard.innerHTML = slop
     }
   }
 }

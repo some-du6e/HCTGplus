@@ -135,7 +135,13 @@ window.HCTG.roles = {
     avatar: "https://avatars.slack-edge.com/2026-01-16/10345469199216_84aca69f87c315112438_512.png",
     role: "reviewer",
     username: "maxstellar",
-  },
+    },
+    5: {
+    "id": 5,
+    "avatar": "https://avatars.slack-edge.com/2025-12-04/10057350036450_b4702515c7432666ac79_512.png",
+    "role": "reviewer",
+    "username": "zsharpminor"
+},
 }
 if (!window.HCTG.quickresponses) {
   window.HCTG.quickresponses = []
